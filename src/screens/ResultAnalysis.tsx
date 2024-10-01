@@ -43,7 +43,7 @@ export const ResultAnalysis = () => {
 
   const StatementAnalysis = ({onClose, support, oppose} : StatementAnalysisProps) => (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex justify-between">
       <h1 className="text-3xl flex mb-4">Statement analysis</h1>
       <Button 
       className="bg-transparent hover:bg-transparent outline-none border-none shadow-none flex md:hidden"
