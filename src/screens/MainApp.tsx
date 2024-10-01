@@ -53,7 +53,7 @@ export const MainApp = () => {
   ];
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen">
-      <div className="lg:h-[90%] h-full md:mt-24 mt-32 flex flex-col items-center lg:gap-10 gap-8">
+      <div className="lg:h-[90%] h-full md:mt-24 mt-44 flex flex-col items-center lg:gap-10 gap-8">
         <img
           src="/big-logo.svg"
           alt="logo"
@@ -93,11 +93,11 @@ export const MainApp = () => {
             />
             {inputValue.length > 0 && (
               <Button
-                className="absolute right-4 bg-[#1E90FF] text-white rounded-full flex items-center gap-2 h-[50px] w-[123px] justify-center hover:bg-blue-600"
+                className="absolute right-4 bg-[#1E90FF] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-blue-600"
                 onClick={handleCheck}
               >
-                <CiSearch className="w-5 h-5" />
-                <span>Check</span>
+                <CiSearch size={20} />
+                <span className="hidden md:flex">Check</span>
               </Button>
             )}
           </div>

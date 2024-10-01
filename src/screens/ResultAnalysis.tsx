@@ -151,7 +151,7 @@ const SkeletonLoader = () => (
       <Navbar input="" />
       <div className="flex items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-14 py-4 sm:py-6 md:py-8">
         <div className="w-full max-w-7xl">
-          <div className="flex flex-wrap gap-4 w-full justify-center sm:justify-start">
+          <div className="flex flex-wrap gap-4 w-full justify-start">
             <Skeleton className="w-36 sm:w-40 md:w-[166px] h-12 sm:h-14 md:h-[56px] rounded-full" />
             <Skeleton className="w-36 sm:w-40 md:w-[166px] h-12 sm:h-14 md:h-[56px] rounded-full" />
           </div>
@@ -165,7 +165,7 @@ const SkeletonLoader = () => (
               ))}
             </div>
             <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full lg:w-1/3">
-              <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg" />
+              <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg hidden md:flex" />
               <Skeleton className="w-full h-24 sm:h-28 md:h-[111px] rounded-lg" />
             </div>
           </div>
