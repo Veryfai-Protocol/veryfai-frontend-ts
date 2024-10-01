@@ -15,9 +15,6 @@ export const mockData = [
   "Jesus Christ was black",
   "Donald Trump has won the US election",
   "Arsenal will bottle the league again",
-  // "Are aliens real?",
-  // "Can dogs see colors?",
-  // "What is the meaning of life?",
 ];
 export const MainApp = () => {
   const [inputValue, setInputValue] = useState("");
@@ -105,7 +102,6 @@ export const MainApp = () => {
             )}
           </div>
 
-          {/* Animated Suggestions Dropdown */}
           <div
             className={`absolute left-0 right-0 top-full bg-white shadow-2xl rounded-b-xl z-10 overflow-hidden transition-all duration-300 ease-in-out ${
               showSuggestions
