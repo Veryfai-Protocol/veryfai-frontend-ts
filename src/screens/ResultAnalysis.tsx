@@ -59,11 +59,11 @@ export const ResultAnalysis = () => {
         <div className="w-full">
           <div className="flex gap-4 sm:hidden">
             <div className="rounded-full border border-black flex items-center justify-center gap-2 w-[166px] h-[56px]">
-              <img src="/src/assets/upvote.svg" alt="" />
+              <img src="/upvote.svg" alt="" />
               <p>Supporting {`(${support})`}</p>
             </div>
             <div className="rounded-full border border-[#D1D5DB] flex items-center justify-center gap-2 w-[166px] h-[56px]">
-              <img src="/src/assets/downvote.svg" alt="" />
+              <img src="/downvote.svg" alt="" />
               <p className="text-[#6B7280]">Opposing {`(${oppose})`}</p>
             </div>
           </div>
@@ -71,11 +71,11 @@ export const ResultAnalysis = () => {
             <div className="w-full">
               <div className="sm:flex gap-4 hidden">
                 <div className="rounded-full border border-black flex items-center justify-center gap-2 w-[166px] h-[56px]">
-                  <img src="/src/assets/upvote.svg" alt="" />
+                  <img src="/upvote.svg" alt="" />
                   <p>Supporting {`(${support})`}</p>
                 </div>
                 <div className="rounded-full border border-[#D1D5DB] flex items-center justify-center gap-2 w-[166px] h-[56px]">
-                  <img src="/src/assets/downvote.svg" alt="" />
+                  <img src="/downvote.svg" alt="" />
                   <p className="text-[#6B7280]">Opposing {`(${oppose})`}</p>
                 </div>
               </div>

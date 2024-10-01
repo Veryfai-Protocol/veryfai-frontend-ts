@@ -70,11 +70,11 @@ export const StatementScore = ({ score, supportCount, opposeCount } : StatementS
 
         <div className="space-y-2 mb-6 border-b py-4">
           <p className="text-green-500 flex items-center gap-3">
-          <img src="/src/assets/upvote.svg" alt="" />
+          <img src="/upvote.svg" alt="" />
             {supportCount} sources supported your statement.
           </p>
           <p className="text-red-500 flex items-center gap-3">
-          <img src="/src/assets/downvote.svg" alt="" />
+          <img src="/downvote.svg" alt="" />
             {opposeCount} sources opposed your statement
           </p>
         </div>

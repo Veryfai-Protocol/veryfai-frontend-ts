@@ -14,7 +14,7 @@ export const QuoteCard = ({ quote, summary, source, date } : QuoteCardType) => {
       <div className="flex items-center justify-between text-xs text-gray-500">
         <div className="flex items-center">
           <div className="w-6 h-6 bg-gray-300 rounded-full mr-2">
-            <img src="/src/assets/new-york.svg" alt="" />
+            <img src="/new-york.svg" alt="" />
           </div>
           <span>{source}</span>
           <span className="mx-2">•</span>
