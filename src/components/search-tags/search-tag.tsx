@@ -14,7 +14,7 @@ export const SearchTag = ({text, key} : SearchTagParams) => {
         className={`flex items-center space-x-2 border border-gray-300 rounded-lg ${randomSize} text-sm text-gray-700 bg-white shadow-sm hover:bg-gray-100 cursor-pointer`}
       >
         <CiSearch />
-        <span>{text}</span>
+        <span className="text-nowrap">{text}</span>
       </div>
     );
 }

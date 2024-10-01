@@ -129,9 +129,9 @@ export const ResultAnalysis = () => {
         <div className="md:hidden flex flex-col">
             <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
               <DrawerTrigger asChild>
-                <Button variant="outline" className="fixed bottom-4 right-4 mt-4 rounded-full w-[159px] h-[52px] bg-[#1E90FF] hover:bg-[#45b6ebf3] text-white hover:text-white shadow-lg">
-                    <img src="/star.svg" alt="" />
-                    See analysis
+                <Button variant="outline" className="fixed space-x-2 bottom-4 right-4 mt-4 rounded-full w-[159px] h-[52px] bg-[#1E90FF] hover:bg-[#45b6ebf3] text-white hover:text-white shadow-lg">
+                    <img src="/chart.svg" alt="" />
+                    <p>See analysis</p>
                 </Button>
               </DrawerTrigger>
               <DrawerContent className="md:hidden flex">

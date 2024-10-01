@@ -53,9 +53,26 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
-  		}
+  		},
+		  keyframes: {
+			scroll: {
+			  '0%': { transform: 'translateX(0)' },
+			  '100%': { transform: 'translateX(-50%)' }
+			},
+			scrollReverse: {
+			  '100%': { transform: 'translateX(-50%)' },
+			  '0%': { transform: 'translateX(0)' }
+			}
+		  },
+		  animation: {
+			scroll: 'scroll 500s linear infinite',
+			'scroll-reverse': 'scrollReverse 500s linear infinite'
+		  }
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+	require("tailwindcss-animate"),
+	require('tailwind-scrollbar-hide')
+  ],
 }
 
