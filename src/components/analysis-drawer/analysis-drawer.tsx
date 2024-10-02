@@ -29,7 +29,7 @@ export const StatementAnalysisDrawer: React.FC<StatementAnalysisDrawerProps> = (
   }: StatementAnalysisProps) => (
     <>
       <div className="flex justify-between">
-        <h1 className="text-3xl flex mb-4">Statement analysis</h1>
+        <h1 className="text-3xl flex text-nowrap mb-4">Statement analysis</h1>
         <Button
           className="bg-transparent hover:bg-transparent outline-none border-none shadow-none flex md:hidden"
           onClick={onClose}
