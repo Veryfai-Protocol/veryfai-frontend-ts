@@ -1,7 +1,7 @@
-import { SearchTag } from "@/components/search-tags/search-tag";
+import { ScrollingTags } from "@/components/scrolling-tag/scrolling-tag";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useCallback, useState, useRef, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { FaFilePen } from "react-icons/fa6";
@@ -24,34 +24,6 @@ export const MainApp = () => {
   const navigate = useNavigate();
 
   const reversedMockData = [...mockData].reverse();
-
-  const scrollRef1 = useRef<HTMLDivElement>(null);
-  const scrollRef2 = useRef<HTMLDivElement>(null);
-
-  // Auto-scrolling effect
-  useEffect(() => {
-    const scroll = (ref: React.RefObject<HTMLDivElement>, speed: number) => {
-      if (ref.current) {
-        ref.current.scrollLeft += speed;
-        
-        // If we've scrolled to the end, jump back to the start
-        if (ref.current.scrollLeft >= ref.current.scrollWidth / 2) {
-          ref.current.scrollLeft = 0;
-        }
-        // If we've scrolled to the start (for reverse direction), jump to the end
-        else if (ref.current.scrollLeft <= 0) {
-          ref.current.scrollLeft = ref.current.scrollWidth / 2;
-        }
-      }
-    };
-
-    const interval = setInterval(() => {
-      scroll(scrollRef1, 1);
-      scroll(scrollRef2, -1);
-    }, 20);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -87,10 +59,16 @@ export const MainApp = () => {
         <img
           src="/big-logo.svg"
           alt="logo"
-          className={`w-full max-w-[200px] md:max-w-[300px] object-contain ${animateUp ? "translate-y-[-50px] opacity-0" : ""} transition-all duration-300`}
+          className={`w-full max-w-[200px] md:max-w-[300px] object-contain ${
+            animateUp ? "translate-y-[-50px] opacity-0" : ""
+          } transition-all duration-300`}
         />
 
-        <div className={`flex flex-col md:flex-row gap-4 items-center ${animateUp ? "translate-y-[-50px] opacity-0" : ""} transition-all duration-300`}>
+        <div
+          className={`flex flex-col md:flex-row gap-4 items-center ${
+            animateUp ? "translate-y-[-50px] opacity-0" : ""
+          } transition-all duration-300`}
+        >
           <div className="flex gap-4 items-center">
             <div className="flex gap-3 bg-[#16974D] rounded-lg text-white items-center px-4 py-2">
               <FaRegCircleCheck size={20} />
@@ -105,11 +83,21 @@ export const MainApp = () => {
           <p className="md:text-[24px]">for accuracy and truth</p>
         </div>
 
-        <div className={`lg:w-[60%] sm:w-[80%] w-[98%] ${inputValue.length > 0 ? "shadow-2xl" : ""} relative p-2 rounded-t-xl ${animateUp ? "bg-transparent shadow-none" : ""} transition-all duration-300`}>
+        <div
+          className={`lg:w-[60%] sm:w-[80%] w-[98%] ${
+            inputValue.length > 0 ? "shadow-2xl" : ""
+          } relative p-2 rounded-t-xl ${
+            animateUp ? "bg-transparent shadow-none" : ""
+          } transition-all duration-300`}
+        >
           <div className="flex items-center">
             <Input
               type="text"
-              className={`rounded-full transition-all duration-300 transform ${inputValue.length > 0 ? "bg-white" : "bg-[#F3F4F6]"} ${animateUp ? "translate-y-[-50px] opacity-0" : ""} py-7 pl-6 md:pr-[140px] w-full text-gray-700 focus:outline-none`}
+              className={`rounded-full transition-all duration-300 transform ${
+                inputValue.length > 0 ? "bg-white" : "bg-[#F3F4F6]"
+              } ${
+                animateUp ? "translate-y-[-50px] opacity-0" : ""
+              } py-7 pl-6 md:pr-[140px] w-full text-gray-700 focus:outline-none`}
               placeholder="Type your statement here..."
               value={inputValue}
               onChange={handleInputChange}
@@ -117,7 +105,9 @@ export const MainApp = () => {
             />
             {inputValue.length > 0 && (
               <Button
-                className={`absolute right-4 bg-[#1E90FF] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-blue-600 transition-all duration-300 transform ${animateUp ? "translate-y-[-50px] opacity-0" : ""}`}
+                className={`absolute right-4 bg-[#1E90FF] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-blue-600 transition-all duration-300 transform ${
+                  animateUp ? "translate-y-[-50px] opacity-0" : ""
+                }`}
                 onClick={handleCheck}
               >
                 <CiSearch size={20} />
@@ -126,7 +116,13 @@ export const MainApp = () => {
             )}
           </div>
 
-          <div className={`absolute left-0 right-0 top-full bg-white shadow-2xl rounded-b-xl z-10 overflow-hidden transition-all duration-300 ease-in-out ${showSuggestions ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"}`}>
+          <div
+            className={`absolute left-0 right-0 top-full bg-white shadow-2xl rounded-b-xl z-10 overflow-hidden transition-all duration-300 ease-in-out ${
+              showSuggestions
+                ? "max-h-[300px] opacity-100"
+                : "max-h-0 opacity-0"
+            }`}
+          >
             {suggestions.map((suggestion, index) => (
               <div
                 key={index}
@@ -154,32 +150,9 @@ export const MainApp = () => {
           </div>
 
           {/* Scrolling Tags */}
-          <div className="w-full flex flex-col items-center justify-center md:space-y-4 space-y-1">
-            {/* Scrolling Container for mockData */}
-            <div
-              className="flex overflow-x-auto gap-4 pt-8 w-full scrollbar-hide"
-              ref={scrollRef1}
-              style={{ whiteSpace: 'nowrap' }}
-            >
-              <div className={`flex gap-4 animate-scroll`}>
-                {[...mockData, ...mockData].map((tag, index) => (
-                  <SearchTag key={index} text={tag} />
-                ))}
-              </div>
-            </div>
-
-            {/* Scrolling Container for reversedMockData */}
-            <div
-              className="flex overflow-x-auto gap-4 pt-4 w-full scrollbar-hide"
-              ref={scrollRef2}
-              style={{ whiteSpace: 'nowrap' }}
-            >
-              <div className={`flex gap-4 animate-scroll-reverse`}>
-                {[...reversedMockData, ...reversedMockData].map((tag, index) => (
-                  <SearchTag key={index} text={tag} />
-                ))}
-              </div>
-            </div>
+          <div className="w-full flex flex-col items-center justify-center md:space-y-2 space-y-1">
+            <ScrollingTags tags={mockData} direction="left" />
+            <ScrollingTags tags={reversedMockData} direction="right" />
           </div>
         </div>
       </div>
