@@ -105,12 +105,12 @@ export const MainApp = () => {
           <p className="md:text-[24px]">for accuracy and truth</p>
         </div>
 
-        <div className={`lg:w-[60%] sm:w-[80%] w-[90%] ${inputValue.length > 0 ? "shadow-2xl" : ""} relative p-2 rounded-t-xl ${animateUp ? "bg-transparent shadow-none" : ""} transition-all duration-300`}>
+        <div className={`lg:w-[60%] sm:w-[80%] w-[98%] ${inputValue.length > 0 ? "shadow-2xl" : ""} relative p-2 rounded-t-xl ${animateUp ? "bg-transparent shadow-none" : ""} transition-all duration-300`}>
           <div className="flex items-center">
             <Input
               type="text"
-              className={`rounded-full transition-all duration-300 transform ${inputValue.length > 0 ? "bg-white" : "bg-[#F3F4F6]"} ${animateUp ? "translate-y-[-50px] opacity-0" : ""} py-7 pl-6 pr-[140px] w-full text-gray-700 focus:outline-none`}
-              placeholder="Type your statement here"
+              className={`rounded-full transition-all duration-300 transform ${inputValue.length > 0 ? "bg-white" : "bg-[#F3F4F6]"} ${animateUp ? "translate-y-[-50px] opacity-0" : ""} py-7 pl-6 md:pr-[140px] w-full text-gray-700 focus:outline-none`}
+              placeholder="Type your statement here..."
               value={inputValue}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
