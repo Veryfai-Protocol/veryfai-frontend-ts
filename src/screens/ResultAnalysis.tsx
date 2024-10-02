@@ -23,6 +23,8 @@ interface StatementAnalysisProps {
 export const ResultAnalysis = () => {
   const { inputValue } = useParams();
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'supporting' | 'opposing'>('supporting');
+  const [tabLoading, setTabLoading] = useState(false);
   const support = 14;
   const oppose = 200;
   const reversedMockData = [...mockData].reverse();
@@ -38,6 +40,16 @@ export const ResultAnalysis = () => {
   if (loading) {
     return <SkeletonLoader />;
   }
+
+  const handleTabChange = (tab: 'supporting' | 'opposing') => {
+    if (tab !== activeTab) {
+      setTabLoading(true);
+      setActiveTab(tab);
+      setTimeout(() => {
+        setTabLoading(false);
+      }, 1000);
+    }
+  };
 
   const StatementAnalysis = ({
     onClose,
@@ -64,26 +76,58 @@ export const ResultAnalysis = () => {
       <div className="flex items-center justify-center w-full px-4 sm:px-14 py-8">
         <div className="w-full">
           <div className="flex gap-[10px] lg:hidden overflow-x-auto scrollbar-hide">
-            <VoteButton type="supporting" count={14} />
-            <VoteButton type="opposing" count={200} />
+            <VoteButton 
+            type="supporting" 
+            count={14}
+            onClick={() => handleTabChange('supporting')}
+            active={activeTab === 'supporting'}
+            />
+            <VoteButton 
+            type="opposing" 
+            count={200} 
+            onClick={() => handleTabChange('opposing')}
+            active={activeTab === 'opposing'}
+            />
             <StatementAnalysisDrawer support={18} oppose={200} />
           </div>
-          <div className="flex flex-col-reverse lg:flex-row md:mt-5 mt-2 gap-0 sm:gap-2 md:gap-10">
+          <div className="flex flex-col-reverse lg:flex-row lg:mt-5 mt-2 gap-0 sm:gap-2 md:gap-10">
             <div className="w-full">
               <div className="lg:flex gap-4 hidden">
-                <div className="rounded-full border border-black flex items-center justify-center gap-2 w-[166px] h-[56px]">
+              <Button
+                  className={`rounded-full border flex bg-transparent hover:bg-transparent items-center justify-center gap-2 w-[166px] h-[56px] ${
+                    activeTab === 'supporting'
+                      ? 'border-black text-black'
+                      : 'border-[#D1D5DB] text-[#6B7280]'
+                  }`}
+                  onClick={() => handleTabChange('supporting')}
+                >
                   <img src="/upvote.svg" alt="" />
                   <p>Supporting {`(${support})`}</p>
-                </div>
-                <div className="rounded-full border border-[#D1D5DB] flex items-center justify-center gap-2 w-[166px] h-[56px]">
+                </Button>
+                <Button
+                  className={`rounded-full border flex bg-transparent hover:bg-transparent items-center justify-center gap-2 w-[166px] h-[56px] ${
+                    activeTab === 'opposing'
+                      ? 'border-black text-black'
+                      : 'border-[#D1D5DB] text-[#6B7280]'
+                  }`}
+                  onClick={() => handleTabChange('opposing')}
+                >
                   <img src="/downvote.svg" alt="" />
-                  <p className="text-[#6B7280]">Opposing {`(${oppose})`}</p>
-                </div>
+                  <p>Opposing {`(${oppose})`}</p>
+                </Button>
               </div>
               <div className="space-y-6 w-full">
-                {cardData.map((card, index) => (
-                  <QuoteCard key={index} {...card} />
-                ))}
+              {tabLoading ? (
+                  <SkeletonQuoteCards />
+                ) : (
+                  cardData
+                    .filter((card) => 
+                      activeTab === 'supporting' ? card.type === 'supporting' : card.type === 'opposing'
+                    )
+                    .map((card, index) => (
+                      <QuoteCard key={index} {...card} />
+                    ))
+                )}
               </div>
               <div className="flex items-center justify-center w-full mt-5">
                 <Button className="rounded-full text-[#1E90FF] bg-transparent hover:bg-transparent border border-[#1E90FF] w-full">
@@ -94,7 +138,7 @@ export const ResultAnalysis = () => {
             </div>
 
             <div className="flex flex-col items-start w-full">
-              <div className="hidden md:block w-full">
+              <div className="hidden lg:block w-full">
                 <StatementAnalysis support={14} oppose={200} />
               </div>
               <div className="lg:flex hidden flex-col">
@@ -125,6 +169,17 @@ export const ResultAnalysis = () => {
     </div>
   );
 };
+
+const SkeletonQuoteCards = () => (
+  <>
+    {[1, 2, 3].map((item) => (
+      <Skeleton
+        key={item}
+        className="w-full mt-5 h-24 sm:h-28 md:h-[113px] rounded-lg"
+      />
+    ))}
+  </>
+);
 
 const SkeletonLoader = () => (
   <div className="w-full">
@@ -161,29 +216,62 @@ const cardData = [
     summary: "This is an AI summary of the reason and context from the source.",
     source: "New York Times",
     date: "20/09/24",
+    type: "supporting"
   },
   {
     quote: "Another important statement",
     summary: "Context and explanation for the second quote.",
     source: "Washington Post",
     date: "20/09/24",
+    type: "opposing"
   },
   {
     quote: "A third perspective on the matter",
     summary: "Additional insights from a different source.",
     source: "The Guardian",
     date: "20/09/24",
+    type: "supporting"
   },
   {
     quote: "Expert opinion on the topic",
     summary: "Professional analysis of the situation.",
     source: "BBC News",
     date: "20/09/24",
+    type: "opposing"
+  },
+  {
+    quote: "Expert opinion on the topic",
+    summary: "Professional analysis of the situation.",
+    source: "BBC News",
+    date: "20/09/24",
+    type: "opposing"
+  },
+  {
+    quote: "Expert opinion on the topic",
+    summary: "Professional analysis of the situation.",
+    source: "BBC News",
+    date: "20/09/24",
+    type: "opposing"
   },
   {
     quote: "Final thoughts on the issue",
     summary: "Concluding remarks and future implications.",
     source: "Reuters",
     date: "20/09/24",
+    type: "supporting"
+  },
+  {
+    quote: "Final thoughts on the issue",
+    summary: "Concluding remarks and future implications.",
+    source: "Reuters",
+    date: "20/09/24",
+    type: "supporting"
+  },
+  {
+    quote: "Final thoughts on the issue",
+    summary: "Concluding remarks and future implications.",
+    source: "Reuters",
+    date: "20/09/24",
+    type: "supporting"
   },
 ];

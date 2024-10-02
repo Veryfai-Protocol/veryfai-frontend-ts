@@ -27,7 +27,7 @@ export const StatementScore = ({ score, supportCount, opposeCount } : StatementS
 
         <div className='flex items-center justify-center gap-4 border-b w-full'>
         <div className="relative w-40 h-40 mb-6">
-          <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+          <svg className="w-full h-full" viewBox="0 0 100 100">
             <circle
               className="text-gray-200"
               strokeWidth="10"
@@ -48,7 +48,7 @@ export const StatementScore = ({ score, supportCount, opposeCount } : StatementS
               r="45"
               cx="50"
               cy="50"
-              transform={`rotate(90 50 50)`}
+              transform="rotate(-90 50 50)"
             />
           </svg>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

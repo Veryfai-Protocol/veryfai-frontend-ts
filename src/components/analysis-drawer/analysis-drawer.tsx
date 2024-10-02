@@ -45,7 +45,7 @@ export const StatementAnalysisDrawer: React.FC<StatementAnalysisDrawerProps> = (
   const closeDrawer = () => setDrawerOpen(false);
 
   return (
-    <div className="md:hidden flex flex-col">
+    <div className="lg:hidden flex flex-col">
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerTrigger asChild>
           <Button
@@ -56,7 +56,7 @@ export const StatementAnalysisDrawer: React.FC<StatementAnalysisDrawerProps> = (
             <p>Analysis</p>
           </Button>
         </DrawerTrigger>
-        <DrawerContent className="md:hidden flex">
+        <DrawerContent className="lg:hidden flex">
           <div className="p-4">
             <StatementAnalysis
               onClose={closeDrawer}
