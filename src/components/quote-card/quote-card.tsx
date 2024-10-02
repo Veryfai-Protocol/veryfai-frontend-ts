@@ -17,7 +17,7 @@ export const QuoteCard = ({ quote, summary, source, date } : QuoteCardType) => {
             <img src="/new-york.svg" alt="" />
           </div>
           <span className="text-wrap sm:text-nowrap">{source}</span>
-          <img src="/dot.svg" alt="" className="mx-2 sm:mx-4 mt-1" />
+          <img src="/dot.svg" alt="" className="mx-2 sm:mx-4" />
           <span>{date}</span>
         </div>
         <button className="flex items-center gap-1 hover:text-blue-600">
