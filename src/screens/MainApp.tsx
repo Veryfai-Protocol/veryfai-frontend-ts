@@ -36,6 +36,7 @@ export const MainApp = () => {
       setAnimateUp(true);
       setTimeout(() => {
         navigate(`/result-analysis/${encodeURIComponent(inputValue)}`);
+        window.scrollTo(0, 0);
       }, 200);
     }
   }, [inputValue, navigate]);
@@ -93,7 +94,7 @@ export const MainApp = () => {
           <div className="flex items-center">
             <Input
               type="text"
-              className={`rounded-full transition-all duration-300 transform ${
+              className={`rounded-full transition-all duration-300 ${
                 inputValue.length > 0 ? "bg-white" : "bg-[#F3F4F6]"
               } ${
                 animateUp ? "translate-y-[-50px] opacity-0" : ""
@@ -105,7 +106,7 @@ export const MainApp = () => {
             />
             {inputValue.length > 0 && (
               <Button
-                className={`absolute right-4 bg-[#1E90FF] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-blue-600 transition-all duration-300 transform ${
+                className={`absolute right-4 bg-[#1E90FF] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-blue-600 transition-all duration-300 ${
                   animateUp ? "translate-y-[-50px] opacity-0" : ""
                 }`}
                 onClick={handleCheck}

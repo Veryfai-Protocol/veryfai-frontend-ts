@@ -30,6 +30,7 @@ export const ResultAnalysis = () => {
   const reversedMockData = [...mockData].reverse();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
