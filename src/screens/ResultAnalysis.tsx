@@ -6,12 +6,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 import { mockData } from "./MainApp";
 import { SearchTag } from "@/components/search-tags/search-tag";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { ScrollingTags } from "@/components/scrolling-tag/scrolling-tag";
+import { StatementAnalysisDrawer } from "@/components/analysis-drawer/analysis-drawer";
+import { VoteButton } from "@/components/vote-button/vote-button";
 
 interface StatementAnalysisProps {
   onClose?: () => void;
@@ -22,7 +23,6 @@ interface StatementAnalysisProps {
 export const ResultAnalysis = () => {
   const { inputValue } = useParams();
   const [loading, setLoading] = useState(true);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const support = 14;
   const oppose = 200;
   const reversedMockData = [...mockData].reverse();
@@ -38,10 +38,6 @@ export const ResultAnalysis = () => {
   if (loading) {
     return <SkeletonLoader />;
   }
-
-  const closeDrawer = () => {
-    setDrawerOpen(false);
-  };
 
   const StatementAnalysis = ({
     onClose,
@@ -67,15 +63,10 @@ export const ResultAnalysis = () => {
       <Navbar input={inputValue as string} />
       <div className="flex items-center justify-center w-full px-4 sm:px-14 py-8">
         <div className="w-full">
-          <div className="flex gap-4 lg:hidden">
-            <div className="rounded-full border border-black flex items-center justify-center gap-2 w-[166px] h-[56px]">
-              <img src="/upvote.svg" alt="" />
-              <p>Supporting {`(${support})`}</p>
-            </div>
-            <div className="rounded-full border border-[#D1D5DB] flex items-center justify-center gap-2 w-[166px] h-[56px]">
-              <img src="/downvote.svg" alt="" />
-              <p className="text-[#6B7280]">Opposing {`(${oppose})`}</p>
-            </div>
+          <div className="flex gap-[10px] lg:hidden overflow-x-auto scrollbar-hide">
+            <VoteButton type="supporting" count={14} />
+            <VoteButton type="opposing" count={200} />
+            <StatementAnalysisDrawer support={18} oppose={200} />
           </div>
           <div className="flex flex-col-reverse lg:flex-row md:mt-5 mt-2 gap-0 sm:gap-2 md:gap-10">
             <div className="w-full">
@@ -131,28 +122,6 @@ export const ResultAnalysis = () => {
           </div>
         </div>
       </div>
-      <div className="md:hidden flex flex-col">
-        <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-          <DrawerTrigger asChild>
-            <Button
-              variant="outline"
-              className="fixed space-x-2 bottom-4 right-4 mt-4 rounded-full w-[159px] h-[52px] bg-[#1E90FF] hover:bg-[#45b6ebf3] text-white hover:text-white shadow-lg"
-            >
-              <img src="/chart.svg" alt="" />
-              <p>See analysis</p>
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent className="md:hidden flex">
-            <div className="p-4">
-              <StatementAnalysis
-                onClose={closeDrawer}
-                support={14}
-                oppose={200}
-              />
-            </div>
-          </DrawerContent>
-        </Drawer>
-      </div>
     </div>
   );
 };
@@ -190,30 +159,30 @@ const cardData = [
     quote: "This is a quote from a source",
     summary: "This is an AI summary of the reason and context from the source.",
     source: "New York Times",
-    date: "20 September, 2024",
+    date: "20/09/24",
   },
   {
     quote: "Another important statement",
     summary: "Context and explanation for the second quote.",
     source: "Washington Post",
-    date: "21 September, 2024",
+    date: "20/09/24",
   },
   {
     quote: "A third perspective on the matter",
     summary: "Additional insights from a different source.",
     source: "The Guardian",
-    date: "22 September, 2024",
+    date: "20/09/24",
   },
   {
     quote: "Expert opinion on the topic",
     summary: "Professional analysis of the situation.",
     source: "BBC News",
-    date: "23 September, 2024",
+    date: "20/09/24",
   },
   {
     quote: "Final thoughts on the issue",
     summary: "Concluding remarks and future implications.",
     source: "Reuters",
-    date: "24 September, 2024",
+    date: "20/09/24",
   },
 ];

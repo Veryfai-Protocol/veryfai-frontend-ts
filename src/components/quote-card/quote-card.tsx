@@ -13,18 +13,16 @@ export const QuoteCard = ({ quote, summary, source, date } : QuoteCardType) => {
       <p className="text-sm text-gray-600 mb-4 text-[20px]">{summary}</p>
       <div className="flex items-center justify-between text-xs text-gray-500">
         <div className="flex items-center">
-          <div className="w-6 h-6 bg-gray-300 rounded-full mr-2">
+          <div className="w-6 h-6 rounded-full mr-2">
             <img src="/new-york.svg" alt="" />
           </div>
-          <span>{source}</span>
-          <span className="mx-2">•</span>
+          <span className="text-wrap sm:text-nowrap">{source}</span>
+          <img src="/dot.svg" alt="" className="mx-2 sm:mx-4 mt-1" />
           <span>{date}</span>
         </div>
-        <button className="flex items-center hover:text-blue-600">
-          Check source 
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
+        <button className="flex items-center gap-1 hover:text-blue-600">
+          <span className="text-nowrap mt-[-2px]">Check Source</span>
+          <img src="/arrow.svg" alt="" />
         </button>
       </div>
     </div>
