@@ -92,29 +92,28 @@ export const MainApp = () => {
           } transition-all duration-300`}
         >
           <div className="flex items-center">
-            <Input
-              type="text"
-              className={`rounded-full transition-all duration-300 ${
-                inputValue.length > 0 ? "bg-white" : "bg-[#F3F4F6]"
-              } ${
-                animateUp ? "translate-y-[-50px] opacity-0" : ""
-              } py-7 pl-6 md:pr-[140px] w-full text-gray-700 focus:outline-none`}
-              placeholder="Type your statement here..."
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-            />
-            {inputValue.length > 0 && (
-              <Button
-                className={`absolute right-4 bg-[#1E90FF] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-blue-600 transition-all duration-300 ${
-                  animateUp ? "translate-y-[-50px] opacity-0" : ""
-                }`}
-                onClick={handleCheck}
-              >
-                <CiSearch size={20} />
-                <span className="hidden md:flex">Check</span>
-              </Button>
-            )}
+          <Input
+    type="text"
+    className={`rounded-full transition-all duration-300 h-[66px] ${
+      inputValue.length > 0 ? "bg-white" : "bg-[#F3F4F6]"
+    } ${animateUp ? "translate-y-[-50px] opacity-0" : ""} py-4 pl-6 md:pr-[120px] w-full text-gray-700 focus:outline-none`}
+    placeholder="Type your statement here..."
+    value={inputValue}
+    onChange={handleInputChange}
+    onKeyDown={handleKeyDown}
+    style={{ transition: "background-color 0.3s ease" }}
+  />
+  {inputValue.length > 0 && (
+    <Button
+      className={`absolute right-4 bg-[#1E90FF] text-white rounded-full flex items-center gap-2 md:h-[45px] md:w-[110px] w-10 h-10 justify-center hover:bg-blue-600 transition-all duration-300 ${
+        animateUp ? "translate-y-[-50px] opacity-0" : ""
+      }`}
+      onClick={handleCheck}
+    >
+      <CiSearch size={20} />
+      <span className="hidden md:flex">Check</span>
+    </Button>
+  )}
           </div>
 
           <div

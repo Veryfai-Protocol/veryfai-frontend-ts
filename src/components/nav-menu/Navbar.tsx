@@ -2,7 +2,7 @@ import { CiSearch } from "react-icons/ci";
 import { Logo } from "../logo/logo";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 type InputProp = {
   input: string | undefined;
@@ -11,40 +11,17 @@ type InputProp = {
 export const Navbar = ({input} : InputProp) => {
   //@ts-ignore
   const [inputValue, setInputValue] = useState("");
-  const [isLogoVisible, setIsLogoVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (window.innerWidth <= 640) { // Only apply on mobile (adjust breakpoint as needed)
-        if (currentScrollY > lastScrollY) {
-          setIsLogoVisible(false);
-        } else {
-          setIsLogoVisible(true);
-        }
-      } else {
-        setIsLogoVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
 
   return (
     <header className="bg-[#1E90FF] w-full flex items-center">
       <nav className="w-full flex flex-col sm:flex-row items-center p-4 sm:gap-16 gap-4 px-10">
-        <div className={`transition-all duration-300 ease-in-out ${isLogoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full'} sm:opacity-100 sm:translate-y-0`}>
+        <div className={`transition-all duration-300 ease-in-out sm:opacity-100 sm:translate-y-0`}>
           <Logo />
         </div>
         <div className="w-full">
