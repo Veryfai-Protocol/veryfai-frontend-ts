@@ -74,7 +74,7 @@ export const ResultAnalysis = () => {
   return (
     <div className="relative min-h-screen">
       <Navbar input={inputValue as string} />
-      <div className="flex items-center justify-center w-full px-4 sm:px-14 py-8">
+      <div className="flex sm:pt-24 pt-40 items-center justify-center w-full px-4 sm:px-14 py-8">
         <div className="w-full">
           <div className="flex gap-[10px] lg:hidden overflow-x-auto scrollbar-hide">
             <VoteButton 
@@ -185,7 +185,7 @@ const SkeletonQuoteCards = () => (
 const SkeletonLoader = () => (
   <div className="w-full">
     <Navbar input="" />
-    <div className="flex items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-14 py-4 sm:py-6 md:py-8">
+    <div className="flex sm:pt-24 pt-40 items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-14 py-4 sm:py-6 md:py-8">
       <div className="w-full max-w-7xl">
         <div className="flex gap-4 w-full justify-start">
           <Skeleton className="w-36 sm:w-40 md:w-[166px] h-12 sm:h-14 md:h-[56px] rounded-full" />

@@ -2,29 +2,66 @@ import { CiSearch } from "react-icons/ci";
 import { Logo } from "../logo/logo";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type InputProp = {
   input: string | undefined;
 };
 
-export const Navbar = ({input} : InputProp) => {
+export const Navbar = ({ input }: InputProp) => {
   //@ts-ignore
   const [inputValue, setInputValue] = useState("");
+  const [isLogoVisible, setIsLogoVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (window.innerWidth <= 640) {
+        if (currentScrollY > lastScrollY) {
+          setIsLogoVisible(false);
+        }
+
+        // Only show logo when scrolled back to the top
+        if (currentScrollY === 0) {
+          setIsLogoVisible(true);
+        }
+      } else {
+        setIsLogoVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   return (
-    <header className="bg-[#1E90FF] w-full flex items-center">
-      <nav className="w-full flex flex-col sm:flex-row items-center p-4 sm:gap-16 gap-4 px-10">
-        <div className={`transition-all duration-300 ease-in-out sm:opacity-100 sm:translate-y-0`}>
-          <Logo />
-        </div>
-        <div className="w-full">
+    <header className="fixed bg-[#1E90FF] w-full flex items-center z-[9999]">
+      <nav className={`w-full flex flex-col sm:flex-row items-center ${isLogoVisible ? 'p-4' : 'p-2'} sm:gap-16 gap-4 px-10`}>
+        {/* Conditional Rendering for Logo Animation */}
+        {isLogoVisible && (
+          <div
+            className={`transition-all duration-1000 ease-in-out ${
+              isLogoVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+            }`}
+          >
+            <Logo />
+          </div>
+        )}
+
+        {/* Input Field Animation */}
+        <div
+          className={`w-full transition-all duration-1000 ease-in-out`}
+        >
           <div className="flex justify-start relative w-full md:w-[70%]">
             <Input
               type="text"
