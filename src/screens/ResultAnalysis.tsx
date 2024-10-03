@@ -23,7 +23,9 @@ interface StatementAnalysisProps {
 export const ResultAnalysis = () => {
   const { inputValue } = useParams();
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'supporting' | 'opposing'>('supporting');
+  const [activeTab, setActiveTab] = useState<"supporting" | "opposing">(
+    "supporting"
+  );
   const [tabLoading, setTabLoading] = useState(false);
   const support = 14;
   const oppose = 200;
@@ -42,7 +44,7 @@ export const ResultAnalysis = () => {
     return <SkeletonLoader />;
   }
 
-  const handleTabChange = (tab: 'supporting' | 'opposing') => {
+  const handleTabChange = (tab: "supporting" | "opposing") => {
     if (tab !== activeTab) {
       setTabLoading(true);
       setActiveTab(tab);
@@ -77,57 +79,47 @@ export const ResultAnalysis = () => {
       <div className="flex sm:pt-24 pt-40 items-center justify-center w-full px-4 sm:px-14 py-8">
         <div className="w-full">
           <div className="flex gap-[10px] lg:hidden overflow-x-auto scrollbar-hide">
-            <VoteButton 
-            type="supporting" 
-            count={14}
-            onClick={() => handleTabChange('supporting')}
-            active={activeTab === 'supporting'}
+            <VoteButton
+              type="supporting"
+              count={14}
+              onClick={() => handleTabChange("supporting")}
+              active={activeTab === "supporting"}
             />
-            <VoteButton 
-            type="opposing" 
-            count={200} 
-            onClick={() => handleTabChange('opposing')}
-            active={activeTab === 'opposing'}
+            <VoteButton
+              type="opposing"
+              count={200}
+              onClick={() => handleTabChange("opposing")}
+              active={activeTab === "opposing"}
             />
-            <StatementAnalysisDrawer support={18} oppose={200} />
+            <StatementAnalysisDrawer support={support} oppose={oppose} />
           </div>
-          <div className="flex flex-col-reverse lg:flex-row lg:mt-5 mt-2 gap-0 sm:gap-2 md:gap-10">
+          <div className="flex flex-col-reverse lg:flex-row lg:mt-5 mt-2 gap-0 sm:gap-2 ">
             <div className="w-full">
               <div className="lg:flex gap-4 hidden">
-              <Button
-                  className={`rounded-full border flex bg-transparent hover:bg-transparent items-center justify-center gap-2 w-[166px] h-[56px] ${
-                    activeTab === 'supporting'
-                      ? 'border-black text-black'
-                      : 'border-[#D1D5DB] text-[#6B7280]'
-                  }`}
-                  onClick={() => handleTabChange('supporting')}
-                >
-                  <img src="/upvote.svg" alt="" />
-                  <p>Supporting {`(${support})`}</p>
-                </Button>
-                <Button
-                  className={`rounded-full border flex bg-transparent hover:bg-transparent items-center justify-center gap-2 w-[166px] h-[56px] ${
-                    activeTab === 'opposing'
-                      ? 'border-black text-black'
-                      : 'border-[#D1D5DB] text-[#6B7280]'
-                  }`}
-                  onClick={() => handleTabChange('opposing')}
-                >
-                  <img src="/downvote.svg" alt="" />
-                  <p>Opposing {`(${oppose})`}</p>
-                </Button>
+                <VoteButton
+                  type="supporting"
+                  count={14}
+                  onClick={() => handleTabChange("supporting")}
+                  active={activeTab === "supporting"}
+                />
+                <VoteButton
+                  type="opposing"
+                  count={200}
+                  onClick={() => handleTabChange("opposing")}
+                  active={activeTab === "opposing"}
+                />
               </div>
               <div className="space-y-6 w-full">
-              {tabLoading ? (
+                {tabLoading ? (
                   <SkeletonQuoteCards />
                 ) : (
                   cardData
-                    .filter((card) => 
-                      activeTab === 'supporting' ? card.type === 'supporting' : card.type === 'opposing'
+                    .filter((card) =>
+                      activeTab === "supporting"
+                        ? card.type === "supporting"
+                        : card.type === "opposing"
                     )
-                    .map((card, index) => (
-                      <QuoteCard key={index} {...card} />
-                    ))
+                    .map((card, index) => <QuoteCard key={index} {...card} />)
                 )}
               </div>
               <div className="flex items-center justify-center w-full mt-5">
@@ -187,10 +179,10 @@ const SkeletonLoader = () => (
     <Navbar input="" />
     <div className="flex sm:pt-24 pt-40 items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-14 py-4 sm:py-6 md:py-8">
       <div className="w-full max-w-7xl">
-        <div className="flex gap-4 w-full justify-start">
+        <div className="flex gap-4 w-full justify-start pt-0 md:pt-20">
           <Skeleton className="w-36 sm:w-40 md:w-[166px] h-12 sm:h-14 md:h-[56px] rounded-full" />
           <Skeleton className="w-36 sm:w-40 md:w-[166px] h-12 sm:h-14 md:h-[56px] rounded-full" />
-          <Skeleton className="w-28 sm:w-32 flex md:hidden md:w-[146px] h-12 sm:h-14 md:h-[56px] rounded-full" />
+          <Skeleton className="w-28 sm:w-32 flex lg:hidden md:w-[146px] h-12 sm:h-14 md:h-[56px] rounded-full" />
         </div>
         <div className="flex flex-col-reverse lg:flex-row mt-5 gap-4 sm:gap-6 lg:gap-10">
           <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full lg:w-2/3">
@@ -202,7 +194,7 @@ const SkeletonLoader = () => (
             ))}
           </div>
           <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full lg:w-1/3">
-            <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg hidden md:flex" />
+            <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg hidden lg:flex" />
             <Skeleton className="w-full h-24 sm:h-28 md:h-[111px] rounded-lg" />
           </div>
         </div>
@@ -217,62 +209,62 @@ const cardData = [
     summary: "This is an AI summary of the reason and context from the source.",
     source: "New York Times",
     date: "20/09/24",
-    type: "supporting"
+    type: "supporting",
   },
   {
     quote: "Another important statement",
     summary: "Context and explanation for the second quote.",
     source: "Washington Post",
     date: "20/09/24",
-    type: "opposing"
+    type: "opposing",
   },
   {
     quote: "A third perspective on the matter",
     summary: "Additional insights from a different source.",
     source: "The Guardian",
     date: "20/09/24",
-    type: "supporting"
+    type: "supporting",
   },
   {
     quote: "Expert opinion on the topic",
     summary: "Professional analysis of the situation.",
     source: "BBC News",
     date: "20/09/24",
-    type: "opposing"
+    type: "opposing",
   },
   {
     quote: "Expert opinion on the topic",
     summary: "Professional analysis of the situation.",
     source: "BBC News",
     date: "20/09/24",
-    type: "opposing"
+    type: "opposing",
   },
   {
     quote: "Expert opinion on the topic",
     summary: "Professional analysis of the situation.",
     source: "BBC News",
     date: "20/09/24",
-    type: "opposing"
+    type: "opposing",
   },
   {
     quote: "Final thoughts on the issue",
     summary: "Concluding remarks and future implications.",
     source: "Reuters",
     date: "20/09/24",
-    type: "supporting"
+    type: "supporting",
   },
   {
     quote: "Final thoughts on the issue",
     summary: "Concluding remarks and future implications.",
     source: "Reuters",
     date: "20/09/24",
-    type: "supporting"
+    type: "supporting",
   },
   {
     quote: "Final thoughts on the issue",
     summary: "Concluding remarks and future implications.",
     source: "Reuters",
     date: "20/09/24",
-    type: "supporting"
+    type: "supporting",
   },
 ];

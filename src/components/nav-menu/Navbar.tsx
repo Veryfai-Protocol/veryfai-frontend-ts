@@ -28,7 +28,6 @@ export const Navbar = ({ input }: InputProp) => {
           setIsLogoVisible(false);
         }
 
-        // Only show logo when scrolled back to the top
         if (currentScrollY === 0) {
           setIsLogoVisible(true);
         }
@@ -45,7 +44,7 @@ export const Navbar = ({ input }: InputProp) => {
   }, [lastScrollY]);
 
   return (
-    <header className="fixed bg-[#1E90FF] w-full flex items-center z-[9999]">
+    <header className="fixed bg-[#1E90FF] w-full flex items-center z-50">
       <nav className={`w-full flex flex-col sm:flex-row items-center ${isLogoVisible ? 'p-4' : 'p-2'} sm:gap-16 gap-4 px-10`}>
         {/* Conditional Rendering for Logo Animation */}
         {isLogoVisible && (
