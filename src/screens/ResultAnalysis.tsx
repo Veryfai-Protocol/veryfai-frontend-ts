@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { Navbar } from "@/components/nav-menu/Navbar";
 import { QuoteCard } from "@/components/quote-card/quote-card";
 import { StatementScore } from "@/components/statement-score/statement-score";
@@ -13,6 +12,7 @@ import { IoClose } from "react-icons/io5";
 import { ScrollingTags } from "@/components/scrolling-tag/scrolling-tag";
 import { StatementAnalysisDrawer } from "@/components/analysis-drawer/analysis-drawer";
 import { VoteButton } from "@/components/vote-button/vote-button";
+// import { useQuery } from '@tanstack/react-query'
 
 interface StatementAnalysisProps {
   onClose?: () => void;
@@ -21,15 +21,15 @@ interface StatementAnalysisProps {
 }
 
 export const ResultAnalysis = () => {
-  const { inputValue } = useParams();
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"supporting" | "opposing">(
-    "supporting"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "supporting" | "opposing" | "analysis"
+  >("supporting");
   const [tabLoading, setTabLoading] = useState(false);
   const support = 14;
   const oppose = 200;
   const reversedMockData = [...mockData].reverse();
+  const [visibleCards, setVisibleCards] = useState(5);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,11 +40,21 @@ export const ResultAnalysis = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleShowMore = () => {
+    setVisibleCards((prevCount) => prevCount + 5);
+  };
+
+  const filteredCardData = cardData.filter((card) =>
+    activeTab === "supporting"
+      ? card.type === "supporting"
+      : card.type === "opposing"
+  );
+
   if (loading) {
     return <SkeletonLoader />;
   }
 
-  const handleTabChange = (tab: "supporting" | "opposing") => {
+  const handleTabChange = (tab: "supporting" | "opposing" | "analysis") => {
     if (tab !== activeTab) {
       setTabLoading(true);
       setActiveTab(tab);
@@ -75,7 +85,7 @@ export const ResultAnalysis = () => {
 
   return (
     <div className="relative min-h-screen">
-      <Navbar input={inputValue as string} />
+      <Navbar />
       <div className="flex sm:pt-24 pt-40 items-center justify-center w-full px-4 sm:px-14 py-8">
         <div className="w-full">
           <div className="flex gap-[10px] lg:hidden overflow-x-auto scrollbar-hide">
@@ -91,7 +101,14 @@ export const ResultAnalysis = () => {
               onClick={() => handleTabChange("opposing")}
               active={activeTab === "opposing"}
             />
-            <StatementAnalysisDrawer support={support} oppose={oppose} />
+            <StatementAnalysisDrawer
+              support={support}
+              oppose={oppose}
+              type="analysis"
+              count={200}
+              onClick={() => handleTabChange("analysis")}
+              active={activeTab === "analysis"}
+            />
           </div>
           <div className="flex flex-col-reverse lg:flex-row lg:mt-5 mt-2 gap-0 sm:gap-2 ">
             <div className="w-full">
@@ -113,21 +130,22 @@ export const ResultAnalysis = () => {
                 {tabLoading ? (
                   <SkeletonQuoteCards />
                 ) : (
-                  cardData
-                    .filter((card) =>
-                      activeTab === "supporting"
-                        ? card.type === "supporting"
-                        : card.type === "opposing"
-                    )
+                  filteredCardData
+                    .slice(0, visibleCards)
                     .map((card, index) => <QuoteCard key={index} {...card} />)
                 )}
               </div>
-              <div className="flex items-center justify-center w-full mt-5">
-                <Button className="rounded-full text-[#1E90FF] bg-transparent hover:bg-transparent border border-[#1E90FF] w-full">
-                  Show more results
-                  <MdKeyboardArrowDown />
-                </Button>
-              </div>
+              {visibleCards < filteredCardData.length && (
+                <div className="flex items-center justify-center w-full mt-5">
+                  <Button
+                    className="rounded-full text-[#1E90FF] bg-transparent hover:bg-transparent border border-[#1E90FF] w-full"
+                    onClick={handleShowMore}
+                  >
+                    Show more results
+                    <MdKeyboardArrowDown />
+                  </Button>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col items-start w-full">
@@ -176,7 +194,7 @@ const SkeletonQuoteCards = () => (
 
 const SkeletonLoader = () => (
   <div className="w-full">
-    <Navbar input="" />
+    <Navbar />
     <div className="flex sm:pt-24 pt-40 items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-14 py-4 sm:py-6 md:py-8">
       <div className="w-full max-w-7xl">
         <div className="flex gap-4 w-full justify-start pt-0 md:pt-20">
@@ -212,11 +230,32 @@ const cardData = [
     type: "supporting",
   },
   {
+    quote: "This is a quote from a source",
+    summary: "This is an AI summary of the reason and context from the source.",
+    source: "New York Times",
+    date: "20/09/24",
+    type: "supporting",
+  },
+  {
     quote: "Another important statement",
     summary: "Context and explanation for the second quote.",
     source: "Washington Post",
     date: "20/09/24",
     type: "opposing",
+  },
+  {
+    quote: "Another important statement",
+    summary: "Context and explanation for the second quote.",
+    source: "Washington Post",
+    date: "20/09/24",
+    type: "opposing",
+  },
+  {
+    quote: "A third perspective on the matter",
+    summary: "Additional insights from a different source.",
+    source: "The Guardian",
+    date: "20/09/24",
+    type: "supporting",
   },
   {
     quote: "A third perspective on the matter",
@@ -245,6 +284,34 @@ const cardData = [
     source: "BBC News",
     date: "20/09/24",
     type: "opposing",
+  },
+  {
+    quote: "Expert opinion on the topic",
+    summary: "Professional analysis of the situation.",
+    source: "BBC News",
+    date: "20/09/24",
+    type: "opposing",
+  },
+  {
+    quote: "Expert opinion on the topic",
+    summary: "Professional analysis of the situation.",
+    source: "BBC News",
+    date: "20/09/24",
+    type: "opposing",
+  },
+  {
+    quote: "Expert opinion on the topic",
+    summary: "Professional analysis of the situation.",
+    source: "BBC News",
+    date: "20/09/24",
+    type: "opposing",
+  },
+  {
+    quote: "Final thoughts on the issue",
+    summary: "Concluding remarks and future implications.",
+    source: "Reuters",
+    date: "20/09/24",
+    type: "supporting",
   },
   {
     quote: "Final thoughts on the issue",
