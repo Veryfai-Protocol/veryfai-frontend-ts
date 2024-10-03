@@ -1,6 +1,7 @@
 import { ScrollingTags } from "@/components/scrolling-tag/scrolling-tag";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSearchStore } from "@/zustand/search-store";
 import { useCallback, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaRegCircleCheck } from "react-icons/fa6";
@@ -18,7 +19,7 @@ export const mockData = [
 ];
 
 export const MainApp = () => {
-  const [inputValue, setInputValue] = useState("");
+  const { inputValue, setInputValue } = useSearchStore();
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [animateUp, setAnimateUp] = useState(false);
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ export const MainApp = () => {
       setAnimateUp(true);
       setTimeout(() => {
         navigate(`/result-analysis/${encodeURIComponent(inputValue)}`);
-        window.scrollTo(0, 0);
+        window.location.reload();
       }, 200);
     }
   }, [inputValue, navigate]);

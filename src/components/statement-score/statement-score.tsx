@@ -9,7 +9,7 @@ type StatementScoreType = {
 
 export const StatementScore = ({ score, supportCount, opposeCount } : StatementScoreType) => {
   const percentage = score;
-  const truthStatus = supportCount > opposeCount ? "True" : "False";
+  const truthStatus = percentage > 70 ? "True" : "False";
   const color = percentage < 70 ? "text-red-500" : "text-green-500";
 
   const circumference = 2 * Math.PI * 45;
