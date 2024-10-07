@@ -5,28 +5,30 @@ import { StatementScore } from "../statement-score/statement-score";
 import { IoClose } from "react-icons/io5";
 
 interface StatementAnalysisDrawerProps {
-  support: number;
-  oppose: number;
+  support: number | undefined;
+  oppose: number | undefined;
   type: "supporting" | "opposing" | "analysis";
-  count: number;
+  count: number | undefined;
   onClick: () => void;
   active: boolean;
 }
 
 interface StatementAnalysisProps {
   onClose?: () => void;
-  support: number;
-  oppose: number;
+  support: number | undefined;
+  oppose: number | undefined;
+  count: number | undefined;
 }
 
 export const StatementAnalysisDrawer: React.FC<
   StatementAnalysisDrawerProps
-> = ({ support, oppose, onClick, active }) => {
+> = ({ support, oppose, onClick, active, count }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const StatementAnalysis = ({
     onClose,
     support,
     oppose,
+    count
   }: StatementAnalysisProps) => (
     <>
       <div className="flex justify-between">
@@ -38,7 +40,7 @@ export const StatementAnalysisDrawer: React.FC<
           <IoClose size={30} className="text-[#6B7280]" />
         </Button>
       </div>
-      <StatementScore score={18} supportCount={support} opposeCount={oppose} />
+      <StatementScore score={count} supportCount={support} opposeCount={oppose} />
     </>
   );
 
@@ -68,6 +70,7 @@ export const StatementAnalysisDrawer: React.FC<
               onClose={closeDrawer}
               support={support}
               oppose={oppose}
+              count={count}
             />
           </div>
         </DrawerContent>

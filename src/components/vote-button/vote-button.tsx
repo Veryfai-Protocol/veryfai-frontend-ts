@@ -1,7 +1,7 @@
 
 type VoteType = {
   type: 'supporting' | 'opposing';
-  count: number;
+  count: number | undefined;
   onClick: () => void;
   active: boolean;
 }
