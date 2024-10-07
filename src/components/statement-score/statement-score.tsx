@@ -2,13 +2,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 type StatementScoreType = {
-    score: number,
-    supportCount: number,
-    opposeCount: number
+    score: number | undefined,
+    supportCount: number | undefined,
+    opposeCount: number | undefined
 }
 
 export const StatementScore = ({ score, supportCount, opposeCount } : StatementScoreType) => {
-  const percentage = score;
+  const percentage = score ?? 0;
   const truthStatus = percentage > 70 ? "True" : "False";
   const color = percentage < 70 ? "text-red-500" : "text-green-500";
 
