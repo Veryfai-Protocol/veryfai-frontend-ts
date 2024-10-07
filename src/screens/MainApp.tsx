@@ -1,6 +1,8 @@
+import { FactCheckingService } from "@/api/api-service/FactCheck";
 import { ScrollingTags } from "@/components/scrolling-tag/scrolling-tag";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { suggestions } from "@/constants/suggestions";
 import { useSearchStore } from "@/zustand/search-store";
 import { useCallback, useState } from "react";
 import { CiSearch } from "react-icons/ci";
@@ -21,6 +23,7 @@ export const mockData = [
 export const MainApp = () => {
   const { inputValue, setInputValue } = useSearchStore();
   const [showSuggestions, setShowSuggestions] = useState(false);
+  //@ts-ignore
   const [animateUp, setAnimateUp] = useState(false);
   const navigate = useNavigate();
 
@@ -32,13 +35,15 @@ export const MainApp = () => {
     setShowSuggestions(value.trim().length > 0);
   };
 
-  const handleCheck = useCallback(() => {
+  const handleCheck = useCallback(async () => {
     if (inputValue.trim()) {
-      setAnimateUp(true);
-      setTimeout(() => {
-        navigate(`/result-analysis/${encodeURIComponent(inputValue)}`);
-        window.location.reload();
-      }, 200);
+      try {
+        const response = await FactCheckingService.checkFact(inputValue);
+        console.log("Fact check response:", response);
+        navigate(`/result-analysis/${encodeURIComponent(response.task_id)}`);
+      } catch (error) {
+        console.error("Error during fact check:", error);
+      }
     }
   }, [inputValue, navigate]);
 
@@ -48,12 +53,11 @@ export const MainApp = () => {
     }
   };
 
-  const suggestions = [
-    "Is Donald Trump's hair red?",
-    "Is Donald Trump dead?",
-    "Is Donald Trump still president?",
-    "Is Donald Trump going to jail?",
-  ];
+  const filteredSuggestions = inputValue.trim()
+  ? suggestions.filter(suggestion => 
+      suggestion.toLowerCase().includes(inputValue.toLowerCase())
+    )
+  : [];
 
   return (
     <div className="flex flex-col items-center justify-center w-full md:px-24 px-4 h-screen">
@@ -120,12 +124,12 @@ export const MainApp = () => {
 
           <div
             className={`absolute left-0 right-0 top-full bg-white shadow-2xl rounded-b-xl z-10 overflow-hidden transition-all duration-300 ease-in-out ${
-              showSuggestions
+              showSuggestions && filteredSuggestions.length > 0 
                 ? "max-h-[300px] opacity-100"
                 : "max-h-0 opacity-0"
             }`}
           >
-            {suggestions.map((suggestion, index) => (
+            {filteredSuggestions.map((suggestion, index) => (
               <div
                 key={index}
                 className="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-100"

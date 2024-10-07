@@ -12,6 +12,9 @@ import { IoClose } from "react-icons/io5";
 import { ScrollingTags } from "@/components/scrolling-tag/scrolling-tag";
 import { StatementAnalysisDrawer } from "@/components/analysis-drawer/analysis-drawer";
 import { VoteButton } from "@/components/vote-button/vote-button";
+import { useParams } from "react-router-dom";
+import { FactCheckingService } from "@/api/api-service/FactCheck";
+import { FactCheckResultResponse } from "@/api/api-service/FactType";
 // import { useQuery } from '@tanstack/react-query'
 
 interface StatementAnalysisProps {
@@ -20,35 +23,53 @@ interface StatementAnalysisProps {
   oppose: number;
 }
 
+interface FactCheckResult {
+  factCheckOutputDict: FactCheckResultResponse;
+  timeTaken: number;
+}
+
 export const ResultAnalysis = () => {
+  const { task_id } = useParams();
   const [loading, setLoading] = useState(true);
+  const [factCheckResult, setFactCheckResult] = useState<FactCheckResult | null>(null);
   const [activeTab, setActiveTab] = useState<
     "supporting" | "opposing" | "analysis"
   >("supporting");
   const [tabLoading, setTabLoading] = useState(false);
-  const support = 14;
-  const oppose = 200;
   const reversedMockData = [...mockData].reverse();
   const [visibleCards, setVisibleCards] = useState(5);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    const fetchFactCheckResult = async () => {
+      try {
+        const result = await FactCheckingService.getFactCheckResult(task_id as string);
+        if(!result){
+          console.log("Fact check result not found. Skipping");
+          return;
+        }
+        console.log("Fact check result:", result);
+        setFactCheckResult(result);
+      } catch (error) {
+        console.error("Error fetching fact check result:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, []);
+    if (task_id) {
+      fetchFactCheckResult();
+    }
+  }, [task_id]);
 
   const handleShowMore = () => {
     setVisibleCards((prevCount) => prevCount + 5);
   };
 
-  const filteredCardData = cardData.filter((card) =>
-    activeTab === "supporting"
-      ? card.type === "supporting"
-      : card.type === "opposing"
-  );
+  const filteredCardData = activeTab === "supporting"
+  ? factCheckResult?.factCheckOutputDict.all_supporting_statements ?? []
+  : activeTab === "opposing"
+  ? factCheckResult?.factCheckOutputDict.all_opposing_statements ?? []
+  : [];
 
   if (loading) {
     return <SkeletonLoader />;
@@ -66,8 +87,6 @@ export const ResultAnalysis = () => {
 
   const StatementAnalysis = ({
     onClose,
-    support,
-    oppose,
   }: StatementAnalysisProps) => (
     <>
       <div className="flex justify-between">
@@ -79,7 +98,9 @@ export const ResultAnalysis = () => {
           <IoClose size={30} className="text-[#6B7280]" />
         </Button>
       </div>
-      <StatementScore score={18} supportCount={support} opposeCount={oppose} />
+      <StatementScore score={factCheckResult?.factCheckOutputDict.all_veryfai_score.length} 
+      supportCount={factCheckResult?.factCheckOutputDict.all_supporting_statements.length} 
+      opposeCount={factCheckResult?.factCheckOutputDict.all_opposing_statements.length} />
     </>
   );
 
@@ -91,21 +112,21 @@ export const ResultAnalysis = () => {
           <div className="flex gap-[10px] lg:hidden overflow-x-auto scrollbar-hide">
             <VoteButton
               type="supporting"
-              count={14}
+              count={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
               onClick={() => handleTabChange("supporting")}
               active={activeTab === "supporting"}
             />
             <VoteButton
               type="opposing"
-              count={200}
+              count={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
               onClick={() => handleTabChange("opposing")}
               active={activeTab === "opposing"}
             />
             <StatementAnalysisDrawer
-              support={support}
-              oppose={oppose}
+              support={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
+              oppose={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
               type="analysis"
-              count={200}
+              count={factCheckResult?.factCheckOutputDict.all_veryfai_score.length}
               onClick={() => handleTabChange("analysis")}
               active={activeTab === "analysis"}
             />
@@ -115,13 +136,13 @@ export const ResultAnalysis = () => {
               <div className="lg:flex gap-4 hidden">
                 <VoteButton
                   type="supporting"
-                  count={14}
+                  count={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
                   onClick={() => handleTabChange("supporting")}
                   active={activeTab === "supporting"}
                 />
                 <VoteButton
                   type="opposing"
-                  count={200}
+                  count={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
                   onClick={() => handleTabChange("opposing")}
                   active={activeTab === "opposing"}
                 />
@@ -220,118 +241,3 @@ const SkeletonLoader = () => (
     </div>
   </div>
 );
-
-const cardData = [
-  {
-    quote: "This is a quote from a source",
-    summary: "This is an AI summary of the reason and context from the source.",
-    source: "New York Times",
-    date: "20/09/24",
-    type: "supporting",
-  },
-  {
-    quote: "This is a quote from a source",
-    summary: "This is an AI summary of the reason and context from the source.",
-    source: "New York Times",
-    date: "20/09/24",
-    type: "supporting",
-  },
-  {
-    quote: "Another important statement",
-    summary: "Context and explanation for the second quote.",
-    source: "Washington Post",
-    date: "20/09/24",
-    type: "opposing",
-  },
-  {
-    quote: "Another important statement",
-    summary: "Context and explanation for the second quote.",
-    source: "Washington Post",
-    date: "20/09/24",
-    type: "opposing",
-  },
-  {
-    quote: "A third perspective on the matter",
-    summary: "Additional insights from a different source.",
-    source: "The Guardian",
-    date: "20/09/24",
-    type: "supporting",
-  },
-  {
-    quote: "A third perspective on the matter",
-    summary: "Additional insights from a different source.",
-    source: "The Guardian",
-    date: "20/09/24",
-    type: "supporting",
-  },
-  {
-    quote: "Expert opinion on the topic",
-    summary: "Professional analysis of the situation.",
-    source: "BBC News",
-    date: "20/09/24",
-    type: "opposing",
-  },
-  {
-    quote: "Expert opinion on the topic",
-    summary: "Professional analysis of the situation.",
-    source: "BBC News",
-    date: "20/09/24",
-    type: "opposing",
-  },
-  {
-    quote: "Expert opinion on the topic",
-    summary: "Professional analysis of the situation.",
-    source: "BBC News",
-    date: "20/09/24",
-    type: "opposing",
-  },
-  {
-    quote: "Expert opinion on the topic",
-    summary: "Professional analysis of the situation.",
-    source: "BBC News",
-    date: "20/09/24",
-    type: "opposing",
-  },
-  {
-    quote: "Expert opinion on the topic",
-    summary: "Professional analysis of the situation.",
-    source: "BBC News",
-    date: "20/09/24",
-    type: "opposing",
-  },
-  {
-    quote: "Expert opinion on the topic",
-    summary: "Professional analysis of the situation.",
-    source: "BBC News",
-    date: "20/09/24",
-    type: "opposing",
-  },
-  {
-    quote: "Final thoughts on the issue",
-    summary: "Concluding remarks and future implications.",
-    source: "Reuters",
-    date: "20/09/24",
-    type: "supporting",
-  },
-  {
-    quote: "Final thoughts on the issue",
-    summary: "Concluding remarks and future implications.",
-    source: "Reuters",
-    date: "20/09/24",
-    type: "supporting",
-  },
-  {
-    quote: "Final thoughts on the issue",
-    summary: "Concluding remarks and future implications.",
-    source: "Reuters",
-    date: "20/09/24",
-    type: "supporting",
-  },
-  {
-    quote: "Final thoughts on the issue",
-    summary: "Concluding remarks and future implications.",
-    source: "Reuters",
-    date: "20/09/24",
-    type: "supporting",
-  },
-];

@@ -70,7 +70,7 @@ export const Navbar = () => {
 
         {/* Input Field Animation */}
         <div className={`w-full transition-all duration-1000 ease-in-out`}>
-          <div className="flex justify-start relative w-full md:w-[70%]">
+          <div className="flex justify-start relative w-full md:w-[60%]">
             <Input
               type="text"
               className={`rounded-full bg-[#F3F4F6] py-5 pl-6 pr-10 w-full md:w-[500px] lg:w-[700px] text-gray-700 focus:outline-none`}
