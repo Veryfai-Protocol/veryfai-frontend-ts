@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { suggestions } from "@/constants/suggestions";
 import { useSearchStore } from "@/zustand/search-store";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { FaFilePen } from "react-icons/fa6";
@@ -34,7 +34,7 @@ export const MainApp = () => {
   const [animateUp, setAnimateUp] = useState(false);
   const navigate = useNavigate();
 
-  const reversedMockData = [...mockData].reverse();
+  const reversedMockData = useMemo(() => [...mockData].reverse(), []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -63,11 +63,14 @@ export const MainApp = () => {
     }
   };
 
-  const filteredSuggestions = inputValue.trim()
-  ? suggestions.filter(suggestion => 
-      suggestion.toLowerCase().includes(inputValue.toLowerCase())
-    )
-  : [];
+  const filteredSuggestions = useMemo(() => 
+    inputValue.trim()
+      ? suggestions.filter(suggestion => 
+          suggestion.toLowerCase().includes(inputValue.toLowerCase())
+        )
+      : []
+  , [inputValue]);
+  
 
   return (
     <div className="flex flex-col items-center justify-center w-full md:px-24 px-4 h-screen">
@@ -174,8 +177,8 @@ export const MainApp = () => {
 
           {/* Scrolling Tags */}
           <div className="w-full flex flex-col items-center justify-center md:space-y-2 space-y-1">
-            <ScrollingTags tags={mockData} direction="left" />
-            <ScrollingTags tags={reversedMockData} direction="right" />
+            <ScrollingTags tags={mockData} direction="left" key="left-scroll" />
+            <ScrollingTags tags={reversedMockData} direction="right" key="right-scroll" />
           </div>
         </div>
       </div>
