@@ -12,17 +12,20 @@ import { MdOutlineArrowOutward } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 export const mockData = [
+  "Taylor Swift's Eras Tour breaks box office records",
+  "New AI image generator creates photorealistic art",
+  "Scientists discover potential 'super-Earth' exoplanet",
+  "Viral TikTok dance craze sweeps the globe",
+  "Electric vehicles now outsell gas-powered cars in several countries",
+  "Retro fashion from the 90s makes a comeback",
   "They found 1,000 baby oils at P. Diddy's mansion",
-  "Is Donald Trump's hair red?",
-  "Is Kamila Harris Nigerian?",
-  "Jesus Christ was black",
-  "Donald Trump has won the US election",
   "Arsenal will bottle the league again",
 ];
 
 export const MainApp = () => {
   const { inputValue, setInputValue } = useSearchStore();
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   //@ts-ignore
   const [animateUp, setAnimateUp] = useState(false);
   const navigate = useNavigate();
@@ -37,12 +40,15 @@ export const MainApp = () => {
 
   const handleCheck = useCallback(async () => {
     if (inputValue.trim()) {
+      setIsLoading(true);
       try {
         const response = await FactCheckingService.checkFact(inputValue);
         console.log("Fact check response:", response);
         navigate(`/result-analysis/${encodeURIComponent(response.task_id)}`);
       } catch (error) {
         console.error("Error during fact check:", error);
+      } finally {
+        setIsLoading(false);
       }
     }
   }, [inputValue, navigate]);
@@ -80,7 +86,7 @@ export const MainApp = () => {
               <FaRegCircleCheck size={20} />
               <p className="md:text-[24px]">Verify</p>
             </div>
-            <p className="md:text-[24px]">Your</p>
+            <p className="md:text-[24px]">any</p>
             <div className="flex gap-3 bg-[#E5E7EB] rounded-lg items-center px-4 py-2">
               <FaFilePen size={20} />
               <p className="md:text-[24px]">statements</p>
@@ -110,15 +116,22 @@ export const MainApp = () => {
               onKeyDown={handleKeyDown}
             />
             {inputValue.length > 0 && (
-              <Button
-                className={`absolute right-4 bg-[#1E90FF] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-blue-600 transition-all duration-300 ${
-                  animateUp ? "translate-y-[-50px] opacity-0" : ""
-                }`}
-                onClick={handleCheck}
-              >
+            <Button
+            className={`absolute right-4 bg-[#1D1D1E] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-[#1D1D1E] transition-all duration-300 ${
+              animateUp ? "translate-y-[-50px] opacity-0" : ""
+            }`}
+            onClick={handleCheck}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            ) : (
+              <>
                 <CiSearch size={20} />
                 <span className="hidden md:flex">Check</span>
-              </Button>
+              </>
+            )}
+          </Button>
             )}
           </div>
 
