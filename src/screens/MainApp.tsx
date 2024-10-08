@@ -13,13 +13,17 @@ import { useNavigate } from "react-router-dom";
 
 export const mockData = [
   "Taylor Swift's Eras Tour breaks box office records",
-  "New AI image generator creates photorealistic art",
+  "Electric planes will become mainstream within the next decade",
   "Scientists discover potential 'super-Earth' exoplanet",
-  "Viral TikTok dance craze sweeps the globe",
+  "Humans share 60% of their DNA with bananas",
   "Electric vehicles now outsell gas-powered cars in several countries",
   "Retro fashion from the 90s makes a comeback",
   "They found 1,000 baby oils at P. Diddy's mansion",
+  "Elephants are the only animals that can't jump",
   "Arsenal will bottle the league again",
+  "A day on Venus is longer than a year on Venus",
+  "SpaceX plans to build a hotel in space by 2030",
+  "A company is working on a pill that could eliminate the need for sleep"
 ];
 
 export const MainApp = () => {
@@ -71,7 +75,7 @@ export const MainApp = () => {
         <img
           src="/big-logo.svg"
           alt="logo"
-          className={`w-full max-w-[200px] md:max-w-[300px] object-contain ${
+          className={`w-full max-w-[300px] md:max-w-[400px] object-contain ${
             animateUp ? "translate-y-[-50px] opacity-0" : ""
           } transition-all duration-300`}
         />
