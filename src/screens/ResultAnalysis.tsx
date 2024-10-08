@@ -2,7 +2,7 @@ import { Navbar } from "@/components/nav-menu/Navbar";
 import { QuoteCard } from "@/components/quote-card/quote-card";
 import { StatementScore } from "@/components/statement-score/statement-score";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { mockData } from "./MainApp";
 import { SearchTag } from "@/components/search-tags/search-tag";
 import { MdOutlineArrowOutward } from "react-icons/md";
@@ -31,45 +31,102 @@ interface FactCheckResult {
 export const ResultAnalysis = () => {
   const { task_id } = useParams();
   const [loading, setLoading] = useState(true);
-  const [factCheckResult, setFactCheckResult] = useState<FactCheckResult | null>(null);
+  const [factCheckResult, setFactCheckResult] =
+    useState<FactCheckResult | null>(null);
   const [activeTab, setActiveTab] = useState<
     "supporting" | "opposing" | "analysis"
   >("supporting");
+  //@ts-ignore
   const [tabLoading, setTabLoading] = useState(false);
   const reversedMockData = [...mockData].reverse();
   const [visibleCards, setVisibleCards] = useState(5);
 
-  useEffect(() => {
-    const fetchFactCheckResult = async () => {
-      try {
-        const result = await FactCheckingService.getFactCheckResult(task_id as string);
-        if(!result){
-          console.log("Fact check result not found. Skipping");
-          return;
-        }
-        console.log("Fact check result:", result);
-        setFactCheckResult(result);
-      } catch (error) {
-        console.error("Error fetching fact check result:", error);
-      } finally {
+  const fetchFactCheckResult = useCallback(async () => {
+    try {
+      const result = await FactCheckingService.getFactCheckResult(
+        task_id as string
+      );
+      if (result) {
+        console.log("New fact check result:", result);
+        setFactCheckResult((prevResult) => {
+          if (!prevResult) return result;
+
+          // Merge new results with existing ones, prioritizing new results
+          const mergedResult = {
+            ...result,
+            factCheckOutputDict: {
+              ...result.factCheckOutputDict,
+              all_supporting_statements: [
+                ...result.factCheckOutputDict.all_supporting_statements,
+                ...prevResult.factCheckOutputDict.all_supporting_statements,
+              ],
+              all_opposing_statements: [
+                ...result.factCheckOutputDict.all_opposing_statements,
+                ...prevResult.factCheckOutputDict.all_opposing_statements,
+              ],
+            },
+          };
+
+          // Remove duplicates based on some unique identifier (assuming 'id' exists)
+          mergedResult.factCheckOutputDict.all_supporting_statements =
+            Array.from(
+              new Map(
+                mergedResult.factCheckOutputDict.all_supporting_statements.map(
+                  (item) => [item.article_url, item]
+                )
+              ).values()
+            );
+          mergedResult.factCheckOutputDict.all_opposing_statements = Array.from(
+            new Map(
+              mergedResult.factCheckOutputDict.all_opposing_statements.map(
+                (item) => [item.article_url, item]
+              )
+            ).values()
+          );
+
+          return mergedResult;
+        });
         setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error fetching fact check result:", error);
+    }
+  }, [task_id]);
+
+  useEffect(() => {
+    let pollingInterval: NodeJS.Timeout;
+    let pollingCount = 0;
+    const maxPolls = 12;
+
+    const startPolling = async () => {
+      await fetchFactCheckResult();
+      pollingCount++;
+
+      if (pollingCount >= maxPolls) {
+        clearInterval(pollingInterval);
       }
     };
 
     if (task_id) {
-      fetchFactCheckResult();
+      startPolling();
+      pollingInterval = setInterval(startPolling, 5000);
     }
-  }, [task_id]);
+
+    return () => {
+      if (pollingInterval) clearInterval(pollingInterval);
+    };
+  }, [task_id, fetchFactCheckResult]);
 
   const handleShowMore = () => {
     setVisibleCards((prevCount) => prevCount + 5);
   };
 
-  const filteredCardData = activeTab === "supporting"
-  ? factCheckResult?.factCheckOutputDict.all_supporting_statements ?? []
-  : activeTab === "opposing"
-  ? factCheckResult?.factCheckOutputDict.all_opposing_statements ?? []
-  : [];
+  const filteredCardData =
+    activeTab === "supporting"
+      ? factCheckResult?.factCheckOutputDict.all_supporting_statements ?? []
+      : activeTab === "opposing"
+      ? factCheckResult?.factCheckOutputDict.all_opposing_statements ?? []
+      : [];
 
   if (loading) {
     return <SkeletonLoader />;
@@ -85,9 +142,7 @@ export const ResultAnalysis = () => {
     }
   };
 
-  const StatementAnalysis = ({
-    onClose,
-  }: StatementAnalysisProps) => (
+  const StatementAnalysis = ({ onClose }: StatementAnalysisProps) => (
     <>
       <div className="flex justify-between">
         <h1 className="text-3xl flex mb-4">Statement analysis</h1>
@@ -98,9 +153,15 @@ export const ResultAnalysis = () => {
           <IoClose size={30} className="text-[#6B7280]" />
         </Button>
       </div>
-      <StatementScore score={factCheckResult?.factCheckOutputDict.all_veryfai_score.length} 
-      supportCount={factCheckResult?.factCheckOutputDict.all_supporting_statements.length} 
-      opposeCount={factCheckResult?.factCheckOutputDict.all_opposing_statements.length} />
+      <StatementScore
+        score={factCheckResult?.factCheckOutputDict.all_veryfai_score.length}
+        supportCount={
+          factCheckResult?.factCheckOutputDict.all_supporting_statements.length
+        }
+        opposeCount={
+          factCheckResult?.factCheckOutputDict.all_opposing_statements.length
+        }
+      />
     </>
   );
 
@@ -112,21 +173,35 @@ export const ResultAnalysis = () => {
           <div className="flex gap-[10px] lg:hidden overflow-x-auto scrollbar-hide">
             <VoteButton
               type="supporting"
-              count={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
+              count={
+                factCheckResult?.factCheckOutputDict.all_supporting_statements
+                  .length
+              }
               onClick={() => handleTabChange("supporting")}
               active={activeTab === "supporting"}
             />
             <VoteButton
               type="opposing"
-              count={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
+              count={
+                factCheckResult?.factCheckOutputDict.all_opposing_statements
+                  .length
+              }
               onClick={() => handleTabChange("opposing")}
               active={activeTab === "opposing"}
             />
             <StatementAnalysisDrawer
-              support={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
-              oppose={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
+              support={
+                factCheckResult?.factCheckOutputDict.all_supporting_statements
+                  .length
+              }
+              oppose={
+                factCheckResult?.factCheckOutputDict.all_opposing_statements
+                  .length
+              }
               type="analysis"
-              count={factCheckResult?.factCheckOutputDict.all_veryfai_score.length}
+              count={
+                factCheckResult?.factCheckOutputDict.all_veryfai_score.length
+              }
               onClick={() => handleTabChange("analysis")}
               active={activeTab === "analysis"}
             />
@@ -136,24 +211,32 @@ export const ResultAnalysis = () => {
               <div className="lg:flex gap-4 hidden">
                 <VoteButton
                   type="supporting"
-                  count={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
+                  count={
+                    factCheckResult?.factCheckOutputDict
+                      .all_supporting_statements.length
+                  }
                   onClick={() => handleTabChange("supporting")}
                   active={activeTab === "supporting"}
                 />
                 <VoteButton
                   type="opposing"
-                  count={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
+                  count={
+                    factCheckResult?.factCheckOutputDict.all_opposing_statements
+                      .length
+                  }
                   onClick={() => handleTabChange("opposing")}
                   active={activeTab === "opposing"}
                 />
               </div>
               <div className="space-y-6 w-full">
-                {tabLoading ? (
+                {loading ? (
                   <SkeletonQuoteCards />
                 ) : (
                   filteredCardData
                     .slice(0, visibleCards)
-                    .map((card, index) => <QuoteCard key={index} {...card} />)
+                    .map((card, index) => (
+                      <QuoteCard key={card.article_url || index} {...card} />
+                    ))
                 )}
               </div>
               {visibleCards < filteredCardData.length && (
