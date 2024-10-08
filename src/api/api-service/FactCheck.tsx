@@ -6,7 +6,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export const FactCheckingService = {
   async checkFact(input_statement: string): Promise<FactCheckResponse> {
     const response = await ApiService.post<FactCheckResponse>(
-      "/send-fact-check-task",
+      "/api/send-fact-check-task",
       { input_statement }
     );
     return response.data;
@@ -26,7 +26,7 @@ export const FactCheckingService = {
         console.log(`Checking if job is completed: ${i + 1}/${maxAttempts}`);
 
         try {
-          const response = await ApiService.post<FactCheckResultResponse>(`/get-fact-check-results`, {
+          const response = await ApiService.post<FactCheckResultResponse>(`/api/get-fact-check-results`, {
             task_id,
           });
 
