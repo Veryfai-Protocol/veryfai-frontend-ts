@@ -28,6 +28,7 @@ export const mockData = [
 
 export const MainApp = () => {
   const { inputValue, setInputValue } = useSearchStore();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   //@ts-ignore
@@ -45,12 +46,20 @@ export const MainApp = () => {
   const handleCheck = useCallback(async () => {
     if (inputValue.trim()) {
       setIsLoading(true);
+      setErrorMessage(null);
       try {
         const response = await FactCheckingService.checkFact(inputValue);
         console.log("Fact check response:", response);
         navigate(`/result-analysis/${encodeURIComponent(response.task_id)}`);
-      } catch (error) {
-        console.error("Error during fact check:", error);
+      } catch (error : any) {
+        if (error.response) {
+          console.error("Error status:", error.response.status);
+          console.error("Error data:", error.response.data);
+          setErrorMessage(`Error: ${error.response.data.message || 'Something went wrong'}`);
+        } else {
+          console.error("Error message:", error.message);
+          setErrorMessage("An unknown error occurred. Please try again.");
+        }
       } finally {
         setIsLoading(false);
       }
@@ -141,6 +150,10 @@ export const MainApp = () => {
           </Button>
             )}
           </div>
+
+          {errorMessage && (
+            <div className="text-red-500 text-center mt-4">{errorMessage}</div>
+          )}
 
           <div
             className={`absolute left-0 right-0 top-full bg-white shadow-2xl rounded-b-xl z-10 overflow-hidden transition-all duration-300 ease-in-out ${
