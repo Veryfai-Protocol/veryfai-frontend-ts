@@ -15,8 +15,8 @@ export const FactCheckingService = {
   async getFactCheckResult(
     task_id: string,
     onUpdate: (result: FactCheckResultResponse) => void,
-    maxAttempts: number = 20,
-    sleepInterval: number = 3000,
+    maxAttempts: number = 10,
+    sleepInterval: number = 5000,
   ): Promise<{ factCheckOutputDict: FactCheckResultResponse; timeTaken: number }> {
     const startTime = Date.now();
     let factCheckOutputDict: FactCheckResultResponse | null = null;

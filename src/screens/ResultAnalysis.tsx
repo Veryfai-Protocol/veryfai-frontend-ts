@@ -178,13 +178,16 @@ export const ResultAnalysis: React.FC = () => {
             </div>
 
             {/* Statement Analysis */}
-            <div className="flex flex-col items-start w-full">
-              <div className="hidden lg:block w-full">
-                <StatementAnalysis />
-              </div>
-              {/* Trending tags section */}
-              {/* ... (Keep your existing trending tags section here) */}
-            </div>
+            {filteredCardData.length > 0 ? (
+          <div className="flex flex-col items-start w-full">
+          <div className="hidden lg:block w-full">
+            <StatementAnalysis />
+          </div>
+          {/* Trending tags section */}
+          {/* ... (Keep your existing trending tags section here) */}
+        </div>
+            ) : <StatementAnalysisLoader />}
+  
           </div>
           
           {/* Mobile trending tags */}
@@ -208,28 +211,31 @@ const SkeletonQuoteCards: React.FC = () => (
 
 const SkeletonLoader = () => (
   <div className="w-full">
-    <div className="flex pt-24 items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-14">
-      <div className="w-full max-w-7xl">
-        <div className="flex gap-4 w-full justify-start pt-0 md:pt-8">
+    <div className="flex items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-14">
+      <div className="w-full">
+        {/* <div className="flex gap-4 w-full justify-start pt-0 md:pt-8">
           <Skeleton className="w-36 sm:w-40 md:w-[166px] h-12 sm:h-14 md:h-[56px] rounded-full" />
           <Skeleton className="w-36 sm:w-40 md:w-[166px] h-12 sm:h-14 md:h-[56px] rounded-full" />
           <Skeleton className="w-28 sm:w-32 flex lg:hidden md:w-[146px] h-12 sm:h-14 md:h-[56px] rounded-full" />
-        </div>
+        </div> */}
         <div className="flex flex-col-reverse lg:flex-row mt-5 gap-4 sm:gap-6 lg:gap-10">
-          <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full lg:w-2/3">
+          <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">
             {[1, 2, 3, 4].map((item) => (
               <Skeleton
                 key={item}
-                className="w-full h-24 sm:h-28 md:h-[113px] rounded-lg"
+                className="w-full h-24 sm:h-24 md:h-[113px] rounded-lg"
               />
             ))}
-          </div>
-          <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full lg:w-1/3">
-            <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg hidden lg:flex" />
-            <Skeleton className="w-full h-24 sm:h-28 md:h-[111px] rounded-lg" />
           </div>
         </div>
       </div>
     </div>
   </div>
+);
+
+const StatementAnalysisLoader = () => (
+<div className="lg:flex hidden flex-col lg:pt-16 pt-10 gap-4 sm:gap-6 lg:gap-8 w-full lg:w-2/3">
+            <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg hidden lg:flex" />
+            <Skeleton className="w-full h-24 sm:h-28 md:h-[111px] rounded-lg" />
+          </div>
 );
