@@ -6,25 +6,31 @@ interface ScrollingTagsProps {
   direction?: 'left' | 'right';
 }
 
-export const ScrollingTags: React.FC<ScrollingTagsProps> = ({ tags, direction = 'left' }) => {
+export const ScrollingTags: React.FC<ScrollingTagsProps> = React.memo(({ tags, direction = 'left' }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let animationFrameId: number;
+
     const scroll = () => {
       if (scrollRef.current) {
         const speed = direction === 'left' ? 1 : -1;
         scrollRef.current.scrollLeft += speed;
-        
+
+        // Handle wrapping around the scroll to create the infinite loop effect
         if (direction === 'left' && scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth / 2) {
           scrollRef.current.scrollLeft = 0;
         } else if (direction === 'right' && scrollRef.current.scrollLeft <= 0) {
           scrollRef.current.scrollLeft = scrollRef.current.scrollWidth / 2;
         }
       }
+      // Use requestAnimationFrame for smoother animation
+      animationFrameId = requestAnimationFrame(scroll);
     };
 
-    const interval = setInterval(scroll, 20);
-    return () => clearInterval(interval);
+    animationFrameId = requestAnimationFrame(scroll);
+    
+    return () => cancelAnimationFrame(animationFrameId);
   }, [direction]);
 
   return (
@@ -40,4 +46,4 @@ export const ScrollingTags: React.FC<ScrollingTagsProps> = ({ tags, direction = 
       </div>
     </div>
   );
-};
+});
