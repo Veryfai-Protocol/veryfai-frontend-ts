@@ -39,10 +39,15 @@ export const ResultAnalysis: React.FC = () => {
       factCheckOutputDict: result,
       timeTaken: prev?.timeTaken || 0,
     }));
-    setLoading(false);
+    if (result.can_show_results) {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
+    const abortController = new AbortController();
+
     const fetchFactCheckResult = async () => {
       if (!task_id) {
         console.log("No task ID provided. Skipping fact check.");
@@ -55,32 +60,35 @@ export const ResultAnalysis: React.FC = () => {
           task_id,
           handleUpdate
         );
-        console.log(`Fact check completed in ${result.timeTaken} seconds`);
+        if (isMounted) {
+          console.log(`Fact check completed in ${result.timeTaken} seconds`);
+          setFactCheckResult(result);
+          setLoading(false);
+          console.log(loading)
+        }
       } catch (error) {
-        console.error("Error fetching fact check result:", error);
-      } finally {
-        setLoading(false);
+        if (isMounted) {
+          console.error("Error fetching fact check result:", error);
+          setLoading(false);
+        }
       }
     };
 
     fetchFactCheckResult();
-    const timeoutId = setTimeout(() => { 
-      if (
-        loading && 
-        factCheckResult &&
-        factCheckResult.factCheckOutputDict.all_supporting_statements.length === 0 &&
-        factCheckResult.factCheckOutputDict.all_opposing_statements.length === 0
-      ) {
+
+    const timeoutId = setTimeout(() => {
+      if (isMounted && loading) {
+        console.log(loading)
         setTimedOut(true);
         setLoading(false);
+        abortController.abort();
       }
-    }, 30000);
-
-    const intervalId = setInterval(fetchFactCheckResult, 5000);
+    }, 60000);
 
     return () => {
-      clearInterval(intervalId);
+      isMounted = false;
       clearTimeout(timeoutId);
+      abortController.abort();
     };
   }, [task_id, handleUpdate]);
 
