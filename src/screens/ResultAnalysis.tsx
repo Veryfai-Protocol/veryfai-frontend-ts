@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Navbar } from "@/components/nav-menu/Navbar";
 import { QuoteCard } from "@/components/quote-card/quote-card";
 import { StatementScore } from "@/components/statement-score/statement-score";
@@ -9,9 +9,10 @@ import { VoteButton } from "@/components/vote-button/vote-button";
 import { StatementAnalysisDrawer } from "@/components/analysis-drawer/analysis-drawer";
 import { FactCheckingService } from "@/api/api-service/FactCheck";
 import { FactCheckResultResponse } from "@/api/api-service/FactType";
-  //@ts-ignore
+//@ts-ignore
 import { MdKeyboardArrowDown, MdOutlineArrowOutward } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
+import NoStatementsGraphic from "@/components/no-statement-graphic/no-statement-graphic";
 
 interface FactCheckResult {
   factCheckOutputDict: FactCheckResultResponse;
@@ -19,13 +20,18 @@ interface FactCheckResult {
 }
 
 export const ResultAnalysis: React.FC = () => {
+  const navigate = useNavigate();
   const { task_id } = useParams<{ task_id: string }>();
   //@ts-ignore
   const [loading, setLoading] = useState(true);
-  const [factCheckResult, setFactCheckResult] = useState<FactCheckResult | null>(null);
-  const [activeTab, setActiveTab] = useState<"supporting" | "opposing" | "analysis">("supporting");
+  const [factCheckResult, setFactCheckResult] =
+    useState<FactCheckResult | null>(null);
+  const [activeTab, setActiveTab] = useState<
+    "supporting" | "opposing" | "analysis"
+  >("supporting");
   const [tabLoading, setTabLoading] = useState(false);
   const [visibleCards, setVisibleCards] = useState(5);
+  const [timedOut, setTimedOut] = useState(false);
 
   const handleUpdate = useCallback((result: FactCheckResultResponse) => {
     console.log("Received update:", result);
@@ -45,7 +51,10 @@ export const ResultAnalysis: React.FC = () => {
       }
 
       try {
-        const result = await FactCheckingService.getFactCheckResult(task_id, handleUpdate);
+        const result = await FactCheckingService.getFactCheckResult(
+          task_id,
+          handleUpdate
+        );
         console.log(`Fact check completed in ${result.timeTaken} seconds`);
       } catch (error) {
         console.error("Error fetching fact check result:", error);
@@ -55,9 +64,24 @@ export const ResultAnalysis: React.FC = () => {
     };
 
     fetchFactCheckResult();
+    const timeoutId = setTimeout(() => { 
+      if (
+        loading && 
+        factCheckResult &&
+        factCheckResult.factCheckOutputDict.all_supporting_statements.length === 0 &&
+        factCheckResult.factCheckOutputDict.all_opposing_statements.length === 0
+      ) {
+        setTimedOut(true);
+        setLoading(false);
+      }
+    }, 30000);
+
     const intervalId = setInterval(fetchFactCheckResult, 5000);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
   }, [task_id, handleUpdate]);
 
   const handleShowMore = () => {
@@ -74,13 +98,16 @@ export const ResultAnalysis: React.FC = () => {
     }
   };
 
-  const filteredCardData = activeTab === "supporting"
-    ? factCheckResult?.factCheckOutputDict.all_supporting_statements ?? []
-    : activeTab === "opposing"
-    ? factCheckResult?.factCheckOutputDict.all_opposing_statements ?? []
-    : [];
+  const filteredCardData =
+    activeTab === "supporting"
+      ? factCheckResult?.factCheckOutputDict.all_supporting_statements ?? []
+      : activeTab === "opposing"
+      ? factCheckResult?.factCheckOutputDict.all_opposing_statements ?? []
+      : [];
 
-  const StatementAnalysis: React.FC<{ onClose?: () => void }> = ({ onClose }) => (
+  const StatementAnalysis: React.FC<{ onClose?: () => void }> = ({
+    onClose,
+  }) => (
     <>
       <div className="flex justify-between">
         <h1 className="text-3xl flex mb-4">Statement analysis</h1>
@@ -93,8 +120,12 @@ export const ResultAnalysis: React.FC = () => {
       </div>
       <StatementScore
         score={factCheckResult?.factCheckOutputDict.all_veryfai_score.length}
-        supportCount={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
-        opposeCount={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
+        supportCount={
+          factCheckResult?.factCheckOutputDict.all_supporting_statements.length
+        }
+        opposeCount={
+          factCheckResult?.factCheckOutputDict.all_opposing_statements.length
+        }
       />
     </>
   );
@@ -105,42 +136,85 @@ export const ResultAnalysis: React.FC = () => {
       <div className="flex sm:pt-24 pt-40 items-center justify-center w-full px-4 sm:px-14 py-8">
         <div className="w-full">
           {/* Mobile vote buttons */}
-          <div className="flex gap-[10px] lg:hidden overflow-x-auto scrollbar-hide">
+          {timedOut ? (
+            <div className="text-center bg-gray-100 rounded-lg p-6">
+              <h2 className="text-2xl font-semibold mb-4">No results found</h2>
+              <p className="mb-6">
+                We couldn't find any results for your search. Please try again
+                with a different query.
+              </p>
+              <Button
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+                onClick={() => {
+                  // Reset the state and redirect to the search page
+                  setTimedOut(false);
+                  setLoading(true);
+                  // Implement your navigation logic here, e.g., using react-router
+                  navigate('/');
+                }}
+              >
+                Make Another Search
+              </Button>
+            </div>
+          ) : (
+            <>
+              {/* Existing component content */}
+              {/* ... (keep the rest of the JSX as it is) */}
+              <div className="flex gap-[10px] lg:hidden overflow-x-auto scrollbar-hide">
             <VoteButton
               type="supporting"
-              count={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
+              count={
+                factCheckResult?.factCheckOutputDict.all_supporting_statements
+                  .length
+              }
               onClick={() => handleTabChange("supporting")}
               active={activeTab === "supporting"}
             />
             <VoteButton
               type="opposing"
-              count={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
+              count={
+                factCheckResult?.factCheckOutputDict.all_opposing_statements
+                  .length
+              }
               onClick={() => handleTabChange("opposing")}
               active={activeTab === "opposing"}
             />
             <StatementAnalysisDrawer
-              support={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
-              oppose={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
+              support={
+                factCheckResult?.factCheckOutputDict.all_supporting_statements
+                  .length
+              }
+              oppose={
+                factCheckResult?.factCheckOutputDict.all_opposing_statements
+                  .length
+              }
               type="analysis"
-              count={factCheckResult?.factCheckOutputDict.all_veryfai_score.length}
+              count={
+                factCheckResult?.factCheckOutputDict.all_veryfai_score.length
+              }
               onClick={() => handleTabChange("analysis")}
               active={activeTab === "analysis"}
             />
           </div>
-
           <div className="flex flex-col-reverse lg:flex-row lg:mt-5 mt-2 gap-0 sm:gap-2">
-            <div className="w-full">
+            <div className="w-full lg:w-2/3">
               {/* Desktop vote buttons */}
               <div className="lg:flex gap-4 hidden">
                 <VoteButton
                   type="supporting"
-                  count={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
+                  count={
+                    factCheckResult?.factCheckOutputDict
+                      .all_supporting_statements.length
+                  }
                   onClick={() => handleTabChange("supporting")}
                   active={activeTab === "supporting"}
                 />
                 <VoteButton
                   type="opposing"
-                  count={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
+                  count={
+                    factCheckResult?.factCheckOutputDict.all_opposing_statements
+                      .length
+                  }
                   onClick={() => handleTabChange("opposing")}
                   active={activeTab === "opposing"}
                 />
@@ -154,9 +228,11 @@ export const ResultAnalysis: React.FC = () => {
                   <div>
                     {filteredCardData.length > 0 ? (
                       <div>
-                        {filteredCardData.slice(0, visibleCards).map((card, index) => (
-                          <QuoteCard key={index} {...card} />
-                        ))}
+                        {filteredCardData
+                          .slice(0, visibleCards)
+                          .map((card, index) => (
+                            <QuoteCard key={index} {...card} />
+                          ))}
                         {visibleCards < filteredCardData.length && (
                           <div className="flex items-center justify-center w-full mt-5">
                             <Button
@@ -170,7 +246,11 @@ export const ResultAnalysis: React.FC = () => {
                         )}
                       </div>
                     ) : (
-                      <SkeletonLoader />
+                      <NoStatementsGraphic
+                        type={
+                          activeTab === "supporting" ? "supporting" : "opposing"
+                        }
+                      />
                     )}
                   </div>
                 )}
@@ -178,17 +258,16 @@ export const ResultAnalysis: React.FC = () => {
             </div>
 
             {/* Statement Analysis */}
-            {filteredCardData.length > 0 ? (
-          <div className="flex flex-col items-start w-full">
-          <div className="hidden lg:block w-full">
-            <StatementAnalysis />
+            <div className="flex flex-col items-start w-full lg:w-2/3">
+              <div className="hidden lg:block w-full">
+                {loading ? <StatementAnalysisLoader /> : <StatementAnalysis />}
+              </div>
+              {/* Trending tags section */}
+              {/* ... (Keep your existing trending tags section here) */}
+            </div>
           </div>
-          {/* Trending tags section */}
-          {/* ... (Keep your existing trending tags section here) */}
-        </div>
-            ) : <StatementAnalysisLoader />}
-  
-          </div>
+            </>
+          )}
           
           {/* Mobile trending tags */}
           {/* ... (Keep your existing mobile trending tags section here) */}
@@ -203,39 +282,15 @@ const SkeletonQuoteCards: React.FC = () => (
     {[1, 2, 3].map((item) => (
       <Skeleton
         key={item}
-        className="w-full mt-5 h-24 sm:h-28 md:h-[113px] rounded-lg"
+        className="w-full mt-5 h-24 sm:h-28 md:h-[113px] rounded-lg animate-pulse"
       />
     ))}
   </>
 );
 
-const SkeletonLoader = () => (
-  <div className="w-full">
-    <div className="flex items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-14">
-      <div className="w-full">
-        {/* <div className="flex gap-4 w-full justify-start pt-0 md:pt-8">
-          <Skeleton className="w-36 sm:w-40 md:w-[166px] h-12 sm:h-14 md:h-[56px] rounded-full" />
-          <Skeleton className="w-36 sm:w-40 md:w-[166px] h-12 sm:h-14 md:h-[56px] rounded-full" />
-          <Skeleton className="w-28 sm:w-32 flex lg:hidden md:w-[146px] h-12 sm:h-14 md:h-[56px] rounded-full" />
-        </div> */}
-        <div className="flex flex-col-reverse lg:flex-row mt-5 gap-4 sm:gap-6 lg:gap-10">
-          <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">
-            {[1, 2, 3, 4].map((item) => (
-              <Skeleton
-                key={item}
-                className="w-full h-24 sm:h-24 md:h-[113px] rounded-lg"
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
 const StatementAnalysisLoader = () => (
-<div className="lg:flex hidden flex-col lg:pt-16 pt-10 gap-4 sm:gap-6 lg:gap-8 w-full lg:w-2/3">
-            <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg hidden lg:flex" />
-            <Skeleton className="w-full h-24 sm:h-28 md:h-[111px] rounded-lg" />
-          </div>
+  <div className="lg:flex hidden flex-col lg:pt-16 pt-10 gap-4 sm:gap-6 lg:gap-8 w-full animate-pulse">
+    <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg hidden lg:flex" />
+    <Skeleton className="w-full h-24 sm:h-28 md:h-[111px] rounded-lg" />
+  </div>
 );

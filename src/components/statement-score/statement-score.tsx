@@ -9,7 +9,7 @@ type StatementScoreType = {
 
 export const StatementScore = ({ score, supportCount, opposeCount } : StatementScoreType) => {
   const percentage = score ?? 0;
-  const truthStatus = percentage > 70 ? "True" : "False";
+  // const truthStatus = percentage > 70 ? "True" : "False";
   const color = percentage < 70 ? "text-red-500" : "text-green-500";
 
   const circumference = 2 * Math.PI * 45;
@@ -77,11 +77,6 @@ export const StatementScore = ({ score, supportCount, opposeCount } : StatementS
           <img src="/downvote.svg" alt="" />
             {opposeCount} sources opposed your statement
           </p>
-        </div>
-
-        <div className='bg-[#F3F4F6] rounded-md p-4'>
-            <p className='text-[#6B7280]'>CONCLUSION</p>
-            <p>Based on the above metrics, your statement appears to be <span className={`${color}`}>{truthStatus}</span></p>
         </div>
       </CardContent>
     </Card>
