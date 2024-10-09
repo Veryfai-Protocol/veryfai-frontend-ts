@@ -34,6 +34,7 @@ export interface FactCheckResponse {
     all_summary: Summary[];
     all_supporting_statements: any[]; // Empty array, could be refined if there's a known structure
     all_veryfai_score: number[];
+    veryfai_score: number;
     can_show_results: boolean;
     fact_check_response_dict: {
       [source: string]: FactCheckSource; // Dictionary of source keys like "CNN"
