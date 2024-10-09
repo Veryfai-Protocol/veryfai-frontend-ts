@@ -127,7 +127,7 @@ export const ResultAnalysis: React.FC = () => {
         </Button>
       </div>
       <StatementScore
-        score={factCheckResult?.factCheckOutputDict.all_veryfai_score.length}
+        score={factCheckResult?.factCheckOutputDict.veryfai_score}
         supportCount={
           factCheckResult?.factCheckOutputDict.all_supporting_statements.length
         }
