@@ -13,6 +13,7 @@ import { FactCheckResultResponse } from "@/api/api-service/FactType";
 import { MdKeyboardArrowDown, MdOutlineArrowOutward } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import NoStatementsGraphic from "@/components/no-statement-graphic/no-statement-graphic";
+import { BetaBanner } from "@/components/beta-banner/beta-banner";
 
 interface FactCheckResult {
   factCheckOutputDict: FactCheckResultResponse;
@@ -140,6 +141,7 @@ export const ResultAnalysis: React.FC = () => {
 
   return (
     <div className="relative min-h-screen">
+      <BetaBanner />
       <Navbar />
       <div className="flex sm:pt-24 pt-40 items-center justify-center w-full px-4 sm:px-14 py-8">
         <div className="w-full">
