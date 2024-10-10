@@ -10,7 +10,7 @@ type StatementScoreType = {
 export const StatementScore = ({ score, supportCount, opposeCount } : StatementScoreType) => {
   const percentage = score ?? 0;
   // const truthStatus = percentage > 70 ? "True" : "False";
-  const color = percentage < 70 ? "text-red-500" : "text-green-500";
+  const color = percentage < 50 ? "text-red-500" : "text-green-500";
 
   const circumference = 2 * Math.PI * 45;
   const dashOffset = circumference * (1 - percentage / 100);
@@ -59,11 +59,11 @@ export const StatementScore = ({ score, supportCount, opposeCount } : StatementS
         <div className="flex flex-col gap-2 text-sm mb-4">
           <span className="flex items-center">
             <span className="w-3 h-3 rounded-full bg-red-500 mr-2"></span>
-            0-69
+            0-49
           </span>
           <span className="flex items-center">
             <span className="w-3 h-3 rounded-full bg-green-500 mr-2"></span>
-            70-100
+            50-100
           </span>
         </div>
         </div>

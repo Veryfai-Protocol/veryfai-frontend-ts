@@ -129,10 +129,10 @@ export const ResultAnalysis: React.FC = () => {
       <StatementScore
         score={factCheckResult?.factCheckOutputDict.veryfai_score}
         supportCount={
-          factCheckResult?.factCheckOutputDict.all_supporting_statements.length
+          factCheckResult?.factCheckOutputDict.all_supporting_statements?.length
         }
         opposeCount={
-          factCheckResult?.factCheckOutputDict.all_opposing_statements.length
+          factCheckResult?.factCheckOutputDict.all_opposing_statements?.length
         }
       />
     </>
@@ -172,8 +172,7 @@ export const ResultAnalysis: React.FC = () => {
             <VoteButton
               type="supporting"
               count={
-                factCheckResult?.factCheckOutputDict.all_supporting_statements
-                  .length
+                factCheckResult?.factCheckOutputDict.all_supporting_statements?.length
               }
               onClick={() => handleTabChange("supporting")}
               active={activeTab === "supporting"}
@@ -181,24 +180,21 @@ export const ResultAnalysis: React.FC = () => {
             <VoteButton
               type="opposing"
               count={
-                factCheckResult?.factCheckOutputDict.all_opposing_statements
-                  .length
+                factCheckResult?.factCheckOutputDict.all_opposing_statements?.length
               }
               onClick={() => handleTabChange("opposing")}
               active={activeTab === "opposing"}
             />
             <StatementAnalysisDrawer
               support={
-                factCheckResult?.factCheckOutputDict.all_supporting_statements
-                  .length
+                factCheckResult?.factCheckOutputDict.all_supporting_statements?.length
               }
               oppose={
-                factCheckResult?.factCheckOutputDict.all_opposing_statements
-                  .length
+                factCheckResult?.factCheckOutputDict.all_opposing_statements?.length
               }
               type="analysis"
               count={
-                factCheckResult?.factCheckOutputDict.all_veryfai_score.length
+                factCheckResult?.factCheckOutputDict.veryfai_score
               }
               onClick={() => handleTabChange("analysis")}
               active={activeTab === "analysis"}
@@ -211,8 +207,7 @@ export const ResultAnalysis: React.FC = () => {
                 <VoteButton
                   type="supporting"
                   count={
-                    factCheckResult?.factCheckOutputDict
-                      .all_supporting_statements.length
+                    factCheckResult?.factCheckOutputDict?.all_supporting_statements?.length
                   }
                   onClick={() => handleTabChange("supporting")}
                   active={activeTab === "supporting"}
@@ -220,8 +215,7 @@ export const ResultAnalysis: React.FC = () => {
                 <VoteButton
                   type="opposing"
                   count={
-                    factCheckResult?.factCheckOutputDict.all_opposing_statements
-                      .length
+                    factCheckResult?.factCheckOutputDict?.all_opposing_statements?.length
                   }
                   onClick={() => handleTabChange("opposing")}
                   active={activeTab === "opposing"}
