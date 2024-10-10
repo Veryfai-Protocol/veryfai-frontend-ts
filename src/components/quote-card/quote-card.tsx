@@ -13,8 +13,8 @@ export const QuoteCard = ({ article_url, sentence, source, reason } : QuoteCardT
       <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-4">{reason}</p>
       <div className="flex flex-row items-center justify-between text-xs sm:text-sm text-gray-500">
         <div className="flex items-center flex-shrink-0 overflow-hidden">
-          <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full mr-2 flex-shrink-0">
-            <img src="/new-york.svg" alt="" className="w-full h-full object-cover" />
+          <div className="w-5 h-5 sm:w-6 sm:h-6 bg-black rounded-full mr-2 flex-shrink-0">
+            {/* <img src="/new-york.svg" alt="" className="w-full h-full object-cover" /> */}
           </div>
           <span className="mr-2 truncate">{source}</span>
           <img src="/dot.svg" alt="" className="mx-2 flex-shrink-0" />
