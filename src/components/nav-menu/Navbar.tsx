@@ -75,9 +75,14 @@ export const Navbar = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="fixed bg-[#1E90FF] w-full flex items-center z-50">
+    <header className="fixed  w-full flex flex-col items-center z-50">
+      <div className="bg-yellow-400 text-black py-2 px-4 text-center  z-50">
+      <p className="font-bold">
+        Beta Version: This site is in active development.
+      </p>
+    </div>
       <nav
-        className={`w-full flex flex-col sm:flex-row items-center ${
+        className={`w-full flex bg-[#1E90FF] flex-col sm:flex-row items-center ${
           isLogoVisible ? "p-4" : "p-2"
         } sm:gap-16 gap-4 px-10`}
       >
