@@ -13,7 +13,7 @@ export const StatementScore: React.FC<StatementScoreType> = ({ score, supportCou
   const absoluteScore = Math.abs(actualScore);
   const isNegative = actualScore < 0;
   const color = isNegative ? "text-red-500" : "text-green-500";
-  const bgColor = isNegative ? "bg-red-500" : "bg-green-500";
+  // const bgColor = isNegative ? "bg-red-500" : "bg-green-500";
 
   const circumference = 2 * Math.PI * 45;
   const dashOffset = circumference * (1 - absoluteScore / 100);

@@ -296,9 +296,9 @@ const SkeletonQuoteCards: React.FC = () => (
   </>
 );
 
-const StatementAnalysisLoader = () => (
-  <div className="lg:flex hidden flex-col lg:pt-16 pt-10 gap-4 sm:gap-6 lg:gap-8 w-full animate-pulse">
-    <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg hidden lg:flex" />
-    <Skeleton className="w-full h-24 sm:h-28 md:h-[111px] rounded-lg" />
-  </div>
-);
+// const StatementAnalysisLoader = () => (
+//   <div className="lg:flex hidden flex-col lg:pt-16 pt-10 gap-4 sm:gap-6 lg:gap-8 w-full animate-pulse">
+//     <Skeleton className="w-full h-64 sm:h-80 md:h-[441px] rounded-lg hidden lg:flex" />
+//     <Skeleton className="w-full h-24 sm:h-28 md:h-[111px] rounded-lg" />
+//   </div>
+// );
