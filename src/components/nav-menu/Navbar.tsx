@@ -5,11 +5,15 @@ import { Input } from "../ui/input";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchStore } from "@/zustand/search-store";
 import { useNavigate } from "react-router-dom";
+import { FactCheckingService } from "@/api/api-service/FactCheck";
 
 export const Navbar = () => {
   const { inputValue, setInputValue } = useSearchStore();
   const [isLogoVisible, setIsLogoVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  //@ts-ignore
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,14 +21,34 @@ export const Navbar = () => {
     setInputValue(value);
   };
 
-  const handleCheck = useCallback(() => {
+  const handleCheck = useCallback(async () => {
     if (inputValue.trim()) {
-      setTimeout(() => {
-        navigate(`/result-analysis/${encodeURIComponent(inputValue)}`);
-        window.location.reload();
-      }, 200);
+      setIsLoading(true);
+      setErrorMessage(null);
+      try {
+        const response = await FactCheckingService.checkFact(inputValue);
+        console.log("Fact check response:", response);
+        navigate(`/result-analysis/${encodeURIComponent(response.task_id)}`);
+      } catch (error : any) {
+        if (error.response) {
+          console.error("Error status:", error.response.status);
+          console.error("Error data:", error.response.data);
+          setErrorMessage(`Error: ${error.response.data.message || 'Something went wrong'}`);
+        } else {
+          console.error("Error message:", error.message);
+          setErrorMessage("An unknown error occurred. Please try again.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
   }, [inputValue, navigate]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleCheck();
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,16 +97,22 @@ export const Navbar = () => {
           <div className="flex justify-start relative w-full md:w-[60%]">
             <Input
               type="text"
-              className={`rounded-full bg-[#F3F4F6] py-5 pl-6 pr-10 w-full md:w-[500px] lg:w-[700px] text-gray-700 focus:outline-none`}
+              className={`rounded-full bg-[#F3F4F6] py-5 pl-6 pr-10 w-full text-gray-700 focus:outline-none`}
               placeholder="Type your statement here"
               value={inputValue}
               onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
             />
             <Button
               className="bg-[#1E90FF] absolute right-2 top-1/2 transform -translate-y-1/2 text-white rounded-full flex items-center justify-center hover:bg-blue-600"
               onClick={handleCheck}
+              disabled={isLoading}
             >
+                          {isLoading ? (
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            ) : (
               <CiSearch className="w-5 h-5" />
+            )}
             </Button>
           </div>
         </div>

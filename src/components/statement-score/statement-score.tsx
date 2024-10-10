@@ -66,7 +66,7 @@ export const StatementScore: React.FC<StatementScoreType> = ({ score, supportCou
             </span>
             <span className="flex items-center">
               <span className="w-3 h-3 rounded-full bg-green-500 mr-2"></span>
-              0 to 100
+              {"> 0"}
             </span>
           </div>
         </div>
