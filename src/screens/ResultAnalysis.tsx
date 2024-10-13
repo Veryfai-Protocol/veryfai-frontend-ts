@@ -243,8 +243,8 @@ export const ResultAnalysis: React.FC = () => {
                                 ? "supporting"
                                 : "opposing"
                             }
-                            oppose={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
-                            support={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
+                            oppose={factCheckResult?.factCheckOutputDict.all_opposing_statements?.length || 0}
+                            support={factCheckResult?.factCheckOutputDict?.all_supporting_statements?.length || 0}
                           />
                         )}
                       </div>
