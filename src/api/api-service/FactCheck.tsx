@@ -104,7 +104,7 @@ export const FactCheckingService = {
           onUpdate(factCheckOutputDict);
 
           // Check if results are ready, return immediately if true
-          if (factCheckOutputDict.can_show_results === true) {
+          if (factCheckOutputDict.veryfai_score > 0) {
             console.log("Job completed, results are ready. Exiting loop.");
             const endTime = Date.now();
             const elapsedTime = (endTime - startTime) / 1000;
@@ -125,8 +125,8 @@ export const FactCheckingService = {
         }
 
         // Only delay if results are not ready
-        if (factCheckOutputDict?.can_show_results === false) {
-          console.log("Results not ready, waiting before the next attempt...", factCheckOutputDict.can_show_results);
+        if (factCheckOutputDict?.veryfai_score === 0) {
+          console.log("Results not ready, waiting before the next attempt...", factCheckOutputDict.veryfai_score);
           await delay(sleepInterval);  // Wait before the next attempt
         }
       }
