@@ -7,7 +7,7 @@ interface CacheItem {
   result: FactCheckResultResponse;
   timestamp: number;
 }
-
+//@ts-ignore
 class Cache {
   private cache: Map<string, CacheItem>;
   private readonly CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
@@ -49,7 +49,7 @@ class Cache {
   }
 }
 
-const cache = new Cache();
+// const cache = new Cache();
 
 export const FactCheckingService = {
   async checkFact(input_statement: string): Promise<FactCheckResponse> {
@@ -72,17 +72,17 @@ export const FactCheckingService = {
     sleepInterval: number = 2000
   ): Promise<{ factCheckOutputDict: FactCheckResultResponse; timeTaken: number }> {
     // Retrieve the input_statement associated with this task_id
-    const input_statement = localStorage.getItem(`input_statement_${task_id}`);
+    // const input_statement = localStorage.getItem(`input_statement_${task_id}`);
 
-    // Check cache first using task_id or input_statement
-    const cachedResult = cache.get(task_id) || (input_statement ? cache.get(input_statement) : null);
-    if (cachedResult) {
-      console.log("Returning cached result for:", task_id || input_statement);
-      return {
-        factCheckOutputDict: cachedResult,
-        timeTaken: 0, // Cached result, so time taken is 0
-      };
-    }
+    // // Check cache first using task_id or input_statement
+    // const cachedResult = cache.get(task_id) || (input_statement ? cache.get(input_statement) : null);
+    // if (cachedResult) {
+    //   console.log("Returning cached result for:", task_id || input_statement);
+    //   return {
+    //     factCheckOutputDict: cachedResult,
+    //     timeTaken: 0, // Cached result, so time taken is 0
+    //   };
+    // }
 
     const startTime = Date.now();
     let factCheckOutputDict: FactCheckResultResponse | null = null;
@@ -110,10 +110,10 @@ export const FactCheckingService = {
             const elapsedTime = (endTime - startTime) / 1000;
 
             // Cache the result using both task_id and input_statement (if available)
-            cache.set(task_id, factCheckOutputDict);
-            if (input_statement) {
-              cache.set(input_statement, factCheckOutputDict);
-            }
+            // cache.set(task_id, factCheckOutputDict);
+            // if (input_statement) {
+            //   cache.set(input_statement, factCheckOutputDict);
+            // }
 
             return {
               factCheckOutputDict,
