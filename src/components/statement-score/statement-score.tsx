@@ -81,12 +81,7 @@ export const StatementScore: React.FC<StatementScoreType> = ({ score }) => {
             {opposeCount} sources opposed your statement
           </p>
         </div> */}
-        <div className=' rounded-xl bg-[#F3F4F6] p-4 mt-6'>
-          <h1 className='uppercase text-[#6B7280]'>Summary</h1>
-          <p className='text-[#111827]'>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga illo eum reprehenderit, itaque ad voluptates esse culpa, inventore facilis ea repellat. Reprehenderit, maxime tempora. Consectetur vitae magnam fugit laudantium delectus?
-          </p>
-        </div>
+
       </CardContent>
     </Card>
   );

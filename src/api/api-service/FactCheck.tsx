@@ -1,6 +1,6 @@
 import ApiService from "../ApiService";
 import { FactCheckResponse, FactCheckResultResponse } from "./FactType";
-
+//@ts-ignore
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 interface CacheItem {
@@ -8,7 +8,7 @@ interface CacheItem {
   timestamp: number;
 }
 //@ts-ignore
-class Cache {
+export class Cache {
   private cache: Map<string, CacheItem>;
   private readonly CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
@@ -67,88 +67,34 @@ export const FactCheckingService = {
 
   async getFactCheckResult(
     task_id: string,
-    onUpdate: (result: FactCheckResultResponse) => void,
-    maxAttempts: number = 10,
-    sleepInterval: number = 2000
-  ): Promise<{ factCheckOutputDict: FactCheckResultResponse; timeTaken: number }> {
-    // Retrieve the input_statement associated with this task_id
-    // const input_statement = localStorage.getItem(`input_statement_${task_id}`);
-
-    // // Check cache first using task_id or input_statement
-    // const cachedResult = cache.get(task_id) || (input_statement ? cache.get(input_statement) : null);
-    // if (cachedResult) {
-    //   console.log("Returning cached result for:", task_id || input_statement);
-    //   return {
-    //     factCheckOutputDict: cachedResult,
-    //     timeTaken: 0, // Cached result, so time taken is 0
-    //   };
-    // }
-
-    const startTime = Date.now();
+  ) {
     let factCheckOutputDict: FactCheckResultResponse | null = null;
-
+  
     try {
-      for (let i = 0; i < maxAttempts; i++) {
-        console.log(`Checking if job is completed: ${i + 1}/${maxAttempts}`);
-
+  
         try {
-          const response = await ApiService.post<FactCheckResultResponse>(`/api/get-fact-check-results`, {
-            task_id,
-          });
-
+          const response = await ApiService.post<FactCheckResultResponse>('/api/get-fact-check-results', { task_id });
           factCheckOutputDict = response.data;
-
+  
           console.log(`Results received:`, factCheckOutputDict);
-
-          // Call the onUpdate callback with the latest results
-          onUpdate(factCheckOutputDict);
-
-          // Check if results are ready, return immediately if true
-          if (factCheckOutputDict.veryfai_score > 0) {
-            console.log("Job completed, results are ready. Exiting loop.");
-            const endTime = Date.now();
-            const elapsedTime = (endTime - startTime) / 1000;
-
-            // Cache the result using both task_id and input_statement (if available)
-            // cache.set(task_id, factCheckOutputDict);
-            // if (input_statement) {
-            //   cache.set(input_statement, factCheckOutputDict);
-            // }
-
-            return {
-              factCheckOutputDict,
-              timeTaken: elapsedTime,
-            };
+  
+          // Cache the result
+          if (task_id) {
+            localStorage.setItem(task_id, JSON.stringify(factCheckOutputDict))
+            console.log(`Cached result for task_id: ${task_id}`);
           }
-        } catch (error: any) {
-          console.error("Error fetching fact-check results:", error.message);
+  
+          // Call the onUpdate callback with the latest results
+          
+          console.log("Results not ready, waiting before next attempt...");
+        } catch (error) {
+          console.error("Error fetching fact-check results:", error);
         }
-
-        // Only delay if results are not ready
-        if (factCheckOutputDict?.veryfai_score === 0) {
-          console.log("Results not ready, waiting before the next attempt...", factCheckOutputDict.veryfai_score);
-          await delay(sleepInterval);  // Wait before the next attempt
-        }
-      }
-
-      const endTime = Date.now();
-      const elapsedTime = (endTime - startTime) / 1000;
-      console.log(`Process completed in ${elapsedTime.toFixed(2)} seconds`);
-
-      if (!factCheckOutputDict) {
-        throw new Error("Failed to retrieve fact-check results after maximum attempts");
-      }
-
-      return {
-        factCheckOutputDict,
-        timeTaken: elapsedTime,
-      };
-    } catch (error: any) {
-      console.error("Error during fact-checking process:", error.message);
+  
+    } catch (error) {
+      console.error("Error during fact-checking process:", error);
       throw error;
-    } finally {
-      // Clean up the stored input_statement
-      localStorage.removeItem(`input_statement_${task_id}`);
     }
   }
-};
+
+}
