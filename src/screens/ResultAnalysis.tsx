@@ -41,7 +41,7 @@ export const ResultAnalysis: React.FC = () => {
       factCheckOutputDict: result,
       timeTaken: prev?.timeTaken || 0,
     }));
-    if (result.can_show_results) {
+    if (result.veryfai_score > 0) {
       setLoading(false);
     }
   }, []);
@@ -243,6 +243,8 @@ export const ResultAnalysis: React.FC = () => {
                                 ? "supporting"
                                 : "opposing"
                             }
+                            oppose={factCheckResult?.factCheckOutputDict.all_opposing_statements.length}
+                            support={factCheckResult?.factCheckOutputDict.all_supporting_statements.length}
                           />
                         )}
                       </div>
@@ -255,15 +257,11 @@ export const ResultAnalysis: React.FC = () => {
                   <div className="hidden lg:block w-full">
                     <StatementAnalysis />
                   </div>
-                  {/* Trending tags section */}
-                  {/* ... (Keep your existing trending tags section here) */}
                 </div>
               </div>
             </>
           )}
 
-          {/* Mobile trending tags */}
-          {/* ... (Keep your existing mobile trending tags section here) */}
         </div>
       </div>
     </div>

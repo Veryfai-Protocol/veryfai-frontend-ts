@@ -4,8 +4,9 @@ type QuoteCardType = {
   reason: string;
   sentence: string;
   source: string;
+  score: number;
 }
-export const QuoteCard = ({ article_url, sentence, source, reason } : QuoteCardType) => {
+export const QuoteCard = ({ article_url, sentence, source, score, reason } : QuoteCardType) => {
   return (
     <div className="w-full mx-auto my-4 bg-white border-b border-b-[#E5E7EB] rounded-lg overflow-hidden shadow-sm">
     <div className="p-4 sm:p-6">
@@ -18,7 +19,7 @@ export const QuoteCard = ({ article_url, sentence, source, reason } : QuoteCardT
           </div>
           <span className="mr-2 truncate">{source}</span>
           <img src="/dot.svg" alt="" className="mx-2 flex-shrink-0" />
-          <span className="truncate">Source score</span>
+          <span className="truncate">Source score: <span className="bg-black text-white text-[14px] w-[29px] px-2 h-[18px] rounded-[1px]">{score}</span></span>
         </div>
         <button className="flex items-center gap-1 hover:text-blue-600 text-xs sm:text-sm ml-2 flex-shrink-0">
           <a href={article_url} target="_blank" className="hidden sm:inline">Check Source</a>
