@@ -8,7 +8,7 @@ type StatementScoreType = {
     opposeCount: number | undefined
 }
 
-export const StatementScore: React.FC<StatementScoreType> = ({ score, supportCount, opposeCount }) => {
+export const StatementScore: React.FC<StatementScoreType> = ({ score }) => {
   const actualScore = score ?? 0;
   const absoluteScore = Math.abs(actualScore);
   const isNegative = actualScore < 0;
@@ -23,7 +23,7 @@ export const StatementScore: React.FC<StatementScoreType> = ({ score, supportCou
       <CardContent className="pt-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-base font-medium text-[#6B7280] flex items-center gap-2">
-            STATEMENT SCORE
+            STATEMENT CREDIBILITY SCORE
             <InfoCircledIcon className="h-4 w-4 text-gray-500" />
           </h2>
         </div>
@@ -71,7 +71,7 @@ export const StatementScore: React.FC<StatementScoreType> = ({ score, supportCou
           </div>
         </div>
 
-        <div className="space-y-2 mb-6 border-b py-4">
+        {/* <div className="space-y-2 mb-6 border-b py-4">
           <p className="text-green-500 flex items-center gap-3">
             <img src="/upvote.svg" alt="" />
             {supportCount} sources supported your statement.
@@ -79,6 +79,12 @@ export const StatementScore: React.FC<StatementScoreType> = ({ score, supportCou
           <p className="text-red-500 flex items-center gap-3">
             <img src="/downvote.svg" alt="" />
             {opposeCount} sources opposed your statement
+          </p>
+        </div> */}
+        <div className=' rounded-xl bg-[#F3F4F6] p-4 mt-6'>
+          <h1 className='uppercase text-[#6B7280]'>Summary</h1>
+          <p className='text-[#111827]'>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga illo eum reprehenderit, itaque ad voluptates esse culpa, inventore facilis ea repellat. Reprehenderit, maxime tempora. Consectetur vitae magnam fugit laudantium delectus?
           </p>
         </div>
       </CardContent>

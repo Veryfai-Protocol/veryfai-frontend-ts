@@ -97,11 +97,11 @@ export const Header = () => {
         )}
 
         <button 
-          className="flex text-white items-center gap-2"
+          className="flex text-white items-center gap-2 bg-[#29457D] px-4 py-2 rounded-md"
           onClick={handleVerifierClick}
         >
-          <img src="/person.svg" alt="" />
-          <p className="text-[20px]">Become a Verifier</p>
+          <img src="/money.svg" alt="" />
+          <p className="text-[20px]">Earn as a Fact-checker</p>
         </button>
 
         {/* Input Field Animation */}

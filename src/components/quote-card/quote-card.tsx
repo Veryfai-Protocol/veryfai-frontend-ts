@@ -18,7 +18,7 @@ export const QuoteCard = ({ article_url, sentence, source, reason } : QuoteCardT
           </div>
           <span className="mr-2 truncate">{source}</span>
           <img src="/dot.svg" alt="" className="mx-2 flex-shrink-0" />
-          <span className="truncate"></span>
+          <span className="truncate">Source score</span>
         </div>
         <button className="flex items-center gap-1 hover:text-blue-600 text-xs sm:text-sm ml-2 flex-shrink-0">
           <a href={article_url} target="_blank" className="hidden sm:inline">Check Source</a>
