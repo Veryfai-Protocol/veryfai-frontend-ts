@@ -69,7 +69,7 @@ export const FactCheckingService = {
     task_id: string,
     onUpdate: (result: FactCheckResultResponse) => void,
     maxAttempts: number = 10,
-    sleepInterval: number = 5000
+    sleepInterval: number = 2000
   ): Promise<{ factCheckOutputDict: FactCheckResultResponse; timeTaken: number }> {
     // Retrieve the input_statement associated with this task_id
     const input_statement = localStorage.getItem(`input_statement_${task_id}`);

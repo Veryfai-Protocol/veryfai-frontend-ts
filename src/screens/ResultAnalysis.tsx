@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Navbar } from "@/components/nav-menu/Navbar";
 import { QuoteCard } from "@/components/quote-card/quote-card";
 import { StatementScore } from "@/components/statement-score/statement-score";
@@ -14,6 +14,7 @@ import { MdKeyboardArrowDown, MdOutlineArrowOutward } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import NoStatementsGraphic from "@/components/no-statement-graphic/no-statement-graphic";
 import { BetaBanner } from "@/components/beta-banner/beta-banner";
+import { NoResult } from "@/components/no-statement-graphic/no-search";
 
 interface FactCheckResult {
   factCheckOutputDict: FactCheckResultResponse;
@@ -21,7 +22,7 @@ interface FactCheckResult {
 }
 
 export const ResultAnalysis: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { task_id } = useParams<{ task_id: string }>();
   //@ts-ignore
   const [loading, setLoading] = useState(true);
@@ -147,25 +148,7 @@ export const ResultAnalysis: React.FC = () => {
         <div className="w-full">
           {/* Mobile vote buttons */}
           {timedOut && !factCheckResult ? (
-            <div className="text-center bg-gray-100 rounded-lg p-6">
-              <h2 className="text-2xl font-semibold mb-4">No results found</h2>
-              <p className="mb-6">
-                We couldn't find any results for your search. Please try again
-                with a different query.
-              </p>
-              <Button
-                className="bg-blue-500 hover:bg-blue-600 text-white"
-                onClick={() => {
-                  // Reset the state and redirect to the search page
-                  setTimedOut(false);
-                  setLoading(true);
-                  // Implement your navigation logic here, e.g., using react-router
-                  navigate("/");
-                }}
-              >
-                Make Another Search
-              </Button>
-            </div>
+            <NoResult />
           ) : (
             <>
               {/* Existing component content */}

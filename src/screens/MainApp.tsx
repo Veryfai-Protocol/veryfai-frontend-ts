@@ -11,6 +11,7 @@ import { CiSearch } from "react-icons/ci";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { FaFilePen } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { RegisterLogin } from "./Register/Register-login";
 
 export const mockData = [
   "Taylor Swift's Eras Tour breaks box office records",
@@ -93,33 +94,7 @@ export const MainApp = () => {
   return (
     <div className="flex flex-col items-center justify-center w-full">
        {showVerifierForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4">Become a Verifier</h2>
-            <form>
-              <Input
-                type="text"
-                placeholder="Full Name"
-                className="mb-4 w-full"
-              />
-              <Input
-                type="email"
-                placeholder="Email"
-                className="mb-4 w-full"
-              />
-              <textarea
-                placeholder="Why do you want to become a verifier?"
-                className="mb-4 w-full h-32 p-2 border rounded"
-              ></textarea>
-              <div className="flex justify-end">
-                <Button onClick={handleCloseForm} className="mr-2">
-                  Cancel
-                </Button>
-                <Button className="bg-blue-500 text-white">Submit</Button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <RegisterLogin closeForm={handleCloseForm} />
       )}
       <BetaBanner />
       <div className="bg-gradient-to-r from-[#224B9F] to-[#0C1B39] w-full pt-8 rounded-b-3xl">
@@ -162,7 +137,7 @@ export const MainApp = () => {
             <div className="flex items-center">
               <Input
                 type="text"
-                className={`rounded-full transition-all duration-300 ${
+                className={`rounded-2xl transition-all duration-300 ${
                   inputValue.length > 0 ? "bg-white" : "bg-[#F3F4F6]"
                 } ${
                   animateUp ? "translate-y-[-50px] opacity-0" : ""
@@ -199,7 +174,7 @@ export const MainApp = () => {
             )}
 
             <div
-              className={`absolute left-0 right-0 top-full bg-white shadow-2xl rounded-b-xl z-10 overflow-hidden transition-all duration-300 ease-in-out ${
+              className={`absolute left-0 right-0 top-full bg-white rounded-2xl shadow-2xl rounded-b-xl z-10 overflow-hidden transition-all duration-300 ease-in-out ${
                 showSuggestions && filteredSuggestions.length > 0
                   ? "max-h-[300px] opacity-100"
                   : "max-h-0 opacity-0"
