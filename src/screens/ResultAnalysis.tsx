@@ -144,7 +144,7 @@ export const ResultAnalysis: React.FC = () => {
     <div className="relative min-h-screen">
       <BetaBanner />
       <Navbar />
-      <div className="flex sm:pt-24 pt-40 items-center justify-center w-full px-4 sm:px-14 py-8">
+      <div className="flex sm:pt-32 pt-48 items-center justify-center w-full px-4 sm:px-14 py-8">
         <div className="w-full">
           {/* Mobile vote buttons */}
           {timedOut && !factCheckResult ? (
