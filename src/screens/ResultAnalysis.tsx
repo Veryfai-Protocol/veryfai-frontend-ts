@@ -18,7 +18,6 @@ import { NoResult } from "@/components/no-statement-graphic/no-search";
 
 interface FactCheckResult {
   factCheckOutputDict: FactCheckResultResponse;
-  timeTaken: number;
 }
 
 export const ResultAnalysis: React.FC = () => {
@@ -35,15 +34,27 @@ export const ResultAnalysis: React.FC = () => {
   const [visibleCards, setVisibleCards] = useState(5);
   const [timedOut, setTimedOut] = useState(false);
 
-  const handleUpdate = useCallback((result: FactCheckResultResponse) => {
-    console.log("Received update:", result);
-    setFactCheckResult((prev) => ({
-      factCheckOutputDict: result,
-      timeTaken: prev?.timeTaken || 0,
-    }));
-    if (result.veryfai_score > 0) {
-      setLoading(false);
+
+  const handleUpdate = useCallback((task_id : string) => {
+    const result = localStorage.getItem(task_id);
+    if(result){
+      const json_result = JSON.parse(result);
+      console.log({"handle update result" : json_result})
+      //@ts-ignore
+      setFactCheckResult((prev) => ({
+        factCheckOutputDict: json_result,
+      }));
     }
+
+    // const result = cache.get(task_id)
+    // setFactCheckResult((prev) => ({
+    //   factCheckOutputDict: result,
+    // }));
+    // if (result.veryfai_score > 0) {
+    //   setLoading(false);
+    // }
+
+    // setFactCheckResult(result)
   }, []);
 
   useEffect(() => {
@@ -58,13 +69,15 @@ export const ResultAnalysis: React.FC = () => {
       }
 
       try {
-        const result = await FactCheckingService.getFactCheckResult(
-          task_id,
-          handleUpdate
-        );
+        for(let i = 0; i <= 3; i++){
+          await FactCheckingService.getFactCheckResult(
+            task_id,
+          );
+          handleUpdate(task_id)
+        }
         if (isMounted) {
-          console.log(`Fact check completed in ${result.timeTaken} seconds`);
-          setFactCheckResult(result);
+          // console.log(result)
+          // setFactCheckResult(result);
           setLoading(false);
           console.log(loading);
         }
