@@ -36,6 +36,7 @@ export interface FactCheckResponse {
     all_veryfai_score: number[];
     veryfai_score: number;
     can_show_results: boolean;
+    num_results: number;
     fact_check_response_dict: {
       [source: string]: FactCheckSource; // Dictionary of source keys like "CNN"
     };
