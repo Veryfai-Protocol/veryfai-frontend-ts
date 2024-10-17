@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.loader {
+  width: 40px; /* control the size */
+  aspect-ratio: 1;
+  display: grid;
+  mask: conic-gradient(from 22deg, #0003, #000);
+  animation: load 1s steps(8) infinite;
+}
+.loader,
+.loader:before {
+  --_g: linear-gradient(#2d2d2d 0 0) 50%; /* update the color here */
+  background: var(--_g) / 34% 9% space no-repeat,
+    var(--_g) / 9% 34% no-repeat space;
+}
+.loader:before {
+  content: '';
+  transform: rotate(45deg);
+}
+@keyframes load {
+  to {
+    transform: rotate(1turn);
+  }
+}
