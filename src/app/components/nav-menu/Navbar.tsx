@@ -1,22 +1,21 @@
+'use client';
+
 import { CiSearch } from 'react-icons/ci';
 import { Logo } from '../logo/logo';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-// import { FactCheckingService } from '@/api/api-service/FactCheck';
+import { useEffect, useState } from 'react';
 import { useSearchStore } from '@/app/providers/unauthorized/search-store';
+import { RegisterLogin } from '@/app/(unauthorized)/components/auth/register-login';
 
 export const Navbar = () => {
-  const { inputValue, setInputValue, setShowVerifierForm } = useSearchStore(
-    (state) => state
-  );
+  const { inputValue, showVerifierForm, setInputValue, setShowVerifierForm } =
+    useSearchStore((state) => state);
   const [isLogoVisible, setIsLogoVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   //@ts-ignore
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -27,7 +26,7 @@ export const Navbar = () => {
     setShowVerifierForm(true);
   };
 
-  const handleCheck = useCallback(async () => {
+  const handleCheck = async () => {
     // if (inputValue.trim()) {
     //   setIsLoading(true);
     //   setErrorMessage(null);
@@ -50,7 +49,7 @@ export const Navbar = () => {
     //     setIsLoading(false);
     //   }
     // }
-  }, [inputValue, navigate]);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -83,26 +82,26 @@ export const Navbar = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="fixed  w-full flex flex-col items-center z-50">
-      <div className="bg-yellow-400 text-black py-2 px-4 text-center  z-50">
-        <p className="font-bold">
-          Beta Version: This site is in active development.
-        </p>
-      </div>
-      <nav
-        className={`w-full flex bg-gradient-to-r from-[#224B9F] to-[#0C1B39] flex-col sm:flex-row items-center ${
-          isLogoVisible ? 'p-4' : 'p-2'
-        } sm:gap-16 gap-4 px-10`}
-      >
-        <div className="w-full flex flex-col md:flex-row items-center gap-4">
-          {isLogoVisible && (
+    <>
+      <header className="fixed  w-full flex flex-col items-center z-50">
+        <div className="bg-yellow-400 text-black py-2 px-4 text-center  z-50">
+          <p className="font-bold">
+            Beta Version: This site is in active development.
+          </p>
+        </div>
+        <nav
+          className={`w-full flex bg-gradient-to-r from-[#224B9F] to-[#0C1B39] flex-col sm:flex-row items-center ${
+            isLogoVisible ? 'p-4' : 'p-2'
+          } sm:gap-16 gap-4 px-10`}
+        >
+          <div className="w-full flex flex-col md:flex-row items-center gap-4">
             <div className="flex items-center justify-between w-full md:w-fit">
               {/* Conditional Rendering for Logo Animation */}
 
               <div
-                className={`transition-all duration-1000 ease-in-out ${
-                  isLogoVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
-                }`}
+                className={`transition-all duration-1000 ease-in-out
+             opacity-100 scale-100
+              `}
               >
                 <Logo />
               </div>
@@ -120,49 +119,50 @@ export const Navbar = () => {
                 </div>
               </div>
             </div>
-          )}
 
-          {/* Input Field Animation */}
-          <div
-            className={`transition-all md:w-[70%] w-full duration-1000 ease-in-out`}
-          >
-            <div className="flex justify-start relative w-full">
-              <Input
-                type="text"
-                className={`rounded-xl bg-[#F3F4F6] py-5 pl-6 pr-10 w-full text-gray-700 focus:outline-none`}
-                placeholder="Type your statement here"
-                value={inputValue}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-              />
-              <Button
-                className="bg-[#1D1D1E] absolute right-2 top-1/2 transform -translate-y-1/2 text-white rounded-full flex items-center justify-center hover:bg-black/70"
-                onClick={handleCheck}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                ) : (
-                  <CiSearch className="w-5 h-5" />
-                )}
-              </Button>
+            {/* Input Field Animation */}
+            <div
+              className={`transition-all md:w-[70%] w-full duration-1000 ease-in-out`}
+            >
+              <div className="flex justify-start relative w-full">
+                <Input
+                  type="text"
+                  className={`rounded-xl bg-[#F3F4F6] py-5 pl-6 pr-10 w-full text-gray-700 focus:outline-none`}
+                  placeholder="Type your statement here"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                />
+                <Button
+                  className="bg-[#1D1D1E] absolute right-2 top-1/2 transform -translate-y-1/2 text-white rounded-full flex items-center justify-center hover:bg-black/70"
+                  onClick={handleCheck}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  ) : (
+                    <CiSearch className="w-5 h-5" />
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="lg:bg-[#29457D] lg:px-6 px-2 rounded-md hidden md:flex">
-          <div
-            role="button"
-            className="flex text-white items-center gap-2  px-4 py-2 rounded-md"
-            onClick={handleVerifierClick}
-          >
-            <img src="/money.svg" alt="" className="w-[24px] h-[24px]" />
-            <p className="text-[20px] lg:flex hidden text-nowrap">
-              Earn as a Fact-checker
-            </p>
+          <div className="lg:bg-[#29457D] lg:px-6 px-2 rounded-md hidden md:flex">
+            <div
+              role="button"
+              className="flex text-white items-center gap-2  px-4 py-2 rounded-md"
+              onClick={handleVerifierClick}
+            >
+              <img src="/money.svg" alt="" className="w-[24px] h-[24px]" />
+              <p className="text-[20px] lg:flex hidden text-nowrap">
+                Earn as a Fact-checker
+              </p>
+            </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
+      </header>
+      {showVerifierForm && <RegisterLogin />}
+    </>
   );
 };

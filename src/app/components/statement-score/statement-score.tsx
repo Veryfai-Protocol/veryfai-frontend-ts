@@ -1,7 +1,7 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
-import StackedStar from "../star-rating/star-rating";
+import React from 'react';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
+import StackedStar from '../star-rating/star-rating';
+import { Card, CardContent } from '../ui/card';
 
 type StatementScoreType = {
   score: number | undefined;
@@ -13,9 +13,8 @@ export const StatementScore: React.FC<StatementScoreType> = ({ score }) => {
   const actualScore = score ?? 0;
   const absoluteScore = Math.abs(actualScore);
   const isNegative = actualScore < 0;
-  const color = isNegative ? "#DD2727" : "#1CA858";
+  const color = isNegative ? '#DD2727' : '#1CA858';
   // const bgColor = isNegative ? "bg-red-500" : "bg-green-500";
-
 
   return (
     <Card className="w-full mx-auto">

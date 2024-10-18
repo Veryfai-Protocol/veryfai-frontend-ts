@@ -1,13 +1,13 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-import { StatementScore } from "../statement-score/statement-score";
-import { IoClose } from "react-icons/io5";
+import React from 'react';
+import { StatementScore } from '../statement-score/statement-score';
+import { IoClose } from 'react-icons/io5';
+import { Button } from '../ui/button';
+import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer';
 
 interface StatementAnalysisDrawerProps {
   support: number | undefined;
   oppose: number | undefined;
-  type: "supporting" | "opposing" | "analysis";
+  type: 'supporting' | 'opposing' | 'analysis';
   count: number | undefined;
   onClick: () => void;
   active: boolean;
@@ -28,7 +28,7 @@ export const StatementAnalysisDrawer: React.FC<
     onClose,
     support,
     oppose,
-    count
+    count,
   }: StatementAnalysisProps) => (
     <>
       <div className="flex justify-between">
@@ -40,7 +40,11 @@ export const StatementAnalysisDrawer: React.FC<
           <IoClose size={30} className="text-[#6B7280]" />
         </Button>
       </div>
-      <StatementScore score={count} supportCount={support} opposeCount={oppose} />
+      <StatementScore
+        score={count}
+        supportCount={support}
+        opposeCount={oppose}
+      />
     </>
   );
 
@@ -55,8 +59,8 @@ export const StatementAnalysisDrawer: React.FC<
             className={`space-x-2 bottom-4 rounded-full border 
               ${
                 active
-                  ? "border-[#111827]  text-[#111827] hover:text-[#111827]"
-                  : "border-[#D1D5DB] text-[#6B7280] hover:border-gray-400 hover:text-gray-700"
+                  ? 'border-[#111827]  text-[#111827] hover:text-[#111827]'
+                  : 'border-[#D1D5DB] text-[#6B7280] hover:border-gray-400 hover:text-gray-700'
               } w-[121px] h-[40px] `}
             onClick={onClick}
           >

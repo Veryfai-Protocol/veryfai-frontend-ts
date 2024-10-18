@@ -1,33 +1,23 @@
+'use client';
+
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import { Navbar } from '@/components/nav-menu/Navbar';
-import { QuoteCard } from '@/components/quote-card/quote-card';
-import { StatementScore } from '@/components/statement-score/statement-score';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
-import { VoteButton } from '@/components/vote-button/vote-button';
-import { StatementAnalysisDrawer } from '@/components/analysis-drawer/analysis-drawer';
-import { FactCheckingService } from '@/api/api-service/FactCheck';
-import { FactCheckResultResponse } from '@/api/api-service/FactType';
-//@ts-ignore
-import { MdKeyboardArrowDown, MdOutlineArrowOutward } from 'react-icons/md';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
-import NoStatementsGraphic from '@/components/no-statement-graphic/no-statement-graphic';
-import { NoResult } from '@/components/no-statement-graphic/no-search';
-import { SponsoredAd } from '@/components/sponsored-ad/sponsored-ad';
 import { BetaBanner } from '@/app/components/beta-banner/beta-banner';
+import { Button } from '@/app/components/ui/button';
+import { StatementScore } from '@/app/components/statement-score/statement-score';
+import { Navbar } from '@/app/components/nav-menu/Navbar';
+import { NoResult } from '@/app/components/no-statement-graphic/no-search';
+import { VoteButton } from '@/app/components/vote-button/vote-button';
+import { StatementAnalysisDrawer } from '@/app/components/analysis-drawer/analysis-drawer';
+import { SponsoredAd } from '@/app/components/sponsored-ad/sponsored-ad';
+import { QuoteCard } from '@/app/components/quote-card/quote-card';
+import NoStatementsGraphic from '@/app/components/no-statement-graphic/no-statement-graphic';
+import { Skeleton } from '@/app/components/ui/skeleton';
 
-interface FactCheckResult {
-  factCheckOutputDict: FactCheckResultResponse;
-}
-
-export const ResultAnalysis: React.FC = () => {
-  // const navigate = useNavigate();
-  const { task_id } = useParams<{ task_id: string }>();
-  //@ts-ignore
+export const ResultAnalysis = ({ taskId }: { taskId: string }) => {
   const [loading, setLoading] = useState(true);
-  const [factCheckResult, setFactCheckResult] =
-    useState<FactCheckResult | null>(null);
+  const [factCheckResult, setFactCheckResult] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<
     'supporting' | 'opposing' | 'analysis'
   >('supporting');
@@ -38,8 +28,8 @@ export const ResultAnalysis: React.FC = () => {
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  const handleUpdate = useCallback((task_id: string) => {
-    const result = localStorage.getItem(task_id);
+  const handleUpdate = useCallback((taskId: string) => {
+    const result = localStorage.getItem(taskId);
     if (result) {
       const json_result = JSON.parse(result);
       console.log({ 'handle update result': json_result });
@@ -49,7 +39,7 @@ export const ResultAnalysis: React.FC = () => {
       }));
     }
 
-    // const result = cache.get(task_id)
+    // const result = cache.get(taskId)
     // setFactCheckResult((prev) => ({
     //   factCheckOutputDict: result,
     // }));
@@ -64,34 +54,34 @@ export const ResultAnalysis: React.FC = () => {
     let isMounted = true;
     const abortController = new AbortController();
 
-    const fetchFactCheckResult = async () => {
-      if (!task_id) {
-        console.log('No task ID provided. Skipping fact check.');
-        setLoading(false);
-        return;
-      }
+    // const fetchFactCheckResult = async () => {
+    //   if (!taskId) {
+    //     console.log('No task ID provided. Skipping fact check.');
+    //     setLoading(false);
+    //     return;
+    //   }
 
-      try {
-        for (let i = 0; i <= 15; i++) {
-          await FactCheckingService.getFactCheckResult(task_id);
-          handleUpdate(task_id);
-          delay(4000);
-        }
-        if (isMounted) {
-          // console.log(result)
-          // setFactCheckResult(result);
-          setLoading(false);
-          console.log(loading);
-        }
-      } catch (error) {
-        if (isMounted) {
-          console.error('Error fetching fact check result:', error);
-          setLoading(false);
-        }
-      }
-    };
+    //   try {
+    //     for (let i = 0; i <= 15; i++) {
+    //       await FactCheckingService.getFactCheckResult(taskId);
+    //       handleUpdate(taskId);
+    //       delay(4000);
+    //     }
+    //     if (isMounted) {
+    //       // console.log(result)
+    //       // setFactCheckResult(result);
+    //       setLoading(false);
+    //       console.log(loading);
+    //     }
+    //   } catch (error) {
+    //     if (isMounted) {
+    //       console.error('Error fetching fact check result:', error);
+    //       setLoading(false);
+    //     }
+    //   }
+    // };
 
-    fetchFactCheckResult();
+    // fetchFactCheckResult();
 
     const timeoutId = setTimeout(() => {
       if (isMounted && loading) {
@@ -107,7 +97,7 @@ export const ResultAnalysis: React.FC = () => {
       clearTimeout(timeoutId);
       abortController.abort();
     };
-  }, [task_id, handleUpdate]);
+  }, [taskId, handleUpdate]);
 
   const handleShowMore = () => {
     setVisibleCards((prevCount) => prevCount + 5);
@@ -237,7 +227,7 @@ export const ResultAnalysis: React.FC = () => {
                           <div>
                             {filteredCardData
                               .slice(0, visibleCards)
-                              .map((card, index) => (
+                              .map((card: any, index: number) => (
                                 <QuoteCard key={index} {...card} />
                               ))}
                             {visibleCards < filteredCardData.length && (
