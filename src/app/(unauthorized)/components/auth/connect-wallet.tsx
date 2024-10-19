@@ -9,6 +9,8 @@ import { CloseButton } from './closeButton';
 import { WalletConnected } from './wallectConnected';
 import { useRouter } from 'next/navigation';
 import { DASHBOARD } from '@/site-settings/navigations';
+import Image from 'next/image';
+import WALLET from '../../../../../public/wallet.svg';
 
 type ConnectWalletType = {
   closeForm: () => void;
@@ -53,8 +55,8 @@ export const ConnectWallet = ({ closeForm }: ConnectWalletType) => {
       });
       setIsStakeSuccessful(true);
       router.push(DASHBOARD.href);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error('Error while staking:', error);
       alert('An error occurred while staking. Please try again.');
     } finally {
       setIsLoading(false);
@@ -75,6 +77,11 @@ export const ConnectWallet = ({ closeForm }: ConnectWalletType) => {
     router.push(DASHBOARD.href);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleStakeInput = (value: any) => {
+    setStakeInputValue(value);
+  };
+
   const isStakeValueValid = stakeInputValue && parseFloat(stakeInputValue) > 0;
 
   if (isConnected) {
@@ -83,7 +90,7 @@ export const ConnectWallet = ({ closeForm }: ConnectWalletType) => {
         isStakeSuccessful={isStakeSuccessful}
         handleDone={handleDone}
         handleClose={closeForm}
-        setStakeInputValue={setStakeInputValue}
+        setStakeInputValue={handleStakeInput}
         isStakeValueValid={isStakeValueValid}
         longText={longText}
         isLoading={isLoading}
@@ -106,7 +113,7 @@ export const ConnectWallet = ({ closeForm }: ConnectWalletType) => {
             <CloseButton onClick={closeForm} />
           </div>
           <div className="flex flex-col items-center border-b pb-4 sm:pb-7 mt-[-30px]">
-            <img src="/wallet.svg" alt="" className="w-12 sm:w-16" />
+            <Image src={WALLET} alt="" className="w-12 sm:w-16" />
             <h1 className="font-bold text-xl sm:text-2xl lg:text-[28px] font-sans text-center mt-2">
               Connect wallet
             </h1>

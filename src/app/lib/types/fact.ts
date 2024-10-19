@@ -2,7 +2,7 @@ export interface FactCheckResponse {
   task_id: string;
 }
 // Interface for individual statement
-interface Statement {
+export interface Statement {
   article_url: string;
   reason: string;
   score: number;
@@ -24,6 +24,7 @@ interface FactCheckSource {
   opposing_statements: Statement[];
   stance: string;
   summary: Summary;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supporting_statements: any[]; // Empty array, could be refined if there's a known structure
   veryfai_score: number;
 }
@@ -32,6 +33,7 @@ interface FactCheckSource {
 export interface FactCheckResultResponse {
   all_opposing_statements: Statement[];
   all_summary: Summary[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   all_supporting_statements: any[]; // Empty array, could be refined if there's a known structure
   all_veryfai_score: number[];
   veryfai_score: number;

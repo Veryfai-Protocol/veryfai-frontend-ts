@@ -3,6 +3,8 @@ import { StatementScore } from '../statement-score/statement-score';
 import { IoClose } from 'react-icons/io5';
 import { Button } from '../ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer';
+import CHART from '../../../../public/chart.svg';
+import Image from 'next/image';
 
 interface StatementAnalysisDrawerProps {
   support: number | undefined;
@@ -64,7 +66,7 @@ export const StatementAnalysisDrawer: React.FC<
               } w-[121px] h-[40px] `}
             onClick={onClick}
           >
-            <img src="/chart.svg" alt="" />
+            <Image src={CHART} alt="" />
             <p>Analysis</p>
           </Button>
         </DrawerTrigger>

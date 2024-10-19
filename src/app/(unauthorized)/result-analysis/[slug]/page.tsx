@@ -1,11 +1,15 @@
-import { Header } from '@/app/components/nav-menu/Header';
-import { ResultBanner } from '../../components/ResultBanner';
+import { BetaBanner } from '@/app/components/beta-banner/beta-banner';
 import { ResultAnalysis } from '../_components/ResultAnalysis';
+import { Navbar } from '@/app/components/nav-menu/Navbar';
 
-const ResultAnalysisPage = ({ params }: { params: { slug: string } }) => {
+const ResultAnalysisPage = async ({ params }: { params: { slug: string } }) => {
   return (
     <div className="relative min-h-screen">
-      <ResultAnalysis taskId={params.slug} />
+      <div className="relative min-h-screen">
+        <BetaBanner />
+        <Navbar />
+        <ResultAnalysis taskId={params.slug} />
+      </div>
     </div>
   );
 };

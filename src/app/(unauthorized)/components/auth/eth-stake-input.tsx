@@ -1,5 +1,7 @@
 import { Input } from '@/app/components/ui/input';
+import Image from 'next/image';
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import ETH from '../../../../../public/etherium.svg';
 
 const ETH_TO_USD_RATE = 2700; // Example rate, you might want to fetch this dynamically
 const MINIMUM_STAKE = 0.37;
@@ -41,7 +43,7 @@ export const EthStakeInput = ({ setStakeInputValue }: EthStakeType) => {
     <div className="w-full">
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <img src="/etherium.svg" alt="" />
+          <Image src={ETH} alt="" />
         </div>
         <Input
           type="text"

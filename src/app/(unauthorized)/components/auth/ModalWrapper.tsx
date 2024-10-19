@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useEffect, MouseEventHandler } from 'react';
+import { useCallback, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function ModalWrapper({
@@ -9,27 +9,12 @@ export default function ModalWrapper({
   children: React.ReactNode;
 }) {
   const overlay = useRef(null);
-  const wrapper = useRef(null);
-  const close = useRef(null);
   const router = useRouter();
 
   const onDismiss = useCallback(() => {
     router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
-
-  const onClick: MouseEventHandler = useCallback(
-    (e) => {
-      if (
-        e.target === overlay.current ||
-        e.target === wrapper.current ||
-        e.target === close.current
-      ) {
-        if (onDismiss) onDismiss();
-      }
-    },
-    [onDismiss, overlay, wrapper, close]
-  );
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {

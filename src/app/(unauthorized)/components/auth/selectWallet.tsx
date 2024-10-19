@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 type SelectWalletProps = {
   name: string;
   imgSrc: string;
@@ -17,7 +19,7 @@ export const SelectWallet = ({
       onClick={onSelect}
     >
       <div className="flex gap-2 sm:gap-[16px] items-center">
-        <img src={imgSrc} alt={name} className="w-5 sm:w-6 lg:w-auto" />
+        <Image src={imgSrc} alt={name} className="w-5 sm:w-6 lg:w-auto" />
         <h1 className="text-xs sm:text-sm lg:text-[20px] font-sans font-medium">
           {name}
         </h1>

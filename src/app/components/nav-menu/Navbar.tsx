@@ -7,15 +7,21 @@ import { Input } from '../ui/input';
 import { useEffect, useState } from 'react';
 import { useSearchStore } from '@/app/providers/unauthorized/search-store';
 import { RegisterLogin } from '@/app/(unauthorized)/components/auth/register-login';
+import Image from 'next/image';
+import MONY_ICON from '../../../../public/money.svg';
+import { checkFact } from '@/app/lib/data-fetching/factChecking';
+import { APIResponse } from '@/app/lib/types';
+import { useRouter } from 'next/navigation';
+import { RESULT_ANALYSIS } from '@/site-settings/navigations';
 
 export const Navbar = () => {
   const { inputValue, showVerifierForm, setInputValue, setShowVerifierForm } =
     useSearchStore((state) => state);
   const [isLogoVisible, setIsLogoVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  //@ts-ignore
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -27,31 +33,24 @@ export const Navbar = () => {
   };
 
   const handleCheck = async () => {
-    // if (inputValue.trim()) {
-    //   setIsLoading(true);
-    //   setErrorMessage(null);
-    //   try {
-    //     const response = await FactCheckingService.checkFact(inputValue);
-    //     console.log('Fact check response:', response);
-    //     navigate(`/result-analysis/${encodeURIComponent(response.task_id)}`);
-    //   } catch (error: any) {
-    //     if (error.response) {
-    //       console.error('Error status:', error.response.status);
-    //       console.error('Error data:', error.response.data);
-    //       setErrorMessage(
-    //         `Error: ${error.response.data.message || 'Something went wrong'}`
-    //       );
-    //     } else {
-    //       console.error('Error message:', error.message);
-    //       setErrorMessage('An unknown error occurred. Please try again.');
-    //     }
-    //   } finally {
-    //     setIsLoading(false);
-    //   }
-    // }
+    const value = inputValue.trim();
+    setIsLoading(true);
+    setErrorMessage(null);
+    try {
+      const response: APIResponse = await checkFact(value);
+      if (response.status > 201) {
+        setErrorMessage(response.data);
+      } else {
+        router.replace(`${RESULT_ANALYSIS.href}/${response.data.task_id}`);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setErrorMessage(JSON.stringify(error));
+      setIsLoading(false);
+    }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
       handleCheck();
     }
@@ -95,48 +94,54 @@ export const Navbar = () => {
           } sm:gap-16 gap-4 px-10`}
         >
           <div className="w-full flex flex-col md:flex-row items-center gap-4">
-            <div className="flex items-center justify-between w-full md:w-fit">
-              {/* Conditional Rendering for Logo Animation */}
+            {isLogoVisible && (
+              <div className="flex items-center justify-between w-full md:w-fit">
+                {/* Conditional Rendering for Logo Animation */}
 
-              <div
-                className={`transition-all duration-1000 ease-in-out
-             opacity-100 scale-100
-              `}
-              >
-                <Logo />
-              </div>
-
-              <div className="lg:bg-[#29457D] px-6 rounded-md md:hidden">
                 <div
-                  role="button"
-                  className="flex text-white items-center gap-2  px-4 py-2 rounded-md"
-                  onClick={handleVerifierClick}
+                  className={`transition-all duration-1000 ease-in-out ${
+                    isLogoVisible
+                      ? 'opacity-100 scale-100'
+                      : 'opacity-0 scale-0'
+                  }`}
                 >
-                  <img src="/money.svg" alt="" />
-                  <p className="text-[20px] hidden lg:flex text-nowrap">
-                    Earn as a Fact-checker
-                  </p>
+                  <Logo />
+                </div>
+
+                <div className="lg:bg-[#29457D] px-6 rounded-md md:hidden">
+                  <div
+                    role="button"
+                    className="flex text-white items-center gap-2  px-4 py-2 rounded-md"
+                    onClick={handleVerifierClick}
+                  >
+                    <Image src={MONY_ICON} alt="" />
+                    <p className="text-[20px] hidden lg:flex text-nowrap">
+                      Earn as a Fact-checker
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Input Field Animation */}
             <div
               className={`transition-all md:w-[70%] w-full duration-1000 ease-in-out`}
             >
-              <div className="flex justify-start relative w-full">
+              <form
+                className="flex justify-start relative w-full"
+                onKeyDown={handleKeyDown}
+              >
                 <Input
                   type="text"
                   className={`rounded-xl bg-[#F3F4F6] py-5 pl-6 pr-10 w-full text-gray-700 focus:outline-none`}
                   placeholder="Type your statement here"
                   value={inputValue}
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                 />
                 <Button
                   className="bg-[#1D1D1E] absolute right-2 top-1/2 transform -translate-y-1/2 text-white rounded-full flex items-center justify-center hover:bg-black/70"
-                  onClick={handleCheck}
                   disabled={isLoading}
+                  onClick={handleCheck}
                 >
                   {isLoading ? (
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -144,7 +149,12 @@ export const Navbar = () => {
                     <CiSearch className="w-5 h-5" />
                   )}
                 </Button>
-              </div>
+              </form>
+              {errorMessage && (
+                <div className="text-red-500 text-center mt-4">
+                  {errorMessage}
+                </div>
+              )}
             </div>
           </div>
 
@@ -154,7 +164,7 @@ export const Navbar = () => {
               className="flex text-white items-center gap-2  px-4 py-2 rounded-md"
               onClick={handleVerifierClick}
             >
-              <img src="/money.svg" alt="" className="w-[24px] h-[24px]" />
+              <Image src={MONY_ICON} alt="" className="w-[24px] h-[24px]" />
               <p className="text-[20px] lg:flex hidden text-nowrap">
                 Earn as a Fact-checker
               </p>

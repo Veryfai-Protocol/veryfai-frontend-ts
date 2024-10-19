@@ -3,6 +3,8 @@
 import { RegisterLogin } from '@/app/(unauthorized)/components/auth/register-login';
 import { Logo } from '../logo/logo';
 import { useSearchStore } from '@/app/providers/unauthorized/search-store';
+import Image from 'next/image';
+import MONY_ICON from '../../../../public/money.svg';
 
 export const Header = () => {
   const { showVerifierForm, setShowVerifierForm } = useSearchStore(
@@ -23,7 +25,7 @@ export const Header = () => {
             onClick={() => setShowVerifierForm(!showVerifierForm)}
             className="flex text-white items-center gap-2 lg:bg-[#29457D] px-4 py-2 rounded-md"
           >
-            <img src="/money.svg" alt="" />
+            <Image src={MONY_ICON} alt="" />
             <p className="text-[20px] hidden lg:flex">Earn as a Fact-checker</p>
           </button>
         </nav>

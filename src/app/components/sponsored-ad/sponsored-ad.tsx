@@ -22,7 +22,7 @@ export const SponsoredAd = () => {
 
 const SponsoredAdCard = () => {
   return (
-    <div className="rounded-[16px] flex-shrink-0 w-[200px] h-[107px] bg-center bg-cover bg-no-repeat bg-[url('/sponsored.'png')]">
+    <div className="rounded-[16px] flex-shrink-0 w-[200px] h-[107px] bg-center bg-cover bg-no-repeat bg-[url('/sponsored.png')]">
       <Link href={HOME.href}></Link>
     </div>
   );

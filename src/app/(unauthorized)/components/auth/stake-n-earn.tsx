@@ -1,5 +1,7 @@
 import { ReadMoreText } from '@/app/components/read-more-text/read-more-text';
 import { CloseButton } from './closeButton';
+import META_MASK from '../../../../../public/metamask.svg';
+import Image from 'next/image';
 
 type StakeType = {
   closeForm: () => void;
@@ -24,7 +26,7 @@ export const StakeNEarn = ({ closeForm }: StakeType) => {
                   12.5 ETH
                 </h1>
                 <div className="bg-[#61666A3D] mt-4 sm:mt-6 flex rounded-[8px] px-2 py-2 sm:py-3 items-center justify-center gap-2 sm:gap-4">
-                  <img src="/metamask.svg" alt="" className="w-6 sm:w-8" />
+                  <Image src={META_MASK} alt="" className="w-6 sm:w-8" />
                   <p className="text-[20px] font-medium text-[#EFEFF0] sm:text-sm">
                     0x4ffeteg...ht56a
                   </p>

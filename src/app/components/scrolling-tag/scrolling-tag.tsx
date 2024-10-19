@@ -61,3 +61,5 @@ export const ScrollingTags: React.FC<ScrollingTagsProps> = React.memo(
     );
   }
 );
+
+ScrollingTags.displayName = 'ScrollingTags';

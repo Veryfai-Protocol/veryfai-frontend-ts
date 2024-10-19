@@ -4,11 +4,14 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ReadMoreText } from '@/app/components/read-more-text/read-more-text';
 import { EthStakeInput } from './eth-stake-input';
 import Spinner from '@/app/components/loader/loading-spinner';
+import CONFETTI from '../../../../../public/confetti.svg';
+import Image from 'next/image';
 
 type Props = {
   isStakeSuccessful: boolean;
   handleDone: () => void;
   handleClose: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setStakeInputValue: (value: any) => void;
   isStakeValueValid: boolean | string | undefined;
   longText: string;
@@ -31,9 +34,9 @@ export const WalletConnected = ({
         {isStakeSuccessful && (
           <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center rounded-xl z-10">
             <div className="bg-white rounded-3xl py-6 px-8 flex flex-col items-center">
-              <img src="/confetti.svg" alt="" />
+              <Image src={CONFETTI} alt="" />
               <h1 className="text-[24px] font-bold text-wrap text-center">
-                Congratulations you're <br></br> now a{' '}
+                Congratulations you&apos;re <br></br> now a{' '}
                 <span className="text-[#16974D]">Fact-checker</span>.
               </h1>
               <Button

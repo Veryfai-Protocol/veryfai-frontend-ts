@@ -32,36 +32,17 @@ export const FactSearch = () => {
         router.push(`${RESULT_ANALYSIS.href}/${response.data.task_id}`);
       }
       setIsLoading(false);
-      console.log(response);
     } catch (error) {
-      console.log(error, '====erer');
+      setErrorMessage(JSON.stringify(error));
       setIsLoading(false);
     }
-
-    // try {
-    //   const response = await FactCheckingService.checkFact(inputValue);
-    //   console.log('Fact check response:', response);
-    //   navigate(`/result-analysis/${encodeURIComponent(response.task_id)}`);
-    // } catch (error: any) {
-    //   if (error.response) {
-    //     console.error('Error status:', error.response.status);
-    //     console.error('Error data:', error.response.data);
-    //     setErrorMessage(
-    //       `Error: ${error.response.data.message || 'Something went wrong'}`
-    //     );
-    //   } else {
-    //     console.error('Error message:', error.message);
-    //     setErrorMessage('An unknown error occurred. Please try again.');
-    //   }
-    // } finally {
-    //   setIsLoading(false);
-    // }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
     setShowSuggestions(value.trim().length > 0);
+    setAnimateUp(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -88,11 +69,7 @@ export const FactSearch = () => {
         animateUp ? 'bg-transparent shadow-none' : ''
       } transition-all duration-300`}
     >
-      <form
-        className="flex items-center"
-        onSubmit={handleCheck}
-        onKeyDown={handleKeyDown}
-      >
+      <form className="flex items-center" onKeyDown={handleKeyDown}>
         <Input
           type="text"
           className={`rounded-2xl transition-all duration-300 ${
@@ -103,15 +80,15 @@ export const FactSearch = () => {
           placeholder="Type your statement here..."
           value={inputValue}
           onChange={handleInputChange}
-          //   onKeyDown={handleKeyDown}
         />
         {inputValue.length > 0 && (
           <Button
             className={`absolute right-4 bg-[#1D1D1E] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-[#1D1D1E] transition-all duration-300 ${
               animateUp ? 'translate-y-[-50px] opacity-0' : ''
             }`}
-            onClick={handleCheck}
+            type="submit"
             disabled={isLoading}
+            onClick={handleCheck}
           >
             {isLoading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>

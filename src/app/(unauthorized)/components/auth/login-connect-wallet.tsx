@@ -1,5 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { CloseButton } from './closeButton';
+import LOGIN from '../../../../../public/veryfai-login.svg';
+import Image from 'next/image';
 
 type ConnectWalletType = {
   closeForm: () => void;
@@ -18,7 +20,7 @@ export const LoginConnectWallet = ({
             <CloseButton onClick={closeForm} />
           </div>
           <div className="flex flex-col items-center border-b pb-4 sm:pb-7 mt-[-30px]">
-            <img src="/veryfai-login.svg" alt="" className="w-12 sm:w-16" />
+            <Image src={LOGIN} alt="" className="w-12 sm:w-16" />
             <h1 className="font-bold text-xl sm:text-2xl lg:text-[28px] font-sans text-center mt-2">
               Login as a <span className="text-[#16974D]">Fact-checker</span>
             </h1>
@@ -36,7 +38,7 @@ export const LoginConnectWallet = ({
               <ConnectButton />
             </div>
             <div className="flex gap-2 items-center justify-center mt-2">
-              <p className="text-[20px]">Don't have an account?</p>
+              <p className="text-[20px]">Don&apos;t have an account?</p>
               <div
                 role="button"
                 onClick={handleRegister}
