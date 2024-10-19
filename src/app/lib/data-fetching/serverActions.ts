@@ -1,5 +1,3 @@
-// 'use server';
-
 import { APIResponse } from '../types';
 import { isObjEmpty, responseSchema, sleep } from '../utils';
 
