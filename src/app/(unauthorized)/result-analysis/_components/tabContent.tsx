@@ -7,6 +7,7 @@ type Props = {
   statements: Statement[] | undefined;
   value: string;
 };
+
 export const Content = ({ statements, value }: Props) => {
   return (
     <TabsContent value={value}>
