@@ -7,6 +7,12 @@ const Colors = {
   green: {
     green1: '#16974D',
   },
+  gray: {
+    gray1: '#6B7280',
+    gray2: '#F3F4F6',
+    gray3: '#E5E7EB',
+    gray4: '#4B5563',
+  },
 };
 
 export default Colors;

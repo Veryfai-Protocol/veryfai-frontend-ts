@@ -14,3 +14,10 @@ export const mockData = [
 ];
 
 export const PRODUCT_NAME = 'VerfyAI';
+
+export const PROGRESS = [
+  'Analysing statement',
+  'Analysing source',
+  'Retrieving source',
+  'Just a few more seconds',
+];
