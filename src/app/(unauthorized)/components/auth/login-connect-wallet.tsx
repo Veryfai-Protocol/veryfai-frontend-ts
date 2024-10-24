@@ -42,7 +42,7 @@ export const LoginConnectWallet = ({
               <div
                 role="button"
                 onClick={handleRegister}
-                className="text-[#1E90FF] uppercase"
+                className="text-blue-blue1 uppercase"
               >
                 Register
               </div>

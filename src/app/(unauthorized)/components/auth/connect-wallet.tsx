@@ -103,7 +103,7 @@ export const ConnectWallet = ({ closeForm }: ConnectWalletType) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
       <div className="bg-white p-2 sm:p-[6px] flex flex-col items-center rounded-3xl w-full max-w-md lg:max-w-lg xl:max-w-xl max-h-[calc(100vh-2rem)] relative">
         <div
-          className="bg-[#1E90FF] rounded-2xl text-white flex items-center justify-center w-[83px] h-[31px] top-0 z-50"
+          className="bg-blue-blue rounded-2xl text-white flex items-center justify-center w-[83px] h-[31px] top-0 z-50"
           style={{ position: 'absolute', transform: 'translateY(-50%)' }}
         >
           1/2

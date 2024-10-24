@@ -7,9 +7,13 @@ type Props = {
   statements: Statement[] | undefined;
   value: string;
 };
+
 export const Content = ({ statements, value }: Props) => {
   return (
-    <TabsContent value={value}>
+    <TabsContent
+      value={value}
+      className="border rounded-[1em] border-gray-gray3 mt-6"
+    >
       {statements && statements.length > 0 ? (
         statements.map((item: Statement, ind: number) => (
           <QuoteCard key={ind} {...item} />
