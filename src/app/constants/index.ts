@@ -12,3 +12,12 @@ export const mockData = [
   'SpaceX plans to build a hotel in space by 2030',
   'A company is working on a pill that could eliminate the need for sleep',
 ];
+
+export const PRODUCT_NAME = 'VerfyAI';
+
+export const PROGRESS = [
+  'Analysing statement',
+  'Analysing source',
+  'Retrieving source',
+  'Just a few more seconds',
+];

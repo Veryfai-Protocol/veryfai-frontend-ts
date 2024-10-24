@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import LOGO from '../../../../public/small-logo.svg';
+import LOGO from '../../../../public/logo.svg';
+import { HOME } from '@/site-settings/navigations';
 
 export const Logo = () => {
   return (
-    <div>
-      <Link href="/">
+    <div className="flex">
+      <Link href={HOME.href}>
         <Image src={LOGO} alt="logo" />
       </Link>
     </div>

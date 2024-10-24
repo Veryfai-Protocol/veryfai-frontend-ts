@@ -1,10 +1,12 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-    darkMode: ["class"],
-    content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+import type { Config } from 'tailwindcss';
+import animate from 'tailwindcss-animate';
+// @ts-expect-error no avaliable typing
+import scrollbar from 'tailwind-scrollbar-hide';
+import Colors from './src/site-settings/colors';
+
+const config: Config = {
+  darkMode: ['class'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
   	extend: {
   		borderRadius: {
@@ -78,9 +80,7 @@ export default {
 		  }
   	}
   },
-  plugins: [
-	require("tailwindcss-animate"),
-	require('tailwind-scrollbar-hide')
-  ],
-}
+  plugins: [animate, scrollbar],
+};
 
+export default config;

@@ -13,6 +13,7 @@ export const QuoteCard = ({
   return (
     <div className="w-full mx-auto my-4 bg-white border-b border-b-[#E5E7EB] rounded-lg overflow-hidden shadow-sm">
       <div className="p-4 sm:p-6">
+        <span className="mr-2 truncate pb-3">{source}</span>
         <p className="text-lg sm:text-xl md:text-2xl mb-2 text-[#111827] font-medium">
           {sentence}
         </p>
@@ -22,7 +23,7 @@ export const QuoteCard = ({
         <div className="flex flex-row items-center justify-between text-xs sm:text-sm text-gray-500">
           <div className="flex items-center flex-shrink-0 overflow-hidden">
             <div className="w-5 h-5 sm:w-6 sm:h-6 bg-black rounded-full mr-2 flex-shrink-0"></div>
-            <span className="mr-2 truncate">{source}</span>
+
             <Image src={DOT} alt="" className="mx-2 flex-shrink-0" />
             <span className="truncate">
               Source score:{' '}

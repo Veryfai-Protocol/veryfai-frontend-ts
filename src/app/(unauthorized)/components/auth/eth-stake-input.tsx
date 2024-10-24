@@ -55,7 +55,7 @@ export const EthStakeInput = ({ setStakeInputValue }: EthStakeType) => {
           placeholder="0.00"
         />
         <div className="absolute inset-y-0 w-[80px] h-[37px] mt-3 mr-4 right-0 bg-[#E0EFFE] rounded-[8px] flex items-center justify-center pointer-events-none">
-          <span className="text-[#1E90FF] sm:text-sm">max</span>
+          <span className="text-blue-blue1 sm:text-sm">max</span>
         </div>
       </div>
       {inputValue !== '' && (

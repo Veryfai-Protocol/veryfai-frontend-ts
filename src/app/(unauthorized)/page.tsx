@@ -25,7 +25,7 @@ const Entry = () => {
 
         <Footer />
       </div>
-    </div>
+    </>
   );
 };
 
