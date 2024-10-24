@@ -11,3 +11,7 @@ export const HOME = {
 export const RESULT_ANALYSIS = {
   href: '/result-analysis',
 };
+
+export const FACT_CHECK = {
+  href: '/fact-check',
+}
