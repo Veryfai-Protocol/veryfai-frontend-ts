@@ -50,7 +50,7 @@ const DialogVideo = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <div className="text-center mt-2">
+        <div className="text-center">
           <div className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700">
             <div className="w-full h-full rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg">
               <Image
