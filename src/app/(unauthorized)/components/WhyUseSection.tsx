@@ -23,7 +23,7 @@ export const WhyUseSection = () => {
     <motion.div
       className="lg:px-[56px] w-full flex flex-col items-center justify-center md:px-[32px] px-4 py-[124px]"
       style={{
-        backgroundImage: `url('/shield.png')`,
+        backgroundImage: `url('/Shield.png')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

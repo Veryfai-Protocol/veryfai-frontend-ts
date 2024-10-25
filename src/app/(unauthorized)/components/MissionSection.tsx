@@ -21,7 +21,7 @@ export const MissionSection = () => {
         },
       };
   return (
-    <div className="lg:py-[124px] py-[24px] relative w-full flex items-center justify-center">
+    <div className="md:py-[124px] sm:py-[14px] relative w-full flex items-center justify-center">
 <div className="absolute z-0 lg:mt-10 mt-2 overflow-hidden">
     {/* First row scrolling right */}
     <div className="flex animate-scroll mb-4 whitespace-nowrap">
