@@ -5,6 +5,7 @@ import { Input } from '@/app/components/ui/input';
 import { Button } from '@/app/components/ui/button';
 import VideoModal from './VideoModal';
 import { submitForm } from '@/app/lib/data-fetching/factChecking';
+import { useToast } from '@/app/hooks/use-toast';
 
 interface FormData {
   name: string;
@@ -18,8 +19,8 @@ interface Toast {
 }
 
 export const Hero = () => {
+  const { toast } = useToast();
   const [data, setData] = useState<FormData>({ name: '', email: '' });
-  const [toasts, setToasts] = useState<Toast[]>([]);
 
   const heroVar = {
     initial: {
@@ -36,31 +37,32 @@ export const Hero = () => {
     },
   };
 
-  const showToast = (message: string, type: 'success' | 'error') => {
-    const newToast: Toast = { id: Date.now(), message, type };
-    setToasts(prev => [...prev, newToast]);
-    
-    setTimeout(() => {
-      setToasts(prev => prev.filter(t => t.id !== newToast.id));
-    }, 3000);
-  };
-
   const handleClick = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!data.name || !data.email) {
-      showToast('Please fill in all fields', 'error');
-      return;
-    }
+    
     try {
       const response = await submitForm(data);
-      showToast('Successfully joined waitlist!', 'success');
+      
+      // Success toast
+      toast({
+        title: "Success!",
+        description: "Your form has been submitted successfully.",
+        variant: "default",
+        duration: 3000,
+        className: "bg-green-500 text-white",
+      });
+      
       console.log(response);
       
-      setData({ name: '', email: '' });
+    } catch (error :any) {
+      // Error toast
+      toast({
+        title: "Error",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
       
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Something went wrong. Please try again.';
-      showToast(errorMessage, 'error');
       console.error(error);
     }
   };
@@ -77,23 +79,6 @@ export const Hero = () => {
       initial="initial"
       animate="animate"
     >
-      {toasts.map(toast => (
-        <div
-          key={toast.id}
-          className={`
-            fixed top-4 right-4 z-50
-            min-w-[200px] px-4 py-2 rounded-lg shadow-lg
-            transform transition-all duration-300 ease-in-out
-            ${toast.type === 'success' 
-              ? 'bg-gradient-radial from-[#4DB7FA] to-[#1E8AF2]' 
-              : 'bg-red-500'
-            }
-            text-white
-          `}
-        >
-          {toast.message}
-        </div>
-      ))}
       <div className="flex flex-col w-[80%] items-center gap-[40px]">
         <h1 className="text-[#1E293B] text-center font-bold text-[32px] md:text-[56px] lg:text-[64px]">
           Verify Claims <br className="flex md:hidden" /> Using AI

@@ -3,6 +3,7 @@ import './globals.css';
 import { Figtree } from 'next/font/google';
 import { Web3Provider } from './providers';
 import GoogleAnalytics from './components/GoogleAnalytics';
+import { Toaster } from './components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'VeryAi',
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={figtree.className}>
         <Web3Provider>{children}</Web3Provider>
+      <Toaster />
       </body>
       <GoogleAnalytics />
     </html>
