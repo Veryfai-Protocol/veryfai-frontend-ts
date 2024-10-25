@@ -52,13 +52,13 @@ const DialogVideo = () => {
       <DialogTrigger>
         <div className="text-center">
           <div className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700">
-            <div className="w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg">
+            <div className="w-full h-full rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg">
               <Image
-                src="/playbtn.svg"
+                src="/IMG.png"
                 alt="Video placeholder"
-                className="w-[32px] h-[32px]"
-                width={200}
-                height={200}
+                className="w-full h-full"
+                width={1096}
+                height={584}
               />
             </div>
           </div>
@@ -73,13 +73,14 @@ const DialogVideo = () => {
             <X size={24} />
           </button>
           {/* Replace src with your video URL */}
-          <Image
-            src="/video-img.png"
-            alt="Video placeholder"
-            className="w-full h-full rounded-lg object-cover"
+          <video
             width={1096}
             height={584}
-          />
+            className="w-full h-full rounded-lg object-cover"
+            controls
+          >
+            <source src="/explainer.mp4" type="video/mp4" />
+          </video>
         </div>
       </DialogContent>
     </Dialog>

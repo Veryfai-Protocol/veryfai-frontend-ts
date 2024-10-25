@@ -12,9 +12,8 @@ const Entry = () => {
           <LandingLogo />
         </div>
         <Hero />
-       <MissionSection />
+        <MissionSection />
         <WhyUseSection />
-
         <Footer />
       </div>
     </div>

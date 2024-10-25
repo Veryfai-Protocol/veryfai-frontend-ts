@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FooterLogo } from './LandingLogo';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const Footer = () => {
   const scrollToTop = () => {
@@ -55,10 +56,8 @@ export const Footer = () => {
           <div className="flex md:flex-row flex-col gap-4 items-center mt-[40px] justify-center md:justify-between w-full">
             <FooterLogo />
             <div className="flex gap-[16px]">
-              <Icon imgStr="/facebook.svg" />
-              <Icon imgStr="/insta.svg" />
-              <Icon imgStr="/x.svg" />
-              <Icon imgStr="/linkedin.svg" />
+              <Icon imgStr="/x.svg" href="https://x.com/factveryfai?s=21" />
+              <Icon imgStr="/linkedin.svg" href="https://www.linkedin.com/company/veryfai-io/" />
             </div>
           </div>
           <p className="text-[#C8E4FF] text-[14px] md:text-[20px] text-center mt-[40px]">
@@ -82,12 +81,15 @@ export const Footer = () => {
 
 type ImageString = {
   imgStr: string;
+  href: string;
 };
 
-export const Icon = ({ imgStr }: ImageString) => {
+export const Icon = ({ imgStr, href }: ImageString) => {
   return (
     <div>
+        <Link href={href}>
       <Image src={imgStr} alt="" width={56} height={56} />
+        </Link>
     </div>
   );
 };
