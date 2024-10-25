@@ -28,6 +28,8 @@ const VideoModal = () => {
             src="/backdrop.png"
             className="w-full mask-image-gradient"
             alt="backdrop blur"
+            width={1041}
+            height={1041}
           />
         </div>
 
@@ -49,34 +51,36 @@ const DialogVideo = () => {
     <Dialog>
       <DialogTrigger>
         <div className="text-center">
-          <div
-            className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700"
-          >
+          <div className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700">
             <div className="w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg">
               <Image
                 src="/playbtn.svg"
                 alt="Video placeholder"
                 className="w-[32px] h-[32px]"
+                width={200}
+                height={200}
               />
             </div>
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className='p-0 max-w-4xl border-0 rounded-[16px]'>
-          <div className="relative w-full max-w-4xl aspect-video bg-black rounded-[16px]">
-            <button
-              onClick={() => {}}
-              className="absolute -top-14 right-0 text-white bg-[#12121266] rounded-full p-2 hover:text-gray-300"
-            >
-              <X size={24} />
-            </button>
-            {/* Replace src with your video URL */}
-            <Image
-              src="/video-img.png"
-              alt="Video placeholder"
-              className="w-full h-full rounded-lg object-cover"
-            />
-          </div>
+      <DialogContent className="p-0 max-w-4xl border-0 rounded-3xl">
+        <div className="relative w-full max-w-4xl aspect-video bg-black rounded-[16px]">
+          <button
+            onClick={() => {}}
+            className="absolute -top-14 right-0 text-white bg-[#12121266] rounded-full p-2 hover:text-gray-300"
+          >
+            <X size={24} />
+          </button>
+          {/* Replace src with your video URL */}
+          <Image
+            src="/video-img.png"
+            alt="Video placeholder"
+            className="w-full h-full rounded-lg object-cover"
+            width={1096}
+            height={584}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );
