@@ -16,7 +16,7 @@ export const MissionSection = () => {
           transition: {
             duration: 1,
             ease: "easeOut",
-            delay: 3,
+            delay: 2.5,
           },
         },
       };
