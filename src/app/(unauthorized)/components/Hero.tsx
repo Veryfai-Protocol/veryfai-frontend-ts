@@ -12,12 +12,6 @@ interface FormData {
   email: string;
 }
 
-interface Toast {
-  id: number;
-  message: string;
-  type: 'success' | 'error';
-}
-
 export const Hero = () => {
   const { toast } = useToast();
   const [data, setData] = useState<FormData>({ name: '', email: '' });
@@ -53,7 +47,7 @@ export const Hero = () => {
       });
       
       console.log(response);
-      
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error :any) {
       // Error toast
       toast({
