@@ -8,8 +8,10 @@ type Props = {
 
 export default function UnAuthorizedLayout({ children }: Props) {
   return (
-    <SearchStoreProvider>
-      <>{children}</>
-    </SearchStoreProvider>
+    <>
+      <SearchStoreProvider>
+        <>{children}</>
+      </SearchStoreProvider>
+    </>
   );
 }
