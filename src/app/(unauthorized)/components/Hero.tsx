@@ -23,6 +23,7 @@ export const Hero = () => {
     },
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleClick = async (e : any) => {
     e.preventDefault();
     const response = await submitForm(data);
