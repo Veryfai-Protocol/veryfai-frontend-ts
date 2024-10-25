@@ -52,13 +52,13 @@ const DialogVideo = () => {
       <DialogTrigger>
         <div className="text-center">
           <div className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700">
-            <div className="w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg">
+            <div className="w-full h-full rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg">
               <Image
-                src="/playbtn.svg"
+                src="/IMG.png"
                 alt="Video placeholder"
-                className="w-[32px] h-[32px]"
-                width={200}
-                height={200}
+                className="w-full h-full"
+                width={1096}
+                height={584}
               />
             </div>
           </div>

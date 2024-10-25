@@ -23,7 +23,8 @@ export const Hero = () => {
     },
   };
 
-  const handleClick = async () => {
+  const handleClick = async (e : any) => {
+    e.preventDefault();
     const response = await submitForm(data);
     // do what you want with the response
     console.log(response);
