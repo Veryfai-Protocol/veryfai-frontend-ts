@@ -23,7 +23,7 @@ export const checkFact = async (inputValue: string) => {
 };
 
 export const submitForm = async (payload: { name: string; email: string }) => {
-  const url = `${API_URL}/submit-email`;
+  const url = `${API_URL}/api/submit-email`;
   try {
     const response = await fetch(url, {
       method: 'POST',
