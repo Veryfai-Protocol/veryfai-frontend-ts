@@ -7,7 +7,7 @@ export const registerServiceWorker = async () => {
     try {
       const registration = await navigator.serviceWorker.register('sw.js', {
         type: 'module',
-        scope: '/dashboard',
+        scope: '/',
       });
       if (registration.installing) {
         console.log('Service worker installing');
