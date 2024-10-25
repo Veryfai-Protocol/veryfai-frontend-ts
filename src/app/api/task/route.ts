@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_URL = process.env.NEXT_PUBLIC_TASK_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(req: NextRequest) {
   const payload = await req.json();
@@ -29,7 +29,6 @@ export async function PUT(req: NextRequest) {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${payload.token}`,
     },
     body: JSON.stringify(dataR),
   });
