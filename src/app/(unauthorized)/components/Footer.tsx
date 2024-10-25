@@ -52,7 +52,7 @@ export const Footer = () => {
 
         {/* Footer content */}
         <div className="mb-[40px]">
-          <div className="flex md:flex-row flex-col gap-4 items-center mt-[40px] justify-between w-full">
+          <div className="flex md:flex-row flex-col gap-4 items-center mt-[40px] justify-center md:justify-between w-full">
             <FooterLogo />
             <div className="flex gap-[16px]">
               <Icon imgStr="/facebook.svg" />
