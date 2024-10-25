@@ -1,21 +1,21 @@
-import { HomeBanner } from './components/HomeBanner';
-import { Suggestions } from './components/Suggestions';
+import { Footer } from './components/Footer';
+import { Hero } from './components/Hero';
+import { LandingLogo } from './components/LandingLogo';
+import { MissionSection } from './components/MissionSection';
+import { WhyUseSection } from './components/WhyUseSection';
 
 const Entry = () => {
   return (
-    <div className="flex flex-col items-center justify-center w-full">
-      <HomeBanner />
-      <div className="w-full flex flex-col items-center justify-center pt-12 pb-10">
-        <div className="flex items-center justify-center w-full space-x-4">
-          <div className="h-px w-[40%] bg-gray-300"></div>{' '}
-          <div className="text-xs text-gray-500 flex items-center space-x-1">
-            <span className="text-[#6B7280] lg:text-[20px] text-nowrap text-[15px]">
-              People also searched for
-            </span>
-          </div>
-          <div className="h-px w-[40%] bg-gray-300"></div>{' '}
+    <div className="flex w-full">
+      <div className="flex w-full flex-col items-center justify-center">
+        <div className="w-full py-[32px] px-[16px] md:px-[56px]">
+          <LandingLogo />
         </div>
-        <Suggestions />
+        <Hero />
+       <MissionSection />
+        <WhyUseSection />
+
+        <Footer />
       </div>
     </div>
   );

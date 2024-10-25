@@ -1,10 +1,12 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-    darkMode: ["class"],
-    content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+import type { Config } from 'tailwindcss';
+import animate from 'tailwindcss-animate';
+// @ts-expect-error no avaliable typing
+import scrollbar from 'tailwind-scrollbar-hide';
+import Colors from './src/site-settings/colors';
+
+const config: Config = {
+  darkMode: ['class'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
   	extend: {
   		borderRadius: {
@@ -12,6 +14,9 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+		  backgroundImage: {
+			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+		  },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -60,13 +65,13 @@ export default {
 			  '100%': { transform: 'translateX(-50%)' }
 			},
 			scrollReverse: {
-			  '100%': { transform: 'translateX(-50%)' },
-			  '0%': { transform: 'translateX(0)' }
-			}
+				'0%': { transform: 'translateX(-50%)' },  // Changed this
+				'100%': { transform: 'translateX(0)' }    // Changed this
+			  }
 		  },
 		  animation: {
-			scroll: 'scroll 500s linear infinite',
-			'scroll-reverse': 'scrollReverse 500s linear infinite'
+			scroll: 'scroll 40s linear infinite',
+			'scroll-reverse': 'scrollReverse 40s linear infinite'
 		  },
 		  transitionDuration: {
 			'2000': '2000ms',
@@ -75,9 +80,7 @@ export default {
 		  }
   	}
   },
-  plugins: [
-	require("tailwindcss-animate"),
-	require('tailwind-scrollbar-hide')
-  ],
-}
+  plugins: [animate, scrollbar],
+};
 
+export default config;

@@ -96,14 +96,14 @@ export const RegisterLogin = () => {
             statements for accuracy and truth.
           </p>
           <Button
-            className="w-[90%] uppercase text-[16px] hover:bg-sky-400 bg-[#1E90FF] px-4 h-[44px] rounded-lg"
+            className="w-[90%] uppercase text-[16px] hover:bg-sky-400 bg-blue-blue px-4 h-[44px] rounded-lg"
             onClick={handleRegister}
             disabled={isLoading}
           >
             Register
           </Button>
           <Button
-            className="w-[90%] outline-none border-none shadow-none uppercase text-[16px] hover:bg-transparent bg-transparent text-[#1E90FF] px-4 h-[44px] rounded-lg"
+            className="w-[90%] outline-none border-none shadow-none uppercase text-[16px] hover:bg-transparent bg-transparent text-blue-blue1 px-4 h-[44px] rounded-lg"
             onClick={handleLogin}
             disabled={isLoading}
           >

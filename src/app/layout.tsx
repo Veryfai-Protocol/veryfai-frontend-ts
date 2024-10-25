@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Montserrat } from 'next/font/google';
+import { Figtree } from 'next/font/google';
 import { Web3Provider } from './providers';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'VeryAi',
 };
 
-const montserrat = Montserrat({ subsets: ['latin'] });
+const figtree = Figtree({ subsets: ['latin'] });
 
 export default function RootLayout({
   children,
@@ -16,7 +17,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-CGZDTB9YJF"
+        ></Script>
+        <Script id="google-analytics">
+          {`
+      window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CGZDTB9YJF');
+    `}
+        </Script>
+      </head>
+      <body className={figtree.className}>
         <Web3Provider>{children}</Web3Provider>
       </body>
     </html>

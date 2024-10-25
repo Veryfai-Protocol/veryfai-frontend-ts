@@ -63,7 +63,7 @@ export const FactSearch = () => {
 
   return (
     <div
-      className={`lg:w-[60%] sm:w-[80%] w-[98%] ${
+      className={`w-full ${
         inputValue.length > 0 ? 'shadow-2xl' : ''
       } relative p-2 rounded-t-xl ${
         animateUp ? 'bg-transparent shadow-none' : ''

@@ -41,14 +41,14 @@ export const WalletConnected = ({
               </h1>
               <Button
                 onClick={handleDone}
-                className="w-full rounded-[12px] py-6 bg-[#1E90FF] hover:bg-[#1E90FF] text-[20px] font-semibold uppercase mt-8"
+                className="w-full rounded-[12px] py-6 bg-blue-blue hover:bg-blue-blue text-[20px] font-semibold uppercase mt-8"
               >
                 Done
               </Button>
             </div>
           </div>
         )}
-        <div className="bg-[#1E90FF] rounded-2xl text-white flex items-center justify-center w-[83px] h-[31px] absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+        <div className="bg-blue-blue rounded-2xl text-white flex items-center justify-center w-[83px] h-[31px] absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
           2/2
         </div>
         <div className="overflow-y-auto scrollbar-hide flex flex-col w-full max-w-[calc(100vw-2rem)] sm:max-w-md lg:max-w-lg xl:max-w-xl items-center rounded-3xl justify-center">
@@ -77,7 +77,7 @@ export const WalletConnected = ({
                 className={`uppercase w-full rounded-[12px] ${
                   !isStakeValueValid || isLoading
                     ? 'bg-[#9CA3AF] hover:bg-[#9CA3AF]'
-                    : 'bg-[#1E90FF] hover:bg-[#1E90FF]'
+                    : 'bg-blue-blue hover:bg-blue-blue'
                 } h-[40px] sm:h-[48px] lg:h-[56px] text-sm sm:text-base lg:text-lg font-semibold mt-4 sm:mt-6 mb-2`}
                 onClick={handleStake}
               >
