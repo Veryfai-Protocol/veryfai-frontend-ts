@@ -1,22 +1,22 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { X } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from '@/app/components/ui/dialog';
+import Image from 'next/image';
 
 const VideoModal = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [name, setName] = useState('');
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log('Submitted:', { name, email });
-  };
+  // const handleSubmit = (e: any) => {
+  //   e.preventDefault();
+  //   // Handle form submission
+  //   console.log('Submitted:', { name, email });
+  // };
 
   return (
     <>
@@ -24,7 +24,7 @@ const VideoModal = () => {
         {/* Background gradient */}
         {/* <div className="absolute inset-0 z-0 rounded-full bg-gradient-radial mt-[-140px] from-blue-600 from-10% w-full to-transparent to-75% py-4 lg:p-48 md:p-32 p-10" /> */}
         <div className="absolute z-0">
-          <img
+          <Image
             src="/backdrop.png"
             className="w-full mask-image-gradient"
             alt="backdrop blur"
@@ -53,7 +53,7 @@ const DialogVideo = () => {
             className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700"
           >
             <div className="w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg">
-              <img
+              <Image
                 src="/playbtn.svg"
                 alt="Video placeholder"
                 className="w-[32px] h-[32px]"
@@ -71,7 +71,7 @@ const DialogVideo = () => {
               <X size={24} />
             </button>
             {/* Replace src with your video URL */}
-            <img
+            <Image
               src="/video-img.png"
               alt="Video placeholder"
               className="w-full h-full rounded-lg object-cover"

@@ -2,6 +2,7 @@
 import React from 'react'
 import { HeaderText } from './HeaderText'
 import { motion } from "framer-motion";
+import Image from 'next/image';
 
 export const WhyUseSection = () => {
     const WhyUseVar = {
@@ -38,11 +39,11 @@ export const WhyUseSection = () => {
           />
           <div className="flex md:flex-row flex-col mt-[108px]">
             <div>
-              <img src="/twitter-bot.png" alt="" />
+              <Image src="/twitter-bot.png" alt="" />
             </div>
             <div className="flex flex-col">
-              <img src="/chrome-extension.png" alt="" />
-              <img src="/veryfai-web.png" alt="" />
+              <Image src="/chrome-extension.png" alt="" />
+              <Image src="/veryfai-web.png" alt="" />
             </div>
           </div>
         </motion.div>

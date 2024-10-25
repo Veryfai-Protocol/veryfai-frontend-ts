@@ -1,7 +1,8 @@
 "use client"
 import { Button } from '@/app/components/ui/button'
 import React from 'react'
-import { FooterLogo, LandingLogo } from './LandingLogo'
+import { FooterLogo } from './LandingLogo'
+import Image from 'next/image'
 
 export const Footer = () => {
     const scrollToTop = () => {
@@ -45,7 +46,7 @@ export const Footer = () => {
     </div>
     
     <div className='absolute bottom-0 md:h-1/3 h-1/4 left-0 right-0 z-0'>
-        <img 
+        <Image 
             src="/backdrop.png" 
             className='w-full'
             alt="backdrop blur" 
@@ -62,7 +63,7 @@ type ImageString = {
 export const Icon = ({imgStr} : ImageString) => {
   return (
     <div>
-        <img src={imgStr} alt="" />
+        <Image src={imgStr} alt="" />
     </div>
   )
 }
