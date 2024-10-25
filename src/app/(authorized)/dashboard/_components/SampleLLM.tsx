@@ -2,8 +2,8 @@
 
 import { Button } from '@/app/components/ui/button';
 import { registerServiceWorker } from '../../../lib/webllm';
-import { useEffect, useState } from 'react';
-import { createTask, login } from '@/app/lib/data-fetching/task';
+import { useState } from 'react';
+import { createTask } from '@/app/lib/data-fetching/task';
 import { authUser, startTimer } from '@/app/lib/utils';
 
 export const SampleLLM = () => {
@@ -13,12 +13,13 @@ export const SampleLLM = () => {
   const [msg, setMsg] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(false);
 
-  useEffect(() => {
-    const getuser = async () => {
-      await login();
-    };
-    getuser();
-  }, []);
+  // useEffect(() => {
+  //   const p = async () => {
+  //     const t = await getPendingTask();
+  //     console.log(t);
+  //   };
+  //   p();
+  // }, []);
 
   const handleClick = async () => {
     setStatus([...status, 'Setting up worker...']);
@@ -39,6 +40,7 @@ export const SampleLLM = () => {
     const user_id = authUser()?.user.id;
     console.log(user_id);
     const payload = {
+      id: Date.now().toString(),
       type: 'string',
       content: task,
       status: 'pending',

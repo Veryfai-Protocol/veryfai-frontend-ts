@@ -82,11 +82,16 @@ async function mainStreaming(task: any) {
 export const startListeningForTask = async () => {
   setLabel('init-label', 'Looking for task...');
   const tasks = await getPendingTask();
-  console.log('----------', tasks);
-  if (tasks.status <= 201 && tasks.data.pending_tasks) {
+  if (
+    tasks.status <= 201 &&
+    tasks.data.pending_tasks &&
+    tasks.data.pending_tasks.length > 0
+  ) {
     const task = tasks.data.pending_tasks[0];
     setLabel('init-label', 'Task received');
     mainStreaming(task);
+  } else {
+    setLabel('init-label', 'No available Task');
   }
 };
 
