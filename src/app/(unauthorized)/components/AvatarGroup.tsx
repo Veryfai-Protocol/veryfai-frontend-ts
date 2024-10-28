@@ -30,7 +30,7 @@ export default function AvatarGroup({ responseDict, limit = 3, stance }: AvatarG
 
   return (
     <div className="flex items-center">
-      {visibleSources.map(([sourceName, sourceInfo], index) => (
+      {visibleSources.map(([sourceName], index) => (
         <TooltipProvider key={sourceName}>
           <Tooltip>
             <TooltipTrigger asChild>

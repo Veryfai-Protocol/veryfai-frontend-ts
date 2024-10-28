@@ -1,12 +1,10 @@
 import { SponsoredAd } from '@/app/components/sponsored-ad/sponsored-ad';
-import { StatementScore } from '@/app/components/statement-score/statement-score';
 import { WandSparkles } from 'lucide-react';
 import Image from 'next/image';
 import SUPPORT_IMG from '../../../../../public/upvote.svg';
 import OPPOSSING_IMG from '../../../../../public/downvote.svg';
 import { Separator } from '@/components/ui/separator';
 import GaugeMeter from '../../components/GuageSystem';
-import { useState } from 'react';
 import AvatarGroup from '../../components/AvatarGroup';
 
 interface FactCheckSource {

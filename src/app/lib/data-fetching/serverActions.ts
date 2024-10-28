@@ -1,5 +1,5 @@
 import { APIResponse } from '../types';
-import { isObjEmpty, responseSchema, sleep } from '../utils';
+import { responseSchema, sleep } from '../utils';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
