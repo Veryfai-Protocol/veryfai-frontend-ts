@@ -26,12 +26,12 @@ const getFacts = async (task_id: string) => {
 
 export const getFactCheckResult = async (task_id: string) => {
   let result: APIResponse = {} as APIResponse;
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     result = await getFacts(task_id);
-    if (typeof result.data === 'object' && !isObjEmpty(result.data)) {
-      break;
-    }
-    await sleep(3000);
+    // if (typeof result.data === 'object' && !isObjEmpty(result.data)) {
+    //   break;
+    // }
+    await sleep(1000);
   }
   return result;
 };

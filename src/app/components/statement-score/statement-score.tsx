@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import StackedStar from '../star-rating/star-rating';
+import GaugeMeter from '@/app/(unauthorized)/components/GuageSystem';
 
 type StatementScoreType = {
   score: number | undefined;
@@ -24,6 +25,7 @@ export const StatementScore: React.FC<StatementScoreType> = ({ score }) => {
     <div className="w-full mx-auto border-b">
       <div className="flex flex-col items-center justify-center gap-6 w-full py-4">
         <StackedStar color={color} score={absoluteScore} />
+        <GaugeMeter value={score} />
         <h2 className="text-xl font-medium text-gray-gray4">
           Credibility score
         </h2>

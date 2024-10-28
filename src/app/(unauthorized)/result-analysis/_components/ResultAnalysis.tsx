@@ -98,6 +98,7 @@ export const ResultAnalysis = ({ taskId }: { taskId: string }) => {
                     factCheckResult.all_supporting_statements?.length
                   }
                   opposeCount={factCheckResult.all_opposing_statements?.length}
+                  responseDict={factCheckResult.fact_check_response_dict}
                 />
               </div>
             </div>
