@@ -20,13 +20,13 @@ interface Summary {
 // Interface for the structure of fact-check response dict (per source)
 interface FactCheckSource {
   article_url: string;
-  is_opinion: boolean;
-  opposing_statements: Statement[];
+  // is_opinion: boolean;
+  // opposing_statements: Statement[];
   stance: string;
-  summary: Summary;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supporting_statements: any[]; // Empty array, could be refined if there's a known structure
-  veryfai_score: number;
+  // summary: Summary;
+  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // supporting_statements: any[]; // Empty array, could be refined if there's a known structure
+  // veryfai_score: number;
 }
 
 // Main interface for the fact-check response
