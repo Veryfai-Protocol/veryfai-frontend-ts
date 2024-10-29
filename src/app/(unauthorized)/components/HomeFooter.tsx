@@ -1,4 +1,4 @@
-import { PRODUCT_NAME } from '@/app/constants';
+import { PRODUCT_NAME } from '@/app/lib/constants/index';
 import { Separator } from '@/components/ui/separator';
 import { Heart } from 'lucide-react';
 

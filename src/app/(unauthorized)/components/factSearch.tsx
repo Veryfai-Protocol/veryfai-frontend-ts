@@ -5,7 +5,7 @@ import { Input } from '@/app/components/ui/input';
 import { useMemo, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
 import { useSearchStore } from '@/app/providers/unauthorized/search-store';
-import { suggestions } from '@/app/constants/suggestions';
+import { suggestions } from '@/app/lib/constants/suggestions';
 import { checkFact } from '@/app/lib/data-fetching/factChecking';
 import { APIResponse } from '@/app/lib/types';
 import { useRouter } from 'next/navigation';

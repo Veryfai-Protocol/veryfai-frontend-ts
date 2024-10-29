@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { mockData } from '../constants';
+import { mockData } from './constants';
 import { APIResponse } from './types';
 import { startListeningForTask } from './webllm';
 

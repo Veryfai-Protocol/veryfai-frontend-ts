@@ -9,6 +9,10 @@ const config: Config = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      boxShadow: {
+        custom:
+          '0px 0px 13.683px 0px rgba(107, 114, 128, 0.24), 0px 0px 13.683px 0px rgba(107, 114, 128, 0.24), 0px 0px 13.683px 0px rgba(107, 114, 128, 0.24), 0px -2.281px 9.122px 0px rgba(0, 0, 0, 0.25) inset, 0px 2.281px 9.122px 0px rgba(0, 0, 0, 0.25) inset;',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
