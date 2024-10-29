@@ -9,7 +9,6 @@ const DashBoard = () => {
           Hello there 👋 , It’s another day to tackle misinformation.
         </span>
       </div>
-
       <TaskProcessing />
     </div>
   );

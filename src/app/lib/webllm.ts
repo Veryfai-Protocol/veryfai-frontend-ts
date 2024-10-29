@@ -1,13 +1,20 @@
 import * as webllm from '@mlc-ai/web-llm';
-import { startTimer, stopTimer } from './utils';
+import {
+  getServerStatus,
+  removeFromStatus,
+  setServerStatus,
+  startTimer,
+  stopTimer,
+} from './utils';
 import { getPendingTask, updateTask } from './data-fetching/task';
+import { SERVER_STATUS } from './enums';
 
 export const registerServiceWorker = async () => {
   if ('serviceWorker' in navigator) {
     try {
-      const registration = await navigator.serviceWorker.register('sw.js', {
+      const registration = await navigator.serviceWorker.register('/sw.js', {
         type: 'module',
-        scope: '/',
+        scope: '/checker/',
       });
       if (registration.installing) {
         console.log('Service worker installing');
@@ -15,19 +22,24 @@ export const registerServiceWorker = async () => {
         console.log('Service worker installed');
       } else if (registration.active) {
         console.log('Service worker active');
+        new webllm.ServiceWorkerMLCEngineHandler();
       }
+      return true;
     } catch (error) {
       console.error(`Registration failed with ${error}`);
+      setServerStatus(['> Environment setup failed']);
+      return false;
     }
   }
 };
 
-function setLabel(id: string, text: string) {
-  const label = document.getElementById(id);
-  if (label == null) {
-    throw Error('Cannot find label ' + id);
+export function setLabel(text: string) {
+  const div = document.getElementById('status');
+  if (div) {
+    const label = div.appendChild(document.createElement('span'));
+    label.className = 'text-white text-xs';
+    label.innerText = text;
   }
-  label.innerText = text;
 }
 
 export const registerSync = async () => {
@@ -46,8 +58,11 @@ export const registerSync = async () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function mainStreaming(task: any) {
   stopTimer();
+  const status = getServerStatus();
   const initProgressCallback = (report: webllm.InitProgressReport) => {
-    setLabel('init-label', report.text);
+    if (!status.includes(SERVER_STATUS.Model)) {
+      setServerStatus([...status, SERVER_STATUS.Model]);
+    }
   };
   const selectedModel = 'SmolLM-135M-Instruct-q0f16-MLC';
 
@@ -55,7 +70,8 @@ async function mainStreaming(task: any) {
     await webllm.CreateServiceWorkerMLCEngine(selectedModel, {
       initProgressCallback: initProgressCallback,
     });
-  setLabel('init-label', 'Executing...');
+
+  setServerStatus([...getServerStatus(), SERVER_STATUS.Executing]);
 
   const request: webllm.ChatCompletionRequest = {
     messages: [{ role: 'user', content: task.content }],
@@ -64,7 +80,7 @@ async function mainStreaming(task: any) {
   };
 
   const reply0 = await engine.chat.completions.create(request);
-  setLabel('init-label', 'Submitting result...');
+  setServerStatus([...getServerStatus(), SERVER_STATUS.Submitting]);
   await updateTask(
     {
       completion_metadata: { content: reply0.choices[0].message.content || '' },
@@ -75,12 +91,12 @@ async function mainStreaming(task: any) {
   console.log(reply0);
 
   console.log(reply0.usage);
-  setLabel('init-label', 'Execution Complete');
+  setServerStatus([SERVER_STATUS.Done]);
   startTimer();
 }
 
 export const startListeningForTask = async () => {
-  setLabel('init-label', 'Looking for task...');
+  setServerStatus([...getServerStatus(), SERVER_STATUS.Awaiting]);
   const tasks = await getPendingTask();
   if (
     tasks.status <= 201 &&
@@ -88,18 +104,18 @@ export const startListeningForTask = async () => {
     tasks.data.pending_tasks.length > 0
   ) {
     const task = tasks.data.pending_tasks[0];
-    setLabel('init-label', 'Task received');
+    setServerStatus([...getServerStatus(), SERVER_STATUS.Received]);
+
     mainStreaming(task);
-  } else {
-    setLabel('init-label', 'No available Task');
   }
 };
 
 export async function unregister() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-      .register('sw.js', {
+      .register('/sw.js', {
         type: 'module',
+        scope: '/checker/',
       })
       .then((registration) => {
         registration.unregister().then(() => {});

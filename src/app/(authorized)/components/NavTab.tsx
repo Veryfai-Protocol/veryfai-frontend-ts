@@ -11,7 +11,7 @@ import { usePathname } from 'next/navigation';
 
 export const NavTab = () => {
   const pathname = usePathname();
-  console.log(pathname);
+
   return (
     <div className="flex gap-6 w-full">
       <Link
