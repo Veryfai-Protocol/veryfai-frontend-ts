@@ -19,7 +19,7 @@ export const TaskProcessing = () => {
   return (
     <>
       <div className="flex bg-white rounded-[32px] px-6 gap-6">
-        <div className="grid px-6 py-3 my-6 h-[18.25rem] w-2/3 bg-black rounded-[20px] border border-gray-gray6 border-[6px] text-white">
+        <div className="grid px-6 py-3 my-6 h-[18.25rem] w-2/3 bg-black rounded-[20px] border-gray-gray6 border-[6px] text-white">
           <div className="flex justify-between">
             <span className="text-red-red1 text-xs">OFFLINE</span>
             <span className="text-white text-xs">Last active: N/A</span>
