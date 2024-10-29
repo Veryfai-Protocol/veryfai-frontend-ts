@@ -47,6 +47,7 @@ export const AnalysisMobile = ({ factCheckResult }: Props) => {
             score={factCheckResult.veryfai_score}
             supportCount={factCheckResult.all_supporting_statements?.length}
             opposeCount={factCheckResult.all_opposing_statements?.length}
+            responseDict={factCheckResult.fact_check_response_dict}
           />
           <div className="grid gap-2 my-6">
             <h2 className="font-semibold text-center">
