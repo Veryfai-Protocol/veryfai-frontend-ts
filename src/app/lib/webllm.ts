@@ -1,7 +1,6 @@
 import * as webllm from '@mlc-ai/web-llm';
 import {
   getServerStatus,
-  removeFromStatus,
   setServerStatus,
   startTimer,
   stopTimer,

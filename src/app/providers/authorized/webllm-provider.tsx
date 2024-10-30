@@ -31,7 +31,6 @@ export const WebLLMStoreProvider = ({ children }: WebLLMStoreProviderProps) => {
   }
 
   const handelMessage = (e: any) => {
-    console.log(e, '===message', e.data.target, e.data.data);
     if (e.data.name === 'veryfaiMsg') {
       const data = e.data.data;
       storeRef.current?.setState({ processState: data });
