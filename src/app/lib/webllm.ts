@@ -1,8 +1,8 @@
 import * as webllm from '@mlc-ai/web-llm';
 import {
   getServerStatus,
+  restartTimer,
   setServerStatus,
-  startTimer,
   stopTimer,
 } from './utils';
 import { getPendingTask, updateTask } from './data-fetching/task';
@@ -54,49 +54,56 @@ export const registerSync = async () => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const initProgressCallback = (report: webllm.InitProgressReport) => {
+  const status = getServerStatus();
+  if (!status.includes(SERVER_STATUS.Model)) {
+    setServerStatus([...status, SERVER_STATUS.Model]);
+  }
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function mainStreaming(task: any) {
   stopTimer();
-  const status = getServerStatus();
-  const initProgressCallback = (report: webllm.InitProgressReport) => {
-    console.log(report);
-    if (!status.includes(SERVER_STATUS.Model)) {
-      setServerStatus([...status, SERVER_STATUS.Model]);
+  const selectedModel = process.env.NEXT_PUBLIC_MODEL ?? '';
+  try {
+    const engine: webllm.MLCEngineInterface =
+      await webllm.CreateServiceWorkerMLCEngine(selectedModel, {
+        initProgressCallback: initProgressCallback,
+      });
+
+    setServerStatus([...getServerStatus(), SERVER_STATUS.Executing]);
+
+    const request: webllm.ChatCompletionRequest = {
+      messages: [{ role: 'user', content: task.content }],
+      temperature: 1.5,
+      max_tokens: 256,
+    };
+    try {
+      const reply0 = await engine.chat.completions.create(request);
+      setServerStatus([...getServerStatus(), SERVER_STATUS.Submitting]);
+      await updateTask(
+        {
+          completion_metadata: {
+            content: reply0.choices[0].message.content || '',
+          },
+        },
+        task.id
+      );
+      setServerStatus([SERVER_STATUS.Done]);
+      restartTimer();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      setServerStatus(['Failed to submit']);
     }
-  };
-  const selectedModel = 'SmolLM-135M-Instruct-q0f16-MLC';
-
-  const engine: webllm.MLCEngineInterface =
-    await webllm.CreateServiceWorkerMLCEngine(selectedModel, {
-      initProgressCallback: initProgressCallback,
-    });
-
-  setServerStatus([...getServerStatus(), SERVER_STATUS.Executing]);
-
-  const request: webllm.ChatCompletionRequest = {
-    messages: [{ role: 'user', content: task.content }],
-    temperature: 1.5,
-    max_tokens: 256,
-  };
-
-  const reply0 = await engine.chat.completions.create(request);
-  setServerStatus([...getServerStatus(), SERVER_STATUS.Submitting]);
-  await updateTask(
-    {
-      completion_metadata: { content: reply0.choices[0].message.content || '' },
-    },
-    task.id
-  );
-
-  console.log(reply0);
-
-  console.log(reply0.usage);
-  setServerStatus([SERVER_STATUS.Done]);
-  startTimer();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    console.log(error);
+    setServerStatus(['Model setup failed']);
+  }
 }
 
 export const startListeningForTask = async () => {
-  setServerStatus([...getServerStatus(), SERVER_STATUS.Awaiting]);
   const tasks = await getPendingTask();
   if (
     tasks.status <= 201 &&
@@ -112,16 +119,13 @@ export const startListeningForTask = async () => {
 
 export async function unregister() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker
-      .register('/sw.js', {
-        type: 'module',
-        scope: '/checker/',
-      })
-      .then((registration) => {
-        registration.unregister().then(() => {});
-      })
-      .catch((error) => {
-        console.error(`Registration failed with ${error}`);
+    navigator.serviceWorker.getRegistration().then((registration) => {
+      registration?.unregister().then(() => {
+        setTimeout(() => {
+          window.location.replace(window.location.href);
+          setServerStatus([SERVER_STATUS.NotConnected]);
+        }, 3000);
       });
+    });
   }
 }

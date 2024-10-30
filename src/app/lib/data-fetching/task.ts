@@ -24,8 +24,6 @@ export const getPendingTask = async () => {
 };
 
 export const createTask = async (task: Task) => {
-  // const token = authUser()?.access_token;
-  // const payload = { data: task, token };
   const url = `${API_URL}/tasks`;
   try {
     const response = await fetch(url, {

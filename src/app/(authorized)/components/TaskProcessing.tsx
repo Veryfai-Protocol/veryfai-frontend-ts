@@ -8,11 +8,11 @@ import { Console } from './Console';
 import { registerServiceWorker, unregister } from '@/app/lib/webllm';
 import { useWebLLMStore } from '@/app/providers/authorized/webllm-provider';
 import { setServerStatus, startTimer, stopTimer } from '@/app/lib/utils';
-import { SERVER_STATUS } from '@/app/lib/enums';
 
 export const TaskProcessing = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const state = useWebLLMStore((state) => state);
+  const [connecting, setConnecting] = useState<boolean>(false);
 
   const handleClose = () => {
     setShowModal(false);
@@ -20,11 +20,13 @@ export const TaskProcessing = () => {
   const handleProceed = async () => {
     setShowModal(false);
     state.setAppLoaded(true);
+    setConnecting(true);
     setServerStatus(['> Setting up environment']);
     const result = await registerServiceWorker();
     if (result) {
       setServerStatus(['> Environment ready']);
       state.setConnected(true);
+      setConnecting(false);
       startTimer();
     } else {
       setServerStatus(['> Environment setup failed']);
@@ -36,7 +38,6 @@ export const TaskProcessing = () => {
     state.setConnected(false);
     state.setAppLoaded(false);
     stopTimer();
-    setServerStatus([SERVER_STATUS.NotConnected]);
   };
 
   useEffect(() => {
@@ -52,11 +53,15 @@ export const TaskProcessing = () => {
           startTimer();
         }
       }
+      if (navigator.serviceWorker) {
+        console.log('=====no worker', navigator.storage);
+      }
     }
     return () => {
       mounted = false;
     };
   }, []);
+
   return (
     <>
       <div className="flex bg-white rounded-[32px] px-6 gap-6">
@@ -104,7 +109,11 @@ export const TaskProcessing = () => {
           )}
           <div className="grid justify-center items-center bg-gray-gray2 rounded py-2 px-6">
             <span className="text-center font-semibold">
-              {state.connected ? 'Connected' : 'Disconnected'}
+              {state.connected
+                ? 'Connected'
+                : connecting
+                ? 'Connecting'
+                : 'Disconnected'}
             </span>
             <span className="text-center">Connect to server</span>
           </div>

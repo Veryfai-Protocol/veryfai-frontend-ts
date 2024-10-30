@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import { mockData } from './constants';
 import { APIResponse } from './types';
 import { startListeningForTask } from './webllm';
+import { SERVER_STATUS } from './enums';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -30,7 +31,15 @@ export const sleep = (ms: number) => {
 export const startTimer = () => {
   const timer = setInterval(startListeningForTask, 60000);
   localStorage.setItem('timer', JSON.stringify(timer));
+  setServerStatus([...getServerStatus(), SERVER_STATUS.Awaiting]);
   console.log('========started');
+};
+
+export const restartTimer = () => {
+  const timer = setInterval(startListeningForTask, 60000);
+  localStorage.setItem('timer', JSON.stringify(timer));
+  setServerStatus([SERVER_STATUS.Done, SERVER_STATUS.Awaiting]);
+  console.log('========restarted');
 };
 
 export const stopTimer = () => {
