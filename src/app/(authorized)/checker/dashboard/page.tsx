@@ -11,7 +11,6 @@ const DashBoard = () => {
           Hello there 👋 , It’s another day to tackle misinformation.
         </span>
       </div>
-
       <TaskProcessing />
       <EarningsStakePanel />
       <HistoryTable nullImg="/no-earnings.svg" noData="Your earnings will show here." />

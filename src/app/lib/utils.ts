@@ -38,7 +38,25 @@ export const stopTimer = () => {
   if (!timer) return;
   const parseTimer = JSON.parse(timer);
   clearInterval(parseTimer);
+  localStorage.removeItem('timer');
   console.log('========stopped');
+};
+
+export const getServerStatus = () => {
+  const status = localStorage.getItem('serverStatus');
+  if (!status) return [];
+  return JSON.parse(status);
+};
+
+export const removeFromStatus = (value: string) => {
+  const data = getServerStatus().filter((item: string) => item !== value);
+  return data;
+};
+
+export const setServerStatus = (value: string[]) => {
+  const data = JSON.stringify(value);
+  localStorage.setItem('serverStatus', data);
+  window.postMessage({ name: 'veryfaiMsg', data: value });
 };
 
 export const authUser = () => {

@@ -4,7 +4,13 @@ import {
   createWebLLMStore,
   WebLLMStore,
 } from '@/app/stores/authorized/webllm-store';
-import { type ReactNode, createContext, useRef, useContext } from 'react';
+import React, {
+  type ReactNode,
+  createContext,
+  useRef,
+  useContext,
+  useEffect,
+} from 'react';
 import { useStore } from 'zustand';
 
 export type WebLLMStoreApi = ReturnType<typeof createWebLLMStore>;
@@ -22,6 +28,21 @@ export const WebLLMStoreProvider = ({ children }: WebLLMStoreProviderProps) => {
   if (!storeRef.current) {
     storeRef.current = createWebLLMStore();
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handelMessage = (e: any) => {
+    if (e.data.name === 'veryfaiMsg') {
+      const data = e.data.data;
+      storeRef.current?.setState({ processState: data });
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('message', handelMessage);
+    return () => {
+      window.removeEventListener('message', handelMessage);
+    };
+  }, []);
 
   return (
     <WebLLMStoreContext.Provider value={storeRef.current}>

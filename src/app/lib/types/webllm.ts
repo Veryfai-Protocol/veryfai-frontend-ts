@@ -1,5 +1,8 @@
 export interface WebLLMState {
   timer: unknown;
+  processState: string[];
+  connected: boolean;
+  appLoaded: boolean;
 }
 
 export interface Task {
