@@ -1,5 +1,5 @@
 import { ScrollingTags } from '@/app/components/scrolling-tag/scrolling-tag';
-import { mockData } from '@/app/constants';
+import { mockData } from '@/app/lib/constants/index';
 import { reverseMockData } from '@/app/lib/utils';
 
 export const Suggestions = () => {

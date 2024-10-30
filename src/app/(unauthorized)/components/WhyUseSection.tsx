@@ -2,7 +2,9 @@
 import React from 'react';
 import { HeaderText } from './HeaderText';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import VerificationCard from './LandingBot';
+import ChromeExtensionSection from './ChromeExtensionDemo';
+import LandingWebSection from './LandingWebDemo';
 
 export const WhyUseSection = () => {
   const WhyUseVar = {
@@ -21,7 +23,7 @@ export const WhyUseSection = () => {
   };
   return (
     <motion.div
-      className="lg:px-[56px] w-full flex flex-col items-center justify-center md:px-[32px] px-4 py-[124px]"
+      className="lg:px-[56px] w-full flex flex-col items-center justify-center md:px-[32px] px-4 py-[80px] md:py-[124px]"
       style={{
         backgroundImage: `url('/Shield.png')`,
         backgroundSize: 'cover',
@@ -38,13 +40,13 @@ export const WhyUseSection = () => {
         mainText="Your shield against false claims"
         subText="Let us be your defense against misinformation with real-time verification and easy-to-use features."
       />
-      <div className="flex md:flex-row flex-col mt-[108px]">
-        <div>
-          <Image src="/twitter-bot.png" alt="" width={652} height={735} />
+      <div className="flex lg:flex-row gap-6 flex-col mt-[48px] md:mt-[108px]">
+        <div className='mb-5 md:mt-0'>
+        <VerificationCard />
         </div>
-        <div className="flex flex-col">
-          <Image src="/chrome-extension.png" alt="" width={652} height={355} />
-          <Image src="/veryfai-web.png" alt="" width={652} height={355} />
+        <div className="flex flex-col gap-5">
+        <ChromeExtensionSection />
+        <LandingWebSection />
         </div>
       </div>
     </motion.div>
