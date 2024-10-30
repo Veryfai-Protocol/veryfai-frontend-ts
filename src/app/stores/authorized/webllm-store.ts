@@ -1,4 +1,3 @@
-import { SERVER_STATUS } from '@/app/lib/enums';
 import { WebLLMState } from '@/app/lib/types/webllm';
 import { createStore } from 'zustand/vanilla';
 

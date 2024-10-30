@@ -59,6 +59,7 @@ async function mainStreaming(task: any) {
   stopTimer();
   const status = getServerStatus();
   const initProgressCallback = (report: webllm.InitProgressReport) => {
+    console.log(report);
     if (!status.includes(SERVER_STATUS.Model)) {
       setServerStatus([...status, SERVER_STATUS.Model]);
     }

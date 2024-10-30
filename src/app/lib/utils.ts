@@ -2,8 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { mockData } from './constants';
 import { APIResponse } from './types';
-import { setLabel, startListeningForTask } from './webllm';
-import { SERVER_STATUS } from './enums';
+import { startListeningForTask } from './webllm';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

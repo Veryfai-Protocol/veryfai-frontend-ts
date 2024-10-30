@@ -25,11 +25,11 @@ export interface WebLLMStoreProviderProps {
 
 export const WebLLMStoreProvider = ({ children }: WebLLMStoreProviderProps) => {
   const storeRef = useRef<WebLLMStoreApi>();
-  const state = useRef();
   if (!storeRef.current) {
     storeRef.current = createWebLLMStore();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handelMessage = (e: any) => {
     if (e.data.name === 'veryfaiMsg') {
       const data = e.data.data;
