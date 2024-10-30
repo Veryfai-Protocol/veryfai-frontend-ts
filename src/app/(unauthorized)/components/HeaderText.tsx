@@ -24,8 +24,8 @@ export const HeaderText = ({topText, mainText, subText} : HeaderText) => {
             fill="#1E8AF2"
           />
         </svg>
-        <div className="bg-gradient-to-r from-[#1E8AF20D] to-[#1E8AF21A]">
-          <p className="uppercase text-sm md:text-base text-blue-600 font-medium">{topText}</p>
+        <div className="bg-gradient-to-r from-[#1E8AF20D] flex items-center justify-center to-[#1E8AF21A]">
+          <p className="uppercase text-[0.625rem] md:text-base text-blue-600 font-medium">{topText}</p>
         </div>
         <svg
           width="11"
@@ -42,10 +42,10 @@ export const HeaderText = ({topText, mainText, subText} : HeaderText) => {
           />
         </svg>
       </div>
-      <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900">
+      <h2 className="text-[1.75rem] md:text-4xl leading-[39.2px] md:leading-[67.2px] capitalize lg:text-5xl font-bold text-gray-900">
         {mainText}
       </h2>
-      <p className="text-gray-600 text-sm md:text-base lg:text-lg max-w-2xl mx-auto px-4">
+      <p className="text-gray-600 text-[1rem] md:text-base lg:text-lg max-w-2xl mx-auto px-4">
         {subText}
       </p>
     </div>

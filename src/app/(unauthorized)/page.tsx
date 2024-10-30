@@ -8,7 +8,7 @@ const Entry = () => {
   return (
     <div className="flex w-full">
       <div className="flex w-full flex-col items-center justify-center">
-        <div className="w-full py-[32px] px-[16px] md:px-[56px]">
+        <div className="w-full py-[32px] mb-6 px-[16px] md:px-[56px]">
           <LandingLogo />
         </div>
         <Hero />
