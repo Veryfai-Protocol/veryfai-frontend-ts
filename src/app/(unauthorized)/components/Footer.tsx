@@ -28,7 +28,7 @@ export const Footer = () => {
     },
   };
   return (
-    <div className="bg-[#040F1C] w-full h-full relative overflow-hidden px-[56px] pt-[80px]">
+    <div className="bg-[#040F1C] w-full h-full relative overflow-hidden px-[22px] md:px-[56px] pt-[80px]">
       {/* Main content section - takes up most of the space */}
       <div className="h-full flex flex-col mb-12 z-50 justify-between">
         {/* Top content */}
@@ -39,13 +39,18 @@ export const Footer = () => {
           whileInView="animate"
           viewport={{once : true}}
         >
-          <h1 className="bg-clip-text mb-[40px] text-center text-[24px] sm:text-[32px] md:text-[56px] lg:text-[64px] font-semibold lg:w-[60%] w-[90%] mx-auto text-transparent bg-gradient-to-r from-[#FFFFFF] to-[#95CBFF]">
-            Start fact-checking claims today
+          <h1 className="bg-clip-text mb-[40px] leading-[48px] md:leading-[5.6rem] text-center text-[40px] md:text-[56px] lg:text-[64px] font-semibold lg:w-[60%] w-[90%] mx-auto text-transparent bg-gradient-to-r from-[#FFFFFF] to-[#95CBFF]">
+            Start Fact-Checking Claims Today
           </h1>
 
           <Button
             onClick={scrollToTop}
-            className="h-[43px] md:h-[61px] rounded-[16px] z-50 text-[14px] md:text-[24px] bg-gradient-radial from-[#4DB7FA] to-[#1E8AF2]"
+            className="h-[44px] md:h-[61px] rounded-[8px] z-50 text-[1rem] md:text-[24px] bg-gradient-radial from-[#4DB7FA] to-[#1E8AF2]"
+            style={{
+              backgroundImage: `url('/noise.png')`,
+              backgroundPosition: 'center',
+              backgroundColor: "#1E8AF2"
+            }}
           >
             Join waitlist
           </Button>
