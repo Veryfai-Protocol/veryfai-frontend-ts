@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Task } from '../types/webllm';
 import { responseSchema } from '../utils';
 
@@ -65,25 +66,30 @@ export const updateTask = async (task: any, id: string) => {
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-// export const updateTask = async (task: any, id: string) => {
-//   const url = `/api/task`;
-//   const token = authUser()?.access_token;
-//   const payload = { data: task, token, id };
-//   try {
-//     const response = await fetch(url, {
-//       method: 'PUT',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(payload),
-//     });
-//     const data = await response.json();
-//     if (response.status <= 201) {
-//       return responseSchema(response.status, data);
-//     }
-//     return responseSchema(response.status, data.error);
-//   } catch (error) {
-//     return responseSchema(500, error);
-//   }
-// };
+export const getArticleFromGoogle = async (
+  url: string,
+  query: string,
+  headers: any
+) => {
+  try {
+    const response = await fetch(`${url}?query=${'How to cook'}`, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ query: query }),
+    });
+    const data = await response.json();
+    console.log('Serper search response:');
+    return data.organic.map(
+      (a: { title: any; link: any; position: any; snippet: any }) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        a.title, a.link, a.position, a.snippet;
+      }
+    );
+  } catch (error) {
+    console.error(
+      'Error fetching Serper search results:',
+      JSON.stringify(error)
+    );
+    return [];
+  }
+};

@@ -7,6 +7,7 @@ import {
 } from './utils';
 import { getPendingTask, updateTask } from './data-fetching/task';
 import { SERVER_STATUS } from './enums';
+import { initLlm, performFactCheck } from './llm';
 
 export const registerServiceWorker = async () => {
   if ('serviceWorker' in navigator) {
@@ -32,15 +33,6 @@ export const registerServiceWorker = async () => {
   }
 };
 
-export function setLabel(text: string) {
-  const div = document.getElementById('status');
-  if (div) {
-    const label = div.appendChild(document.createElement('span'));
-    label.className = 'text-white text-xs';
-    label.innerText = text;
-  }
-}
-
 export const registerSync = async () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const registration: any = await navigator.serviceWorker.ready;
@@ -63,9 +55,9 @@ const initProgressCallback = (report: webllm.InitProgressReport) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function mainStreaming(task: any) {
+export async function mainStreaming(task: any) {
   stopTimer();
-  const selectedModel = process.env.NEXT_PUBLIC_MODEL ?? '';
+  const selectedModel = 'Llama-3.2-3B-Instruct-q4f16_1-MLC';
   try {
     const engine: webllm.MLCEngineInterface =
       await webllm.CreateServiceWorkerMLCEngine(selectedModel, {
@@ -104,6 +96,7 @@ async function mainStreaming(task: any) {
 }
 
 export const startListeningForTask = async () => {
+  const llmService = await initLlm();
   const tasks = await getPendingTask();
   if (
     tasks.status <= 201 &&
@@ -112,8 +105,14 @@ export const startListeningForTask = async () => {
   ) {
     const task = tasks.data.pending_tasks[0];
     setServerStatus([...getServerStatus(), SERVER_STATUS.Received]);
-
-    mainStreaming(task);
+    // mainStreaming(task);
+    stopTimer();
+    setServerStatus([...getServerStatus(), SERVER_STATUS.Executing]);
+    const response = await performFactCheck(task, llmService);
+    setServerStatus([...getServerStatus(), SERVER_STATUS.Submitting]);
+    await updateTask(response, task.id);
+    setServerStatus([SERVER_STATUS.Done]);
+    restartTimer();
   }
 };
 

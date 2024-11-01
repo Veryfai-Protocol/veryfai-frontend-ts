@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { mockData } from './constants';
+import { mockData, TASK_POLL_INTERVAL_MS } from './constants';
 import { APIResponse } from './types';
 import { startListeningForTask } from './webllm';
 import { SERVER_STATUS } from './enums';
@@ -28,15 +28,15 @@ export const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-export const startTimer = () => {
-  const timer = setInterval(startListeningForTask, 60000);
+export const startTimer = async () => {
+  const timer = setInterval(startListeningForTask, TASK_POLL_INTERVAL_MS);
   localStorage.setItem('timer', JSON.stringify(timer));
   setServerStatus([...getServerStatus(), SERVER_STATUS.Awaiting]);
   console.log('========started');
 };
 
 export const restartTimer = () => {
-  const timer = setInterval(startListeningForTask, 60000);
+  const timer = setInterval(startListeningForTask, TASK_POLL_INTERVAL_MS);
   localStorage.setItem('timer', JSON.stringify(timer));
   setServerStatus([SERVER_STATUS.Done, SERVER_STATUS.Awaiting]);
   console.log('========restarted');

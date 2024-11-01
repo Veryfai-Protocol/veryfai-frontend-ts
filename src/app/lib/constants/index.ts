@@ -21,3 +21,22 @@ export const PROGRESS = [
   'Retrieving source',
   'Just a few more seconds',
 ];
+
+export const NUM_GOOGLE_SEARCH_RESULTS = 1;
+export const MAX_LLM_WORKERS = 10;
+export const TASK_POLL_INTERVAL_MS = 30000;
+
+export const TestDict = [
+  {
+    link: 'https://tastesbetterfromscratch.com/bread-recipe',
+    position: 1,
+    snippet: '',
+    title: 'Homemade Bread Recipe',
+  },
+  {
+    link: 'https://butterwithasideofbread.com/homemade-bread',
+    position: 2,
+    snippet: '',
+    title: '  EASY HOMEMADE BREAD RECIPE',
+  },
+];
