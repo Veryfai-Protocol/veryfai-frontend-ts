@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SnippetMetadata } from '../types/webllm';
 
 export function processArticleSnippetAnalysisResultsRaw(
@@ -7,45 +8,48 @@ export function processArticleSnippetAnalysisResultsRaw(
   const numProcessedSnippets = snippetMetadataDicts.length;
 
   if (numProcessedSnippets > 0) {
-    const snippetVerdictScoreDict = {
+    const snippetVerdictScoreDict: any = {
       weak_yes: 0.75,
       yes: 1,
       weak_no: 0.25,
       no: 0,
     };
-    const snippetStanceScoreDict = {
+    const snippetStanceScoreDict: any = {
       supporting: 1.0,
       weakly_supporting: 0.5,
       opposing: 1,
       weakly_opposing: 0.5,
     };
 
-    const factCheckResponseDict = {};
-    const allSupportingStatements = [];
-    const allOpposingStatements = [];
+    const factCheckResponseDict: any = {};
+    const allSupportingStatements: any[] = [];
+    const allOpposingStatements: any[] = [];
     let totalSupportingScore = 0;
     let totalOpposingScore = 0;
 
     for (const snippetMetadataDict of snippetMetadataDicts) {
-      if (snippetMetadataDict.stance !== 'no_signal') {
-        const articleMetadataDict = snippetMetadataDict.article_metadata;
+      const metadatDict: any = snippetMetadataDict;
+      if (metadatDict.stance !== 'no_signal') {
+        const articleMetadataDict = metadatDict.article_metadata;
         const articleUrl = articleMetadataDict?.article_url ?? '';
 
-        factCheckResponseDict[snippetMetadataDict.source] = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        factCheckResponseDict[metadatDict.source] = {
           article_url: articleUrl,
-          stance: snippetMetadataDict.stance,
+          stance: metadatDict.stance,
         };
 
-        const stance = snippetMetadataDict?.stance;
-        const verdict = snippetMetadataDict?.verdict;
+        const stance = metadatDict?.stance;
+        const verdict = metadatDict?.verdict;
+        if (!stance || !verdict) return;
         const snippetScore =
           snippetStanceScoreDict[stance] * snippetVerdictScoreDict[verdict];
 
         const tempSnippetDict = {
-          sentence: snippetMetadataDict.article_snippet,
-          reason: snippetMetadataDict.reasoning,
+          sentence: metadatDict.article_snippet,
+          reason: metadatDict.reasoning,
           score: snippetScore,
-          source: snippetMetadataDict.source,
+          source: metadatDict.source,
           article_url: articleUrl,
         };
 

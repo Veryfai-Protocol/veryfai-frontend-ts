@@ -36,7 +36,10 @@ async function analyzeSnippetForFactCheck(
   const maxAttempts = 3;
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
-      const responseContent = await llmService.generateResponse(promptText);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const responseContent: any = await llmService.generateResponse(
+        promptText
+      );
       return JSON.parse(responseContent);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
@@ -51,6 +54,7 @@ async function analyzeSnippetForFactCheck(
 }
 
 async function processArticleSnippetForFactCheck(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   snippetMetadataDict: any,
   llmService: WebLLMService
 ) {
@@ -76,6 +80,7 @@ async function processArticleSnippetForFactCheck(
   return snippetMetadataDict;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function processArticle(args: any) {
   const [taskId, factCheckStatement, temp, llmService] = args;
   const articleFactCheckId = `${taskId}-${uuidv4()}`;

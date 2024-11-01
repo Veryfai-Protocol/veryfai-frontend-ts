@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Cast object to a specific class
  * Usage: ```
@@ -55,7 +56,9 @@ export function JsonProperty<T>(metadata?: IJsonMetaData<T> | string): any {
   }
 }
 export default class MapUtils {
-  static isPrimitive(obj) {
+  static isPrimitive(
+    obj: StringConstructor | NumberConstructor | BooleanConstructor
+  ) {
     switch (typeof obj) {
       case 'string':
       case 'number':
@@ -72,7 +75,7 @@ export default class MapUtils {
     );
   }
 
-  static isArray(object) {
+  static isArray(object: ArrayConstructor) {
     if (object === Array) {
       return true;
     } else if (typeof Array.isArray === 'function') {
@@ -82,19 +85,21 @@ export default class MapUtils {
     }
   }
 
-  static deserialize<T>(clazz: { new (): T }, jsonObject) {
+  static deserialize<T>(clazz: { new (): T }, jsonObject: any) {
     if (clazz === undefined || jsonObject === undefined) return undefined;
-    const obj = new clazz();
+    const obj: any = new clazz();
     Object.keys(obj).forEach((key) => {
-      const propertyMetadataFn: (IJsonMetaData) => any = (propertyMetadata) => {
+      const propertyMetadataFn: (IJsonMetaData: any) => any = (
+        propertyMetadata
+      ) => {
         const propertyName = propertyMetadata.name || key;
         const innerJson = jsonObject ? jsonObject[propertyName] : undefined;
         const clazz = getClazz(obj, key);
         if (MapUtils.isArray(clazz)) {
-          const metadata = getJsonProperty(obj, key);
+          const metadata: any = getJsonProperty(obj, key);
           if (metadata.clazz || MapUtils.isPrimitive(clazz)) {
             if (innerJson && MapUtils.isArray(innerJson)) {
-              return innerJson.map((item) =>
+              return innerJson.map((item: any) =>
                 MapUtils.deserialize(metadata.clazz, item)
               );
             } else {

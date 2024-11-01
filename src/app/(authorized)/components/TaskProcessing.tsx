@@ -8,6 +8,7 @@ import { Console } from './Console';
 import { registerServiceWorker, unregister } from '@/app/lib/webllm';
 import { useWebLLMStore } from '@/app/providers/authorized/webllm-provider';
 import { setServerStatus, startTimer, stopTimer } from '@/app/lib/utils';
+import { SERVER_STATUS } from '@/app/lib/enums';
 
 export const TaskProcessing = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -54,12 +55,13 @@ export const TaskProcessing = () => {
         }
       }
       if (navigator.serviceWorker) {
-        console.log('=====no worker', navigator.storage);
+        setServerStatus([SERVER_STATUS.NotConnected]);
       }
     }
     return () => {
       mounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
