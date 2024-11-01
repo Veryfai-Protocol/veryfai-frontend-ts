@@ -11,6 +11,7 @@ import ANALYSIS from '../../../../../public/note.svg';
 import { useState } from 'react';
 import NoStatementsGraphic from '@/app/components/no-statement-graphic/no-statement-graphic';
 import { QuoteCard } from '@/app/components/quote-card/quote-card';
+import { PRODUCT_NAME } from '@/app/lib/constants';
 
 type Props = {
   factCheckResult: FactCheckResultResponse;
@@ -107,6 +108,7 @@ export const AnalysisMobile = ({ factCheckResult }: Props) => {
           value={'opposing'}
         />
       </Tabs>
+      <p className="mt-[40px]">{PRODUCT_NAME} © 2024. All rights reserved</p>
     </div>
   );
 };

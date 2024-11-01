@@ -8,7 +8,7 @@ import { abi } from '@/app/_contracts/abi';
 import { CloseButton } from './closeButton';
 import { WalletConnected } from './wallectConnected';
 import { useRouter } from 'next/navigation';
-import { DASHBOARD } from '@/site-settings/navigations';
+import { CHECKER_DASHBOARD } from '@/site-settings/navigations';
 import Image from 'next/image';
 import WALLET from '../../../../../public/wallet.svg';
 
@@ -54,7 +54,7 @@ export const ConnectWallet = ({ closeForm }: ConnectWalletType) => {
         value: ether,
       });
       setIsStakeSuccessful(true);
-      router.push(DASHBOARD.href);
+      router.push(CHECKER_DASHBOARD.href);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert('An error occurred while staking. Please try again.');
@@ -74,7 +74,7 @@ export const ConnectWallet = ({ closeForm }: ConnectWalletType) => {
   };
 
   const handleDone = () => {
-    router.push(DASHBOARD.href);
+    router.push(CHECKER_DASHBOARD.href);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

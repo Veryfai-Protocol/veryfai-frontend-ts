@@ -28,15 +28,17 @@ export const TASK_POLL_INTERVAL_MS = 30000;
 
 export const TestDict = [
   {
-    link: 'https://tastesbetterfromscratch.com/bread-recipe',
+    link: 'https://www.nytimes.com/interactive/2024/us/elections/polls-president.html',
     position: 1,
-    snippet: '',
-    title: 'Homemade Bread Recipe',
+    snippet:
+      'Both Trump and Harris have states they can probably count on to get at least 200 electoral votes, but they need to get to 270 to win. Let’s zoom in on seven key states in the middle where the vote was closest in 2020.',
+    title: 'Election 2024 Polls: Harris vs. Trump',
   },
   {
     link: 'https://butterwithasideofbread.com/homemade-bread',
     position: 2,
-    snippet: '',
-    title: '  EASY HOMEMADE BREAD RECIPE',
+    snippet:
+      'Voters in the US go to the polls on 5 November to elect their next president.The election was initially a rematch of 2020 but it was upended in July when President Joe Biden ended his campaign and endorsed Vice-President Kamala Harris.',
+    title: 'US election polls: Who is ahead - Harris or Trump',
   },
 ];
