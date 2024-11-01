@@ -1,18 +1,19 @@
 import { SERVER_STATUS } from '@/app/lib/enums';
 import { useWebLLMStore } from '@/app/providers/authorized/webllm-provider';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 export const Console = memo(() => {
   const { processState, connected, setProcessState } = useWebLLMStore(
     (state) => state
   );
+  const dispatch = useRef(setProcessState);
 
   useEffect(() => {
     let mounted = true;
     if (mounted) {
       const status = localStorage.getItem('serverStatus');
       const data = status ? JSON.parse(status) : [SERVER_STATUS.NotConnected];
-      setProcessState(data);
+      dispatch.current(data);
     }
     return () => {
       mounted = false;
