@@ -1,4 +1,5 @@
 import { Logo } from '../logo/logo';
+import { Earn } from './Earn';
 
 export const Header = () => {
   return (
@@ -11,6 +12,7 @@ export const Header = () => {
           <div className={`transition-all duration-1000 ease-in-out`}>
             <Logo />
           </div>
+          <Earn />
         </nav>
       </header>
     </>

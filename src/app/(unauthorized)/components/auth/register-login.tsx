@@ -10,6 +10,7 @@ import ModalWrapper from './ModalWrapper';
 import { LogoSVG } from '@/assets/Logo';
 import { CloseButton } from './closeButton';
 import { LoginConnectWallet } from './login-connect-wallet';
+import { MoveRight } from 'lucide-react';
 
 export const RegisterLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -96,11 +97,12 @@ export const RegisterLogin = () => {
             statements for accuracy and truth.
           </p>
           <Button
-            className="w-[90%] uppercase text-[16px] hover:bg-sky-400 bg-blue-blue px-4 h-[44px] rounded-lg"
+            className="w-[90%] gap-1 uppercase text-[16px] hover:bg-sky-400 bg-blue-blue1 px-4 h-[44px] rounded-lg"
             onClick={handleRegister}
             disabled={isLoading}
           >
             Register
+            <MoveRight size={12} strokeWidth={3} />
           </Button>
           <Button
             className="w-[90%] outline-none border-none shadow-none uppercase text-[16px] hover:bg-transparent bg-transparent text-blue-blue1 px-4 h-[44px] rounded-lg"

@@ -1,11 +1,11 @@
-import React from 'react'
-import { HomeBanner } from '../components/HomeBanner'
-import { Suggestions } from '../components/Suggestions'
+import React from 'react';
+import { HomeBanner } from '../components/HomeBanner';
+import { Suggestions } from '../components/Suggestions';
 
 export default function Home() {
   return (
     <div>
-        <HomeBanner />
+      <HomeBanner />
       <div className="w-full flex flex-col items-center justify-center pt-12 pb-10">
         <div className="flex items-center justify-center w-full space-x-4">
           <div className="h-px w-[40%] bg-gray-300"></div>{' '}
@@ -19,5 +19,5 @@ export default function Home() {
         <Suggestions />
       </div>
     </div>
-  )
+  );
 }

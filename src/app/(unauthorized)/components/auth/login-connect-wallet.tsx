@@ -21,10 +21,10 @@ export const LoginConnectWallet = ({
           </div>
           <div className="flex flex-col items-center border-b pb-4 sm:pb-7 mt-[-30px]">
             <Image src={LOGIN} alt="" className="w-12 sm:w-16" />
-            <h1 className="font-bold text-xl sm:text-2xl lg:text-[28px] font-sans text-center mt-2">
+            <h1 className="font-bold text-2xl text-center mt-2">
               Login as a <span className="text-[#16974D]">Fact-checker</span>
             </h1>
-            <h2 className="text-sm sm:text-base lg:text-[20px] text-center text-[#6B7280] font-sans mt-2">
+            <h2 className="text-xl text-center text-[#6B7280] font-sans mt-2">
               Welcome back, let’s get you back in.
             </h2>
           </div>

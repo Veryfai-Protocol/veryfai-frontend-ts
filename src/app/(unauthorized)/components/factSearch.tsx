@@ -10,6 +10,7 @@ import { checkFact } from '@/app/lib/data-fetching/factChecking';
 import { APIResponse } from '@/app/lib/types';
 import { useRouter } from 'next/navigation';
 import { RESULT_ANALYSIS } from '@/site-settings/navigations';
+import { Search, SendHorizontal } from 'lucide-react';
 
 export const FactSearch = () => {
   const { inputValue, setInputValue } = useSearchStore((state) => state);
@@ -69,33 +70,40 @@ export const FactSearch = () => {
         animateUp ? 'bg-transparent shadow-none' : ''
       } transition-all duration-300`}
     >
-      <form className="flex items-center" onKeyDown={handleKeyDown}>
+      <form
+        className="items-center bg-[#F3F4F6] rounded-2xl pl-2 flex relative"
+        onKeyDown={handleKeyDown}
+      >
+        <Search absoluteStrokeWidth className="" />
         <Input
           type="text"
-          className={`rounded-2xl transition-all duration-300 ${
-            inputValue.length > 0 ? 'bg-white' : 'bg-[#F3F4F6]'
-          } ${
+          className={`mx-3 transition-all border border-none focus:outline-none 
+                 focus-visible:outline-none focus-visible:border-sky-500   
+                 focus-visible:ring-0 focus-visible:ring-transaprent duration-300 ${
+                   inputValue.length > 0 ? 'bg-white' : 'bg-[#F3F4F6]'
+                 } ${
             animateUp ? 'translate-y-[-50px] opacity-0' : ''
-          } py-7 pl-6 md:pr-[140px] w-full text-gray-700 focus:outline-none`}
+          } py-7 w-full text-gray-700 `}
           placeholder="Type your statement here..."
           value={inputValue}
           onChange={handleInputChange}
         />
         {inputValue.length > 0 && (
           <Button
-            className={`absolute right-4 bg-[#1D1D1E] text-white rounded-full flex items-center gap-2 md:h-[50px] md:w-[123px] w-12 h-12 justify-center hover:bg-[#1D1D1E] transition-all duration-300 ${
-              animateUp ? 'translate-y-[-50px] opacity-0' : ''
-            }`}
+            className={`bg-[#076DD1] py-4 h-full text-white flex 
+              items-center gap-2 justify-center hover:bg-[#076DD1] transition-all 
+              duration-300 rounded-l-none ${
+                animateUp ? 'translate-y-[-50px] opacity-0' : ''
+              }`}
             type="submit"
             disabled={isLoading}
             onClick={handleCheck}
           >
             {isLoading ? (
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
             ) : (
               <>
-                <CiSearch size={20} />
-                <span className="hidden md:flex">Check</span>
+                <SendHorizontal absoluteStrokeWidth fill="white" />
               </>
             )}
           </Button>

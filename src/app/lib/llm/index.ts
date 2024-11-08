@@ -82,7 +82,8 @@ export async function initLlm() {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function performFactCheck(task: any, llmService: WebLLMService) {
-  const factCheckStatement = task.content;
+  // const factCheckStatement = task.content;
+  const factCheckStatement = 'american election 2024';
   const taskId = task.id;
   // const articleDictList = await getGoogleSearchResultsRaw(
   //   factCheckStatement,
@@ -131,7 +132,7 @@ export async function performFactCheck(task: any, llmService: WebLLMService) {
 
   console.log(millis.toString());
 
-  console.log(rf);
+  console.log(rf, '==============result');
 
   return factCheckOutputDict;
 }

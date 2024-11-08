@@ -1,6 +1,15 @@
-import React from 'react'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/app/components/ui/tooltip"
-import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar'
+import React from 'react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/app/components/ui/tooltip';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/app/components/ui/avatar';
 
 interface SourceInfo {
   article_url: string;
@@ -15,7 +24,11 @@ interface AvatarGroupProps {
 
 type SourceEntry = [string, SourceInfo];
 
-export default function AvatarGroup({ responseDict, limit = 3, stance }: AvatarGroupProps) {
+export default function AvatarGroup({
+  responseDict,
+  limit = 3,
+  stance,
+}: AvatarGroupProps) {
   // Convert dictionary to array and slice for visible sources
   let filteredSources: SourceEntry[] = [];
   if (responseDict) {
@@ -27,7 +40,6 @@ export default function AvatarGroup({ responseDict, limit = 3, stance }: AvatarG
   const visibleSources = filteredSources.slice(0, limit);
   const remainingCount = Math.max(filteredSources.length - limit, 0);
 
-
   return (
     <div className="flex items-center">
       {visibleSources.map(([sourceName], index) => (
@@ -36,11 +48,13 @@ export default function AvatarGroup({ responseDict, limit = 3, stance }: AvatarG
             <TooltipTrigger asChild>
               <Avatar
                 className={`w-10 h-10 border-2 border-background ${
-                  index !== 0 ? '-ml-3' : ''
+                  index !== 0 ? '-ml-5' : ''
                 }`}
               >
                 <AvatarImage src={`/api/placeholder/32/32`} alt={sourceName} />
-                <AvatarFallback className=''>{sourceName.slice(0, 1).toUpperCase()}</AvatarFallback>
+                <AvatarFallback className="">
+                  {sourceName.slice(0, 1).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
             </TooltipTrigger>
             <TooltipContent>
@@ -55,5 +69,5 @@ export default function AvatarGroup({ responseDict, limit = 3, stance }: AvatarG
         </div>
       )}
     </div>
-  )
+  );
 }
