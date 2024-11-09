@@ -25,6 +25,7 @@ export const PROGRESS = [
 export const NUM_GOOGLE_SEARCH_RESULTS = 1;
 export const MAX_LLM_WORKERS = 10;
 export const TASK_POLL_INTERVAL_MS = 30000;
+export const HEATBEAT_INTERVAL = 60000;
 
 export const TestDict = [
   {
