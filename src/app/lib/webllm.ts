@@ -109,7 +109,7 @@ export const startListeningForTask = async () => {
     setServerStatus([...getServerStatus(), SERVER_STATUS.Executing]);
     console.log(task);
     const response = await performFactCheck(task, llmService);
-    const data = response.length >= 1 ? response[0] : {};
+    const data = response.length > 0 ? response[0] : {};
     console.log(response, '---------response');
     setServerStatus([...getServerStatus(), SERVER_STATUS.Submitting]);
     await submitTask(data, task.request_id, task.id);
