@@ -104,6 +104,7 @@ export const startListeningForTask = async () => {
     setServerStatus([...getServerStatus(), SERVER_STATUS.Received]);
     // mainStreaming(task);
     stopTimer();
+    if (task.response_type !== 0) return;
     const llmService = await initLlm();
     setServerStatus([...getServerStatus(), SERVER_STATUS.Executing]);
     console.log(task);

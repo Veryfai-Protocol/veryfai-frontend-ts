@@ -82,7 +82,14 @@ export async function initLlm() {
 export async function performFactCheck(task: any, llmService: WebLLMService) {
   const factCheckStatement = task.task_data.fact;
   const taskId = task.id;
-  const articleDictList = [task.article_disct];
+  const articleDictList = [
+    {
+      snippet: task.task_data.snippet,
+      url: task.task_data.url,
+      title: task.task_data.title,
+      position: 1,
+    },
+  ];
 
   const re = articleDictList.map((m) => {
     return new ArticleDict(m);
