@@ -104,13 +104,15 @@ export const startListeningForTask = async () => {
     setServerStatus([...getServerStatus(), SERVER_STATUS.Received]);
     // mainStreaming(task);
     stopTimer();
+    if (task.response_type !== 0) return;
     const llmService = await initLlm();
     setServerStatus([...getServerStatus(), SERVER_STATUS.Executing]);
     console.log(task);
     const response = await performFactCheck(task, llmService);
+    const data = response.length >= 1 ? response[0] : {};
     console.log(response, '---------response');
     setServerStatus([...getServerStatus(), SERVER_STATUS.Submitting]);
-    await submitTask(response, task.request_id, task.id);
+    await submitTask(data, task.request_id, task.id);
     setServerStatus([SERVER_STATUS.Done]);
     restartTimer();
   } else {
