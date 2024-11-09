@@ -13,20 +13,20 @@ export interface Task {
 }
 
 type Article = {
-  link: string;
+  url: string;
   position: number;
   snippet: string;
   title: string;
 };
 
 export class ArticleDict {
-  link: string;
+  url: string;
   position: number;
   snippet: string;
   title: string;
 
   constructor(obj: Article) {
-    this.link = obj.link;
+    this.url = obj.url;
     this.position = obj.position;
     this.snippet = obj.snippet;
     this.title = obj.title;

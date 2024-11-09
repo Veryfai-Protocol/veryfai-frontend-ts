@@ -80,10 +80,6 @@ export async function initLlm() {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function performFactCheck(task: any, llmService: WebLLMService) {
-  // const factCheckStatement = task.task_data.fact;
-  // const taskId = task.id;
-  // const articleDictList = [task.task_data];
-
   const factCheckStatement = task.task_data.fact;
   const taskId = task.id;
   const articleDictList = [task.article_disct];
