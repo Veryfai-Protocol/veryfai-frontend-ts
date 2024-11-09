@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { COOKIE_KEYS } from '../enums';
 import { Task } from '../types/webllm';
 import { responseSchema } from '../utils';
+import { getCookie } from 'cookies-next/client';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_BASE_API;
 
 export const getPendingTask = async () => {
   const url = `${API_URL}/tasks/pending`;
@@ -91,5 +93,97 @@ export const getArticleFromGoogle = async (
       JSON.stringify(error)
     );
     return [];
+  }
+};
+
+export const submitTask = async (
+  payload: any,
+  requestId: string,
+  taskId: string
+) => {
+  const url = `${API_URL}/requests/${requestId}/tasks/${taskId}/submit-response`;
+  const token = getCookie(COOKIE_KEYS.AccessToken);
+  console.log(payload);
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ response: payload }),
+    });
+    const data = await response.json();
+    if (response.status <= 201) {
+      return responseSchema(response.status, data);
+    }
+    return responseSchema(response.status, data.error);
+  } catch (error) {
+    console.log({ error });
+    return responseSchema(500, error);
+  }
+};
+
+export const getTask = async (taskType: string) => {
+  const url = `${API_URL}/verifiers/get-task?verifier_type=${taskType}`;
+  // const url = 'https://dev-api.veryfaiapi.info/veryfai/requests/14/tasks';
+  const token = getCookie(COOKIE_KEYS.AccessToken);
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    if (response.status <= 201) {
+      return responseSchema(response.status, data);
+    }
+    return responseSchema(response.status, data.error);
+  } catch (error) {
+    return responseSchema(500, error);
+  }
+};
+
+export const sendHeartBeat = async () => {
+  const url = `${API_URL}/heartbeat?verifier_type=limited`;
+  const token = getCookie(COOKIE_KEYS.AccessToken);
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    if (response.status <= 201) {
+      return responseSchema(response.status, data);
+    }
+    return responseSchema(response.status, data.error);
+  } catch (error) {
+    return responseSchema(500, error);
+  }
+};
+
+export const stopHeartBeat = async () => {
+  const url = `${API_URL}/shutdown`;
+  const token = getCookie(COOKIE_KEYS.AccessToken);
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    if (response.status <= 201) {
+      return responseSchema(response.status, data);
+    }
+    return responseSchema(response.status, data.error);
+  } catch (error) {
+    return responseSchema(500, error);
   }
 };

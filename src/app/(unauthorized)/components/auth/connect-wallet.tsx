@@ -11,6 +11,9 @@ import { useRouter } from 'next/navigation';
 import { CHECKER_DASHBOARD } from '@/site-settings/navigations';
 import Image from 'next/image';
 import WALLET from '../../../../../public/wallet.svg';
+import { login } from '@/app/lib/data-fetching/auth';
+import { setCookie } from 'cookies-next/client';
+import { COOKIE_KEYS } from '@/app/lib/enums';
 
 type ConnectWalletType = {
   closeForm: () => void;
@@ -54,7 +57,16 @@ export const ConnectWallet = ({ closeForm }: ConnectWalletType) => {
         value: ether,
       });
       setIsStakeSuccessful(true);
-      router.push(CHECKER_DASHBOARD.href);
+      const response = await login({
+        wallet_address: '6721b9a0-3b3c-8001-a616-a72e978dd4cd',
+        network: 'basenet',
+      });
+      console.log(response);
+      if (response.status <= 201) {
+        setCookie(COOKIE_KEYS.AccessToken, response.data.token);
+        router.push(CHECKER_DASHBOARD.href);
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert('An error occurred while staking. Please try again.');

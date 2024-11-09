@@ -5,7 +5,7 @@ import {
   setServerStatus,
   stopTimer,
 } from './utils';
-import { getPendingTask, updateTask } from './data-fetching/task';
+import { getTask, submitTask, updateTask } from './data-fetching/task';
 import { SERVER_STATUS } from './enums';
 import { initLlm, performFactCheck } from './llm';
 
@@ -96,23 +96,27 @@ export async function mainStreaming(task: any) {
 }
 
 export const startListeningForTask = async () => {
-  const llmService = await initLlm();
-  const tasks = await getPendingTask();
-  if (
-    tasks.status <= 201 &&
-    tasks.data.pending_tasks &&
-    tasks.data.pending_tasks.length > 0
-  ) {
-    const task = tasks.data.pending_tasks[0];
+  const tasks = await getTask('limited');
+  console.log(tasks.data);
+  if (tasks.status <= 201 && tasks.data && tasks.data.data) {
+    const task = tasks.data.data;
+
     setServerStatus([...getServerStatus(), SERVER_STATUS.Received]);
     // mainStreaming(task);
     stopTimer();
+    const llmService = await initLlm();
     setServerStatus([...getServerStatus(), SERVER_STATUS.Executing]);
+    console.log(task);
     const response = await performFactCheck(task, llmService);
+    console.log(response, '---------response');
     setServerStatus([...getServerStatus(), SERVER_STATUS.Submitting]);
-    await updateTask(response, task.id);
+    await submitTask(response, task.request_id, task.id);
     setServerStatus([SERVER_STATUS.Done]);
     restartTimer();
+  } else {
+    const status = getServerStatus().includes(SERVER_STATUS.Nothing);
+    if (!status) return;
+    setServerStatus([...getServerStatus(), SERVER_STATUS.Nothing]);
   }
 };
 

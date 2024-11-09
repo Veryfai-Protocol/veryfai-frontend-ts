@@ -1,15 +1,8 @@
 import * as webllm from '@mlc-ai/web-llm';
 import { getServerStatus, setServerStatus } from '../utils';
 import { SERVER_STATUS } from '../enums';
-import {
-  ArticleDict,
-  FactCheckResponse,
-  SnippetMetadata,
-} from '../types/webllm';
+import { ArticleDict } from '../types/webllm';
 import { processArticleSnippetsForFactCheck } from './process_article';
-import { processArticleSnippetAnalysisResultsRaw } from './article_score';
-import MapUtils from './maputils';
-import { TestDict } from '../constants';
 
 const WEBLLM_DEFAULT_MODEL = 'Llama-3.2-3B-Instruct-q4f16_1-MLC';
 
@@ -23,14 +16,19 @@ const initProgressCallback = (report: webllm.InitProgressReport) => {
 
 async function create_webllm_engine() {
   console.log('Creating WebLLM engine');
-  const engine: webllm.MLCEngineInterface =
-    await webllm.CreateServiceWorkerMLCEngine(WEBLLM_DEFAULT_MODEL, {
-      initProgressCallback: initProgressCallback,
-    });
+  try {
+    const engine: webllm.MLCEngineInterface =
+      await webllm.CreateServiceWorkerMLCEngine(WEBLLM_DEFAULT_MODEL, {
+        initProgressCallback: initProgressCallback,
+      });
 
-  console.log('WebLLM engine created');
+    console.log('WebLLM engine created');
 
-  return engine;
+    return engine;
+  } catch (error) {
+    console.log(error, '=====error');
+    return null;
+  }
 }
 
 async function webllm_prompt(
@@ -82,24 +80,19 @@ export async function initLlm() {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function performFactCheck(task: any, llmService: WebLLMService) {
-  // const factCheckStatement = task.content;
-  const factCheckStatement = 'american election 2024';
-  const taskId = task.id;
-  // const articleDictList = await getGoogleSearchResultsRaw(
-  //   factCheckStatement,
-  //   NUM_GOOGLE_SEARCH_RESULTS
-  // );
+  // const factCheckStatement = task.task_data.fact;
+  // const taskId = task.id;
+  // const articleDictList = [task.task_data];
 
-  const articleDictList = TestDict;
+  const factCheckStatement = task.task_data.fact;
+  const taskId = task.id;
+  const articleDictList = [task.article_disct];
 
   const re = articleDictList.map((m) => {
     return new ArticleDict(m);
   });
   console.log(articleDictList);
   console.log(re);
-
-  let start = Date.now();
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const snippetMetadataList: any = await processArticleSnippetsForFactCheck(
     taskId,
@@ -107,32 +100,6 @@ export async function performFactCheck(task: any, llmService: WebLLMService) {
     articleDictList,
     llmService
   );
-  let millis = (Date.now() - start) / 1000.0;
 
-  console.log(millis.toString());
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const snips = snippetMetadataList.map((m: any) => {
-    return MapUtils.deserialize(SnippetMetadata, m);
-  });
-
-  console.log(snippetMetadataList);
-  console.log(snips);
-
-  const factCheckOutputDict = processArticleSnippetAnalysisResultsRaw(
-    taskId,
-    snippetMetadataList
-  );
-
-  start = Date.now();
-
-  const rf = MapUtils.deserialize(FactCheckResponse, factCheckOutputDict);
-
-  millis = (Date.now() - start) / 1000.0;
-
-  console.log(millis.toString());
-
-  console.log(rf, '==============result');
-
-  return factCheckOutputDict;
+  return snippetMetadataList;
 }

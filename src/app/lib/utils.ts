@@ -1,9 +1,14 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { mockData, TASK_POLL_INTERVAL_MS } from './constants';
+import {
+  HEATBEAT_INTERVAL,
+  mockData,
+  TASK_POLL_INTERVAL_MS,
+} from './constants';
 import { APIResponse } from './types';
 import { startListeningForTask } from './webllm';
 import { SERVER_STATUS } from './enums';
+import { sendHeartBeat } from './data-fetching/task';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -33,6 +38,28 @@ export const startTimer = async () => {
   localStorage.setItem('timer', JSON.stringify(timer));
   setServerStatus([...getServerStatus(), SERVER_STATUS.Awaiting]);
   console.log('========started');
+};
+
+const heartbeatInterval = async () => {
+  const response = await sendHeartBeat();
+  if (response.status > 201) {
+    setServerStatus([...getServerStatus(), SERVER_STATUS.Heartbeat_failed]);
+    stopTimer();
+  }
+};
+
+export const startHeartbeat = async () => {
+  const timer = setInterval(heartbeatInterval, HEATBEAT_INTERVAL);
+  localStorage.setItem('heatbeat', JSON.stringify(timer));
+  // setServerStatus([...getServerStatus(), SERVER_STATUS.Awaiting]);
+};
+
+export const clearHeatbeat = () => {
+  const timer = localStorage.getItem('heatbeat');
+  if (!timer) return;
+  const parseTimer = JSON.parse(timer);
+  clearInterval(parseTimer);
+  localStorage.removeItem('heatbeat');
 };
 
 export const restartTimer = () => {

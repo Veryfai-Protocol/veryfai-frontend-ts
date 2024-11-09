@@ -7,8 +7,16 @@ import { Wifi } from 'lucide-react';
 import { Console } from './Console';
 import { registerServiceWorker, unregister } from '@/app/lib/webllm';
 import { useWebLLMStore } from '@/app/providers/authorized/webllm-provider';
-import { setServerStatus, startTimer, stopTimer } from '@/app/lib/utils';
+import {
+  clearHeatbeat,
+  getServerStatus,
+  setServerStatus,
+  startHeartbeat,
+  startTimer,
+  stopTimer,
+} from '@/app/lib/utils';
 import { SERVER_STATUS } from '@/app/lib/enums';
+import { sendHeartBeat } from '@/app/lib/data-fetching/task';
 
 export const TaskProcessing = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -18,19 +26,30 @@ export const TaskProcessing = () => {
   const handleClose = () => {
     setShowModal(false);
   };
+
   const handleProceed = async () => {
     setShowModal(false);
     state.setAppLoaded(true);
     setConnecting(true);
-    setServerStatus(['> Setting up environment']);
+    setServerStatus(['> Setting up environment', SERVER_STATUS.Sending]);
+    const response = await sendHeartBeat();
+    if (response.status <= 201) {
+      setServerStatus([...getServerStatus(), SERVER_STATUS.Heartbeat]);
+      startHeartbeat();
+    } else {
+      setConnecting(false);
+      setServerStatus([...getServerStatus(), SERVER_STATUS.Heartbeat_failed]);
+      return;
+    }
     const result = await registerServiceWorker();
     if (result) {
-      setServerStatus(['> Environment ready']);
+      setServerStatus([...getServerStatus(), '> Environment ready']);
       state.setConnected(true);
       setConnecting(false);
       startTimer();
     } else {
-      setServerStatus(['> Environment setup failed']);
+      setConnecting(false);
+      setServerStatus([...getServerStatus(), '> Environment setup failed']);
     }
   };
 
@@ -39,6 +58,7 @@ export const TaskProcessing = () => {
     state.setConnected(false);
     state.setAppLoaded(false);
     stopTimer();
+    clearHeatbeat();
   };
 
   useEffect(() => {

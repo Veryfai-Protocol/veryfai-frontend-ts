@@ -1,7 +1,12 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { CloseButton } from './closeButton';
 import LOGIN from '../../../../../public/veryfai-login.svg';
 import Image from 'next/image';
+import { Button } from '@/app/components/ui/button';
+import { login } from '@/app/lib/data-fetching/auth';
+import { setCookie } from 'cookies-next/client';
+import { COOKIE_KEYS } from '@/app/lib/enums';
+import { useRouter } from 'next/navigation';
+import { CHECKER_DASHBOARD } from '@/site-settings/navigations';
 
 type ConnectWalletType = {
   closeForm: () => void;
@@ -12,6 +17,17 @@ export const LoginConnectWallet = ({
   closeForm,
   handleRegister,
 }: ConnectWalletType) => {
+  const router = useRouter();
+  const handleLogin = async () => {
+    const response = await login({
+      wallet_address: '6721b9a0-3b3c-8001-a616-a72e978dd4cd',
+      network: 'basenet',
+    });
+    if (response.status <= 201) {
+      setCookie(COOKIE_KEYS.AccessToken, response.data.token);
+      router.push(CHECKER_DASHBOARD.href);
+    }
+  };
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
       <div className="bg-white p-2 sm:p-[6px] flex flex-col items-center rounded-3xl w-full max-w-md lg:max-w-lg xl:max-w-xl max-h-[calc(100vh-2rem)]  relative">
@@ -33,10 +49,10 @@ export const LoginConnectWallet = ({
               Select wallet to login
             </h1>
             <div className="flex flex-col gap-2 sm:gap-[12px] max-h-[40vh] overflow-y-auto scrollbar-hide pr-1"></div>
-
-            <div className="w-full flex items-center justify-center">
+            <Button onClick={handleLogin}>Login</Button>
+            {/* <div className="w-full flex items-center justify-center">
               <ConnectButton />
-            </div>
+            </div> */}
             <div className="flex gap-2 items-center justify-center mt-2">
               <p className="text-[20px]">Don&apos;t have an account?</p>
               <div
